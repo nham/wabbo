@@ -1,4 +1,7 @@
-# 12 Jan 2014
+---
+title: Music that I like and I'm going to list it here so maybe I won't forget about it.
+---
+## 12 Jan 2014
  - Darkside - Metatron
    <http://youtu.be/CUkw7M5Ptio>
 
@@ -8,6 +11,6 @@
  - Floating Points - Wires
    <http://youtu.be/N67pxJFg_JQ>
 
-# 10 Jan 2014
+## 10 Jan 2014
  - Thom Yorke - Cymbal Rush (The Field remix)
    <http://youtu.be/0lJ7IaleOm4>

@@ -1,3 +1,6 @@
+---
+title: Hi
+---
 Here's some things I made / am making.
 
  - [Linear algebra notes](linalg.html)
