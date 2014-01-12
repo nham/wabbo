@@ -24,3 +24,8 @@ html:
 		    --title-prefix $(title) \
 			--smart \
 			--mathjax
+
+	make -f Makefile -C rigid
+	test -d out/rigid || mkdir out/rigid/
+	cp rigid/index.html out/rigid/index.html
+	cp -r rigid/css/ out/rigid/
