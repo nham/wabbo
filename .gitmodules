@@ -1,0 +1,3 @@
+[submodule "rigid"]
+	path = rigid
+	url = git://github.com/nham/implastic.git
