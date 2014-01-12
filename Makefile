@@ -1,5 +1,5 @@
 include_dir = build
-title = 'Implastic'
+title = 'wabbo'
 
 html:
 	pandoc -s index.md -t html5 -o index.html \
