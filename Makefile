@@ -15,3 +15,11 @@ html:
 		    --include-after-body $(include_dir)/footer.html \
 		    --title-prefix $(title) \
 			--smart
+
+	pandoc -s linalg.md -t html5 -o linalg.html \
+		    --include-in-header $(include_dir)/header.html \
+		    --include-before-body $(include_dir)/top.html \
+		    --include-after-body $(include_dir)/footer.html \
+		    --title-prefix $(title) \
+			--smart \
+			--mathjax
