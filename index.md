@@ -7,6 +7,10 @@ Here's some things I made / am making.
 
  - [Rigid body dynamics notes](rigid/)
 
+ - [Rad cohesion, a WebGL game that exists only in my mind because the code I've written only makes a colorful icosahedron](https://github.com/nham/radcohesion)
+
+ - [Burrfish, a rigid body dynamics engine in Rust](https://github.com/nham/burrfish)
+
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
  - [stream blog](stream.html)
