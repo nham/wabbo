@@ -6,6 +6,11 @@ title: stream
 
 <http://en.wikipedia.org/wiki/Ohm%27s_law>
 
+## 27 Jan 2014
+Music theory with group theory.
+
+<http://alpof.wordpress.com/category/music/neo-riemannian-theory/>
+
 ## 12 Jan 2014
  - Darkside - Metatron
    <http://youtu.be/CUkw7M5Ptio>
