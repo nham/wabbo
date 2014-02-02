@@ -7,4 +7,6 @@ Here's some things I made / am making.
 
  - [Rigid body dynamics notes](rigid/)
 
+ - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
+
  - [A list of music I like](music.html)
