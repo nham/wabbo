@@ -8,21 +8,21 @@ test -d ${out_dir} || mkdir ${out_dir}
 
 pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-in-header ${include_dir}/header.html \
-        --include-before-body ${include_dir}/top.html \
+        --include-before-body ${include_dir}/before_body.html \
         --include-after-body ${include_dir}/footer.html \
         --title-prefix ${title} \
         --smart
 
 pandoc -s stream.md -t html5 -o ${out_dir}/stream.html \
         --include-in-header ${include_dir}/header.html \
-        --include-before-body ${include_dir}/top.html \
+        --include-before-body ${include_dir}/before_body_page.html \
         --include-after-body ${include_dir}/footer.html \
         --title-prefix ${title} \
         --smart
 
 pandoc -s linalg.md -t html5 -o ${out_dir}/linalg.html \
         --include-in-header ${include_dir}/header.html \
-        --include-before-body ${include_dir}/top.html \
+        --include-before-body ${include_dir}/before_body_page.html \
         --include-after-body ${include_dir}/footer.html \
         --title-prefix ${title} \
         --smart \
