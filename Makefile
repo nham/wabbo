@@ -10,7 +10,7 @@ html:
 		    --title-prefix $(title) \
 			--smart
 
-	pandoc -s music.md -t html5 -o $(output_dir)/music.html \
+	pandoc -s stream.md -t html5 -o $(output_dir)/stream.html \
 		    --include-in-header $(include_dir)/header.html \
 		    --include-before-body $(include_dir)/top.html \
 		    --include-after-body $(include_dir)/footer.html \
