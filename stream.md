@@ -22,6 +22,11 @@ Music theory with group theory.
 
 <http://alpof.wordpress.com/category/music/neo-riemannian-theory/>
 
+## 13 Jan 2014
+
+ > The important thing to remember is that this simulation is a good one. It's believable, it's tactile. You can reach out, things are solid. You can move objects from one area to another. You can feel your body. You can say, "I'd like to go over to this location", and you can move this mass of molecules through the air, over to another location, at will.
+ -- Reggie Watts
+
 ## 12 Jan 2014
  - Darkside - Metatron
    <http://youtu.be/CUkw7M5Ptio>
