@@ -3,6 +3,10 @@ title: stream
 ---
 ## 03 Feb 2014
 
+<http://earlyretirementextreme.com/>
+
+## 03 Feb 2014
+
 On Judging the Plausibility of Theories, Herbert Simon
 
 <http://www.psy.cmu.edu/~siegler/simon68.pdf>
