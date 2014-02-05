@@ -1,6 +1,11 @@
 ---
 title: stream
 ---
+## 04 Feb 2014
+This has some stuff on matplotlib, which I am primarily interested in at the moment, but also scipy stuff.
+
+<http://scipy-lectures.github.io/index.html>
+
 ## 03 Feb 2014
 
 <http://earlyretirementextreme.com/>
