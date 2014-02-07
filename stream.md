@@ -1,6 +1,11 @@
 ---
 title: stream
 ---
+## 07 Feb 2014
+Pictures/descriptions of different kinds of receptors in the skin.
+
+<http://faculty.washington.edu/chudler/receptor.html>
+
 ## 04 Feb 2014
 This has some stuff on matplotlib, which I am primarily interested in at the moment, but also scipy stuff.
 
