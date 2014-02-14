@@ -3,9 +3,10 @@ title: stream
 ---
 ## 14 Feb 2014
 
-Google's C++ style guide.
+Some C++ links:
 
-<http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml>
+ - [Google's C++ style guide.](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml)
+ - <http://flamingdangerzone.com/cxx11/2012/08/15/rule-of-zero.html>
 
 ## 13 Feb 2014
 
