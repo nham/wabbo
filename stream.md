@@ -1,6 +1,17 @@
 ---
 title: stream
 ---
+## 14 Feb 2014
+
+Google's C++ style guide.
+
+<http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml>
+
+## 13 Feb 2014
+
+Terrible artist name, but the song is good: Com Truise - Mind
+
+<https://soundcloud.com/ghostly/com-truise-mind>
 ## 12 Feb 2014
 
 Git for Ages 4 and Up:
