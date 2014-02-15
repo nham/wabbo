@@ -1,7 +1,7 @@
 ---
 title: Hi
 ---
-I'm just some guy. Here's some things I made / am making.
+Here's some things I made / am making.
 
  - [Linear algebra notes](linalg.html)
 
@@ -14,3 +14,9 @@ I'm just some guy. Here's some things I made / am making.
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
  - [stream blog](stream.html)
+
+
+Other links:
+
+ - [G+](https://plus.google.com/107239411748947572422/)
+ - [Goodreads](https://www.goodreads.com/user/show/18824764)
