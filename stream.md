@@ -1,6 +1,14 @@
 ---
 title: stream
 ---
+## 16 Feb 2014
+
+Assorted links:
+
+ - Mapei, "Don't Wait" <http://youtu.be/33mjGmfy7PA>
+ - [Bjarne's C++ Style guide](http://www.stroustrup.com/bs_faq2.html#finally). I hate the way his book is organized, so this seems useful.
+ - [The Rise of the Gang of Four with Rust](http://joshldavis.com/2013/06/16/the-rise-of-the-gang-of-four-with-rust/)
+
 ## 14 Feb 2014
 
 Some C++ links:
