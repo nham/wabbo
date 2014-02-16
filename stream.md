@@ -5,9 +5,10 @@ title: stream
 
 Assorted links:
 
- - Mapei, "Don't Wait" <http://youtu.be/33mjGmfy7PA>
- - [Bjarne's C++ Style guide](http://www.stroustrup.com/bs_faq2.html#finally). I hate the way his book is organized, so this seems useful.
+ - Mapei - Don't Wait <http://youtu.be/33mjGmfy7PA>
+ - [Bjarne's C++ Style guide](http://www.stroustrup.com/bs_faq2.html#finally). I hate the way his book is organized, but this seems useful.
  - [The Rise of the Gang of Four with Rust](http://joshldavis.com/2013/06/16/the-rise-of-the-gang-of-four-with-rust/)
+ - Linked List basics: <http://cslibrary.stanford.edu/103/>
 
 ## 14 Feb 2014
 
@@ -39,23 +40,18 @@ This has some stuff on matplotlib, which I am primarily interested in at the mom
 
 ## 03 Feb 2014
 
-<http://earlyretirementextreme.com/>
+Assorted links:
 
-## 03 Feb 2014
+ - <http://earlyretirementextreme.com/>
 
-On Judging the Plausibility of Theories, Herbert Simon
-
-<http://www.psy.cmu.edu/~siegler/simon68.pdf>
+ - On Judging the Plausibility of Theories, Herbert Simon: <http://www.psy.cmu.edu/~siegler/simon68.pdf>
 
 ## 02 Feb 2014
 
-<http://matt.might.net/articles/basic-unix/>
+Assorted links:
 
-## 02 Feb 2014
-
-Thesis vs. dissertation.
-
-<http://www.ccs.neu.edu/home/shivers/diss-advice.html>
+ - <http://matt.might.net/articles/basic-unix/>
+ - Thesis vs. dissertation: <http://www.ccs.neu.edu/home/shivers/diss-advice.html>
 
 
 ## 02 Feb 2014
