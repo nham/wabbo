@@ -1,6 +1,10 @@
 ---
 title: stream
 ---
+## 17 Feb 2014
+
+Game physics links (presentations from GDC conferences): <http://www.essentialmath.com/tutorial.htm>
+
 ## 16 Feb 2014
 
 Assorted links:
