@@ -11,7 +11,7 @@ pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-after-body ${include_dir}/footer.html \
         --smart
 
-pandoc -s linkblog -t html5 -o ${out_dir}/linkblog.html \
+pandoc -s linkblog.md -t html5 -o ${out_dir}/linkblog.html \
         --include-in-header ${include_dir}/header.html \
         --include-before-body ${include_dir}/before_body_page.html \
         --include-after-body ${include_dir}/footer.html \
