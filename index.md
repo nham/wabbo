@@ -13,7 +13,7 @@ Here's some things I made / am making.
 
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
- - [stream blog](stream.html)
+ - [link blog](linkblog.html)
 
 
 Other links:
