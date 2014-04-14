@@ -5,6 +5,8 @@ out_dir=out
 
 test -d ${out_dir} || mkdir ${out_dir}
 
+rm -r ${out_dir}/*
+
 pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-in-header ${include_dir}/header.html \
         --include-before-body ${include_dir}/before_body.html \
