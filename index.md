@@ -11,7 +11,6 @@ Here's some things I made / am making.
 
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
- - [link blog](linkblog.html)
 
 
 Other links:
