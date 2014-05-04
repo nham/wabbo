@@ -3,7 +3,7 @@ title: Hi
 ---
 Here's some things I made / am making.
 
- - [math notes](http://github.com/nham/mat_notes)
+ - [math notes](http://github.com/nham/math_notes)
 
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
