@@ -3,11 +3,7 @@ title: Hi
 ---
 Here's some things I made / am making.
 
- - [Linear algebra notes](http://github.com/nham/linalg)
-
- - [Real analysis notes](http://github.com/nham/numbers)
-
- - [Rad cohesion, a WebGL game that exists only in my mind because the code I've written only makes a colorful icosahedron so far, (but I'm gonna fix that Real Soon Now)](https://github.com/nham/radcohesion)
+ - [math notes](http://github.com/nham/mat_notes)
 
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
