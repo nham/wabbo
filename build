@@ -21,7 +21,4 @@ pandoc -s linkblog.md -t html5 -o ${out_dir}/linkblog.html \
 
 cp -r css/ ${out_dir}/
 
-make -f Makefile -C rigid
-test -d ${out_dir}/rigid || mkdir ${out_dir}/rigid/
-cp rigid/index.html ${out_dir}/rigid/index.html
-cp -r rigid/css/ ${out_dir}/rigid/
+python math_notes/build.py
