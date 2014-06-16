@@ -4,9 +4,9 @@
 
 Hacker School started last week, and for my first major project I decided I was going to write an operating system in Rust. More specifically, since I don't understand how operating systems work, I decided to try and port [xv6](http://pdos.csail.mit.edu/6.828/2012/xv6.html), an educational OS made by some people at MIT.
 
-Since I am a rigorously-minded person interested in messy details, I decided to try to understand the booting process and write my own bootloader. It couldn't be too hard, right? It just involves checking some of x86 documentation and writing some assembly, nothing truly difficult. Whatever difficulty there would be, I was sure my investment will be repaid many times over by the Deep Insight into the design and operation of the x86 architecture that my investigations would yield. I was reasonably convinced that this would be a productive use of my time.
+Since I am a rigorously-minded person interested in messy details, I decided to try to understand the booting process and write my own bootloader. It couldn't be too hard, right? It just involves checking some of x86 documentation and writing some assembly, nothing truly difficult. Whatever difficulty there would be, I was sure my investment will be repaid many times over by the Deep Insight into the design and operation of x86 CPUs that my investigations would yield. I was reasonably convinced that this would be a productive use of my time.
 
-Dear reader, I am now skeptical of that assessment. This has been a frustrating exercise and I'm unsure what, precisely, I have gained. Below I outline everything that I've learned, so that you can see for yourself how futile it is to try to understand the boot sequence.
+Dear reader, I am now skeptical of that assessment. This has been a frustrating exercise and I'm unsure what, precisely, I have gained. Below I outline everything that I've learned, so that you can see for yourself how futile it is to try to understand the intricacies of the boot sequence.
 
 
 ## Power on + BIOS magic
