@@ -12,4 +12,4 @@ Here's some things I made / am making.
 Other links:
 
  - [G+](https://plus.google.com/107239411748947572422/)
- - [Goodreads](https://www.goodreads.com/user/show/18824764)
+ - [Twitter](https://twitter.com/cryptomorphism)
