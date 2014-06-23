@@ -2,10 +2,14 @@
 
 include_dir=includes
 out_dir=out
+blog_dir=blog
+blog_out_dir=${out_dir}/blog
 
+# create out directory, clean it up if necessary
 test -d ${out_dir} || mkdir ${out_dir}
-
 rm -r ${out_dir}/*
+
+test -d ${blog_out_dir} || mkdir ${blog_out_dir}
 
 pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-in-header ${include_dir}/header.html \
@@ -13,7 +17,15 @@ pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-after-body ${include_dir}/footer.html \
         --smart
 
-pandoc -s linkblog.md -t html5 -o ${out_dir}/linkblog.html \
+# compile blog.
+# this is horrible
+pandoc -s ${blog_dir}/index.md -t html5 -o ${blog_out_dir}/index.html \
+        --include-in-header ${include_dir}/header.html \
+        --include-before-body ${include_dir}/before_body_page.html \
+        --include-after-body ${include_dir}/footer.html \
+        --smart
+
+pandoc -s ${blog_dir}/22jun2014_28jun2014.md -t html5 -o ${blog_out_dir}/22jun2014_28jun2014.html \
         --include-in-header ${include_dir}/header.html \
         --include-before-body ${include_dir}/before_body_page.html \
         --include-after-body ${include_dir}/footer.html \

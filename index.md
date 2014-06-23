@@ -7,6 +7,7 @@ Here's some things I made / am making.
 
  - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
 
+ - [blog](blog/)
 
 
 Other links:
