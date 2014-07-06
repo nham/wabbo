@@ -12,5 +12,6 @@ Here's some things I made / am making.
 
 Other links:
 
+ - [Github](https://github.com/nham)
  - [G+](https://plus.google.com/107239411748947572422/)
  - [Twitter](https://twitter.com/cryptomorphism)
