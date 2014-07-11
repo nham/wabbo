@@ -20,7 +20,7 @@ div#header h1 {
 }
 
 div#body {
-    width: 600px;
+    width: 620px;
     margin: 20px 40px;
     padding: 20px;
     background-color: #f9f9f9;
@@ -42,4 +42,13 @@ ul {
 
 a, a:visited {
     color: #ff0000;
+}
+
+pre {
+    background-color: #efefef;
+}
+
+code {
+    background-color: #efefef;
+    font-size: 14px;
 }
