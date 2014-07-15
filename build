@@ -5,11 +5,15 @@ out_dir=out
 blog_dir=blog
 blog_out_dir=${out_dir}/blog
 
+# whyyyyyyyyyy
+blog_out_dir_2014=${blog_out_dir}/2014
+
 # create out directory, clean it up if necessary
 test -d ${out_dir} || mkdir ${out_dir}
 rm -r ${out_dir}/*
 
 test -d ${blog_out_dir} || mkdir ${blog_out_dir}
+test -d ${blog_out_dir_2014} || mkdir ${blog_out_dir_2014}
 
 pandoc -s index.md -t html5 -o ${out_dir}/index.html \
         --include-in-header ${include_dir}/header.html \
@@ -25,7 +29,13 @@ pandoc -s ${blog_dir}/index.md -t html5 -o ${blog_out_dir}/index.html \
         --include-after-body ${include_dir}/footer.html \
         --smart
 
-pandoc -s ${blog_dir}/22jun2014_28jun2014.md -t html5 -o ${blog_out_dir}/22jun2014_28jun2014.html \
+pandoc -s ${blog_dir}/2014/22jun_28jun.md -t html5 -o ${blog_out_dir_2014}/22jun_28jun.html \
+        --include-in-header ${include_dir}/header.html \
+        --include-before-body ${include_dir}/before_body_page.html \
+        --include-after-body ${include_dir}/footer.html \
+        --smart
+
+pandoc -s ${blog_dir}/2014/06jul_12jul.md -t html5 -o ${blog_out_dir_2014}/06jul_12jul.html \
         --include-in-header ${include_dir}/header.html \
         --include-before-body ${include_dir}/before_body_page.html \
         --include-after-body ${include_dir}/footer.html \

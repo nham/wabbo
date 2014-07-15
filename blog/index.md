@@ -1,2 +1,2 @@
- - [22 Jun 2014 - 28 Jun 2014](22jun2014_28jun2014.html)
- - [06 Jul 2014 - 12 Jul 2014](06jul2014_12jul2014.html)
+ - [22 Jun 2014 - 28 Jun 2014](2014/22jun_28jun.html)
+ - [06 Jul 2014 - 12 Jul 2014](2014/06jul_12jul.html)
