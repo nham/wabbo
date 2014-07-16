@@ -45,10 +45,16 @@ a, a:visited {
 }
 
 pre {
+    max-width: 620px;
     background-color: #efefef;
+    white-space: pre-wrap;       /* CSS 3 */
 }
 
 code {
     background-color: #efefef;
     font-size: 14px;
+}
+
+blockquote {
+    background-color: #efefef;
 }
