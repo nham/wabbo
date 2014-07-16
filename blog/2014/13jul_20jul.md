@@ -14,6 +14,8 @@ You use for loops like this:
         <some code that uses the variable from the first line>
     }
 
+(Actually, it's not merely a variable that works right after the "for" keyword, but any pattern)
+
 The key point is that the `for` loop in Rust is just syntactical sugar for some code that uses the iterator protocol. So if I have this vector of ints defined:
 
     let values = vec![1i, 2, 3];
@@ -25,7 +27,7 @@ And I make a `for` loop like so:
         println!("{}", x);
     }
 
-It desugars into something like this:
+Then the Rust documentation says it gets translated into something like this:
 
     // Rough translation of the iteration without a `for` iterator.
     let mut it = values.iter();
@@ -178,7 +180,7 @@ If we define a `Range` with `start = 2` and `stop = 7`, it should iterate throug
 
 And...it [apparently works!](http://is.gd/CpxrdP)
 
-So there's actually no reliance on `std::iter::Iterator` or `std::option::Option`, but what exactly is going on here? Is it a syntactical transformation where it literally emits the `loop` construct above using `Some` and `None`? Let's see what happens when we change the `Mebbe` type to:
+So there's actually no reliance on `std::iter::Iterator` or `std::option::Option`, but what exactly is going on here? Is it a syntactical transformation where it literally emits the `loop` construct above, which repeatedly calls `next()` and checks whether the result is `Some` and `None`? Let's see what happens when we change the `Mebbe` type to:
 
     enum Mebbe<T> {
         Yap(T),
@@ -195,4 +197,15 @@ So there's actually no reliance on `std::iter::Iterator` or `std::option::Option
     error: aborting due to previous error
     playpen: application terminated with error code 101
 
-So it certainly seems that a for loop gets turned into something like an infinite loop with a match statement checking for the presence of a `Some` pattern or `None` pattern. To confirm this, I guess we would need to delve into the Rust compiler, but I'm not sure I'm intrepid enough for that adventure.
+Also, if we change the name of `MyIterator`'s `next` method to anything else, we get this:
+
+    <anon>:36:5: 39:2 error: type `&mut Range` does not implement any method in 
+    scope named `next`
+    <anon>:36     for i in Range::new(2, 7) {
+    <anon>:37         println!("{}", i);
+    <anon>:38     }
+    <anon>:39 }
+    error: aborting due to previous error
+    playpen: application terminated with error code 101
+
+So it certainly seems that the transformation from above is exactly what's happening. We get code that attempts to call some method named `next()` and checks whether the result of that call matches a `Some` pattern or a `None` pattern. To confirm this, I guess we would need to delve into the Rust compiler, but I'm not sure I'm intrepid enough for that adventure.
