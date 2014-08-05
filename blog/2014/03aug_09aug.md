@@ -26,7 +26,7 @@ To understand what's going on, you need to know three things:
 
 So the above code is checking whether the type of the elements that the slice contains is zero-sized or not. If it is, we advance the iterator to the next element and then return `Some(transmute(1u))`. This iterator is supposed to be returning a borrow, `&T`, so in effect this code says: when `size_of::<T>() == 0`, transmute `1` to a `&T` and return it.
 
-This initialy seemed nuts to me, because you literally have a pointer to memory address `1`. That's a segfault waiting to happen, surely? But I asked around in the Rust IRC channel and this was explained as follows: you don't actually need to follow any pointer to a type with zero size, because there's no bits in memory representing it. As long as you have the type, you have all you need to know about the value. In fact, it's not clear to me why this code insists on transmuting a non-zero value, because doing this seems to work just fine:
+This initially seemed nuts to me, because you literally have a pointer to memory address `1`. That's a segfault waiting to happen, surely? But I asked around in the Rust IRC channel and this was explained as follows: you don't actually need to follow any pointer to a type with zero size, because there's no bits in memory representing it. As long as you have the type, you have all you need to know about the value. In fact, it's not clear to me why this code insists on transmuting a non-zero value, because doing this seems to work just fine:
 
     fn main() {
         let x: &() = unsafe { std::mem::transmute(0u) };
