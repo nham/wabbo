@@ -47,6 +47,12 @@ pandoc -s ${blog_dir}/2014/13jul_20jul.md -t html5 -o ${blog_out_dir_2014}/13jul
         --include-after-body ${include_dir}/footer.html \
         --smart
 
+pandoc -s ${blog_dir}/2014/03aug_09aug.md -t html5 -o ${blog_out_dir_2014}/03aug_09aug.html \
+        --include-in-header ${include_dir}/header.html \
+        --include-before-body ${include_dir}/before_body_page.html \
+        --include-after-body ${include_dir}/footer.html \
+        --smart
+
 cp -r css/ ${out_dir}/
 
 python math_notes/build.py
