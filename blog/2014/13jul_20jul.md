@@ -1,4 +1,4 @@
-# 23 Jun 2014
+# 16 Jul 2014
 ## For loops in Rust without the standard library {#for_loops_rust_no_std}
 
 ### For loops and iterators in Rust
@@ -99,7 +99,7 @@ We'll start out by designing our own trait for iterators:
         fn next(&mut self) -> Option<A>;
     }
 
-Of course, the `Option` type is defined in the standard library, and we're trying to avoid importing from the standard library, so we'll need to define our own version of that. Let's call it `Mebbe` instead of `Option`, for fun? I guess?
+Of course, the `Option` type is defined in the standard library, and we're trying to avoid importing from the standard library, so we'll need to define our own version of that. Let's call it `Mebbe` instead of `Option`, just for fun.
 
     enum Mebbe<T> {
         Some(T),
@@ -205,6 +205,24 @@ Also, if we change the name of `MyIterator`'s `next` method to anything else, we
     <anon>:37         println!("{}", i);
     <anon>:38     }
     <anon>:39 }
+    error: aborting due to previous error
+    playpen: application terminated with error code 101
+
+If we make a different change and add another variant to the `Mebbe` enum:
+
+    enum Mebbe<T> {
+        Some(T),
+        None,
+        Foo,
+    }
+
+we get a new error because the match arm of the desugared code doesn't cover this new variant:
+
+    <anon>:37:5: 40:2 error: non-exhaustive patterns: `Foo` not covered
+    <anon>:37     for i in Range::new(2, 7) {
+    <anon>:38         println!("{}", i);
+    <anon>:39     }
+    <anon>:40 }
     error: aborting due to previous error
     playpen: application terminated with error code 101
 
