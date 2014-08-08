@@ -1,6 +1,8 @@
 # Implementing search trees via AA trees in Rust
 
-A **red-black tree** is a binary tree with the following properties:
+A **binary search tree** is a binary tree where for every node n, for every node j in the left subtree of n, j's key is less than n's key, and for every node k in the right subtree of n, k's key is greater than n's key. (It's also possible to amend this definition to make either the left- or right-subtree allow node keys that are less-than-or-equal or greater-than-or-equal than the node. This is useful when allowing duplicate keys).
+
+A **red-black tree** is a binary search tree with the following properties:
 
  1. Each node in the tree is assigned a color, either red or black
  2. In addition to a color, any internal (non-leaf) node has a key, a value, and pointers to its children. Also, the set of all keys has some (total) ordering on it.
