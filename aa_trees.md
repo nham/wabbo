@@ -11,7 +11,7 @@ A **red-black tree** is a binary search tree with the following properties:
  5. Every red node has two children, and both are black
  6. For any node n and for any descendents d and e of n, the path n -> d and the path n -> e have the same number of black nodes
 
-Note: we could simplify this and use only keys instead of both keys and values, but we are interested in implementing *maps* or *associative arrays* using red-black trees, so we leave them in.
+Note: we could simplify this and use only keys instead of both keys and values, but we are interested in implementing *maps* or *associative arrays* using red-black trees, so we leave them in. If you like, you can ignore the values or imagine that they're all null (or, in the case of Rust, the [unit type](http://static.rust-lang.org/doc/master/core/unit/index.html)).
 
 The last property gives us something interesting: every node n has a well-defined **black-height**, which is the number of black nodes in any path from n to a leaf node. We will actually define and use a slightly different property: the **level** of a node n is the number of black nodes in any path from n to a leaf node *excluding node n itself*. So if n is a node, then when n is black, level(n) = black-height(n) - 1, whereas when n is red, level(n) = black-height(n).
 
