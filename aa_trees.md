@@ -45,7 +45,26 @@ These type definitions match much of the discussion above:
  - leaves have no data (no children, no key or values)
  - internal nodes have a color, a key, a value, and pointers to its child nodes.
 
-This definition meshes with rules 1-3, but we must ensure that the other rules are obeyed as well. However, it turns out that that the above definition is not so easy to work with, so rather than explicitly modeling the color of each node, it is both sufficient and convenient to use the level property instead. Also, since leaf nodes have a level of zero by definition, we no longer need to distinguish between leaf and internal nodes. Here is our new definition:
+This definition meshes with rules 1-3, but we must ensure that the other rules are obeyed as well. However, it turns out that that the above definition is not so easy to work with when it comes to writing an implementation in code.
+
+We can take a different approach by noting that, given the level of each node in the tree, we can completely recover the color information: a node is red if and only if it has the same level as its parent. Also, we don't actually need to create leaf nodes in our code: if we just allow internal nodes to have optional pointers to children, then a missing pointer means there should be a leaf node below. If we define a new kind of binary tree where nodes consist of the following data:
+
+ - key
+ - value
+ - level (nonnegative integer)
+ - optional pointers to left and right children
+
+Then we can ensure that such a tree corresponds to an AA tree by making these rules hold:
+
+ 1. leaf nodes have level 1
+ 2. for any node n, if n has a left child k, then level(n) = level(k) + 1
+ 3. for any node n, if n has a right child k, then level(n) - level(k) = 0 or 1
+ 4. for any node n, if n has a parent p and level(n) = level(p), then for any child k of n, level(n) = level(k) + 1
+
+Rule 2 says that no red node is a left child, and rule 4 says that no child of a red node is red. So any node that obeys these 4 rules clearly corresponds to an AA tree. Similarly, we can transform any AA tree to this form by throwing away the colors and leaf nodes.
+
+Now that we have a more convenient representation of AA trees, let's implement them in Rust!
+
 
     type Link<T> = Option<Box<T>>;
 
@@ -57,4 +76,3 @@ This definition meshes with rules 1-3, but we must ensure that the other rules a
         level: uint
     }
 
-A major change is that we no longer directy represent leaf nodes. Every node has both a key and a value, and if a pointer is missing in the actual struct, we really mean that there's a pointer to a leaf node that we are simply neglecting to actually store in memory. Also, instead of a `color` field we simply have a `level`. I glossed over it above, so you might be wondering how this data allows us to rebalance our tree according to the red-black rules. The key is that any red node must be a child of a black node by (5), so by the definition of "level" a red node has the same level as its parent. So we can detect red nodes simply by checking whether a node's level is the same as its parent's level.
