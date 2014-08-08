@@ -1,8 +1,31 @@
 # Implementing search trees via AA trees in Rust
 
-A **binary search tree** is a binary tree where for every node n, for every node j in the left subtree of n, j's key is less than n's key, and for every node k in the right subtree of n, k's key is greater than n's key. (It's also possible to amend this definition to make either the left- or right-subtree allow node keys that are less-than-or-equal or greater-than-or-equal than the node. This is useful when allowing duplicate keys). Binary search trees are useful because they can enable efficient lookups: if the key we're searching for is strictly less than the current node, we know that we only have to search the left subtree of the current node, since everything in the right subtree is bigger than the current node (and hence bigger than the key).
+## Binary search trees
+
+A **binary search tree** is a binary tree where for every node n:
+
+ - for every node j in the left subtree of n, j's key is less than n's key
+ - for every node k in the right subtree of n, k's key is greater than n's key.
+
+Binary search trees are useful because they can enable efficient lookups: if the key we're searching for is strictly less than the current node, we know that we only have to search the left subtree of the current node, since everything in the right subtree is bigger than the current node (and hence bigger than the key).
+
+Note that I said "can enable", not "enable". It is possible to create degenerate binary search trees which have slow lookups. For example, if we insert keys 1, 2, 3, 4, 5 in that order, what we get is a binary search tree that looks like this:
+
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            5
+
+This is effectively a linked list, and when we do lookup we have to search all nodes in the tree. Such a tree is **unbalanced**.
 
 TODO: Talk about unbalanced BSTs, define a balanced binary search tree.
+
+## AA trees
 
 A **red-black tree** is a binary search tree with the following properties:
 
