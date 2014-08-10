@@ -50,7 +50,7 @@ def compile(folder, filename, is_index):
 files = {}
 files[''] = ['index.md']
 files['css'] = ['style.css']
-files['essays/aa_trees'] = ['index.md', 'bst.svg']
+files['essays/aa_trees'] = ['index.md', 'bst.svg', 'header_aa.svg']
 files['blog'] = ['index.md']
 files['blog/2014'] = ['22jun_28jun.md', '06jul_12jul.md', '13jul_20jul.md', '03aug_09aug.md']
 

@@ -1,5 +1,7 @@
 # Implementing search trees via AA trees in Rust
 
+<img src="header_aa.svg" class="center"></img>
+
 ## Binary search trees
 
 A **binary search tree** is a binary tree where for every node n:
