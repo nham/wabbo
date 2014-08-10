@@ -123,10 +123,10 @@ var get_node_coords = function(x, y, d, r, f, v) {
 
     // now the rest of the levels, working our way up
     for (var j = d - 1; j > 1; j--) {
-        var this_y = y * (j-1);
+        var this_y = y  + v*(j-1);
         var start = get_level_start(j);
         for(var k = start; k < 2*start; k++) {
-            poses[k] = {x: (poses[2*k].x + poses[2*k + 1])/2,
+            poses[k] = {x: (poses[2*k].x + poses[2*k + 1].x)/2,
                         y: this_y};
         }
     }
@@ -135,15 +135,14 @@ var get_node_coords = function(x, y, d, r, f, v) {
 };
 
 var adj_n_sibling_spacing = function(n) {
-    return 30 + 4*(n-1);
+    return 15 + 5*(n-1);
 };
 
 
-var d = 3;
-var r = 20;
-var poses = get_node_coords(200, 100, d, r, adj_n_sibling_spacing, 50);
-
-console.log(poses);
+var d = 5;
+var r = 7;
+var v = 50;
+var poses = get_node_coords(280, 100, d, r, adj_n_sibling_spacing, v);
 
 
 var s = Snap("#svg");
