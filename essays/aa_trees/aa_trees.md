@@ -11,15 +11,7 @@ Binary search trees are useful because they can enable efficient lookups: if the
 
 Note that I said "can enable", not "enable". It is possible to create degenerate binary search trees which have slow lookups. For example, if we insert keys 1, 2, 3, 4, 5 in that order, what we get is a binary search tree that looks like this:
 
-    1
-     \
-      2
-       \
-        3
-         \
-          4
-           \
-            5
+![Unbalanced binary tree](bst.svg)
 
 This is effectively a linked list, and when we do lookup we have to search all nodes in the tree. Such a tree is **unbalanced**.
 
