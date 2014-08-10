@@ -35,15 +35,17 @@ In addition, the following rules must be adhered to:
  2. Every red node has two children, and both are black
  3. For any node $n$ and for any descendents $d$ and $e$ of $n$, the path $n \to d$ and the path $n \to e$ have the same number of black nodes
 
-Red-black trees are one instance of a class of data structures called [self-balancing binary search trees](http://en.wikipedia.org/wiki/Self-balancing_binary_search_tree).
-
 The last rule gives us something interesting: it ensures that every node $n$ has a well-defined **black-height**, which is the number of black nodes in any path from $n$ to a leaf node. We will actually define and use a slightly different notion: the **level** of a node $n$ is the number of black nodes in any path from $n$ to a leaf node *excluding node $n$ itself*. So if $n$ is a node, then when $n$ is black, $level(n) = black-height(n) - 1$, whereas when $n$ is red, $level(n) = black-height(n)$.
+
+Red-black trees are one instance of a class of data structures called [self-balancing binary search trees](http://en.wikipedia.org/wiki/Self-balancing_binary_search_tree). What this means is that when we insert or remove a node, the tree will automatically re-organize itself so that it's more balanced. By doing a little bit of re-balancing work every time we modify the tree, we can ensure that searches will be reasonably fast.
+
+We could now define a data structure for red-black trees and implement the required  methods that maintain the red-black tree properties, but it turns out that it is a little bit tricky to do this! We will instead study and implement a simplified version of the red-black tree called an AA tree.
 
 An **AA tree** or **Andersson tree** is a red-black tree which obeys an additional property:
 
  - Every red node is a right child
 
-(AA trees are named after Arne Andersson, who introduced them in a [paper](http://user.it.uu.se/~arnea/ps/simp.pdf) in 1993.)
+AA trees are named after Arne Andersson, who introduced them in a [paper](http://user.it.uu.se/~arnea/ps/simp.pdf) in 1993. This data structure permits a simpler implementation of general red-black trees because there are less cases to consider due to the fact that red left children are disallowed.
 
 Let's see how we can implement an AA tree in [Rust](http://www.rust-lang.org). To model the nodes of an AA tree, we might use an `enum`, which allows one to define algebraic data types in Rust:
 
@@ -73,9 +75,7 @@ These type definitions match much of the discussion above:
  - leaves have no data (no children, no key or values, no color (well, they have a color, but it's always black, so we don't need to specify it))
  - internal nodes have a color, a key, a value, and pointers to its child nodes.
 
-This definition meshes with rules 1-3, but we must ensure that the other rules are obeyed as well. However, it turns out that that the above definition is not so easy to work with when it comes to writing an implementation in code.
-
-We can take a different approach by noting that, given the level of each node in the tree, we can completely recover the color information: a node is red if and only if it has the same level as its parent. Also, we don't actually need to create leaf nodes in our code: if we just allow internal nodes to have optional pointers to children, then a missing pointer means there should be a leaf node below. If we define a new kind of binary tree where nodes consist of the following data:
+This definition seems to be correct! Unfortunately this form is somewhat difficult to work with. We can take a different approach by noting that, given the level of each node in the tree, we can completely recover the color information: a node is red if and only if it has the same level as its parent. Also, we don't actually need to create leaf nodes in our code: if we just allow internal nodes to have optional pointers to children, then a missing pointer means there should be a leaf node below. If we define a new kind of binary tree where nodes consist of the following data:
 
  - key
  - value
@@ -91,7 +91,7 @@ Then we can ensure that such a tree corresponds to an AA tree by making these ru
 
 Rule 2 says that no red node is a left child, and rule 4 says that no child of a red node is red. So any node that obeys these 4 rules clearly corresponds to an AA tree. Similarly, we can transform any AA tree to this form by throwing away the colors and leaf nodes.
 
-Now that we have a more convenient representation of AA trees, let's implement them in Rust!
+Now that we have a more convenient representation of AA trees, let's define a type for AA trees in Rust:
 
 
     type Link<T> = Option<Box<T>>;
@@ -104,3 +104,6 @@ Now that we have a more convenient representation of AA trees, let's implement t
         level: uint
     }
 
+    struct Tree<K, V> {
+        root: Link<Node<K, V>>,
+    }
