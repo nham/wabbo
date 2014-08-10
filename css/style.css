@@ -2,7 +2,7 @@ body {
     margin: 0px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
-    background-color: #A0C6ED;
+    background-color: #aad0ff;
 }
 
 
@@ -20,7 +20,8 @@ div#header h1 {
 }
 
 div#body {
-    width: 620px;
+    max-width: 680px;
+    min-width: 480px;
     margin: 20px 40px;
     padding: 20px;
     background-color: #f9f9f9;
