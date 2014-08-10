@@ -58,3 +58,9 @@ code {
 blockquote {
     background-color: #efefef;
 }
+
+img.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

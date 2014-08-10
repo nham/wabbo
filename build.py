@@ -15,6 +15,12 @@ def blast_away(d):
         subprocess.call(['rm', '-r', d])
         os.makedirs(d)
 
+def copy_file(folder, filename):
+    in_file = folder + filename
+    out_file = out_dir + '/' + in_file
+    ensure_dir(out_file)
+    subprocess.call(['cp', in_file, out_file])
+
 def compile(folder, filename, is_index):
     in_file = folder + filename
     out_file = out_dir + '/' + folder + filename.replace('.md', '.html')
@@ -38,6 +44,8 @@ def compile(folder, filename, is_index):
 
 files = {}
 files[''] = ['index.md']
+files['css'] = ['style.css']
+files['essays/aa_trees'] = ['index.md', 'bst.svg']
 files['blog'] = ['index.md']
 files['blog/2014'] = ['22jun_28jun.md', '06jul_12jul.md', '13jul_20jul.md', '03aug_09aug.md']
 
@@ -51,9 +59,10 @@ for folder, lst in files.items():
         else:
             is_index = True
 
-        compile(folder, i, is_index)
-
-subprocess.call(['cp', '-r', css_dir, out_dir])
+        if i.endswith('.md'):
+            compile(folder, i, is_index)
+        else:
+            copy_file(folder, i)
 
 # ugh
 subprocess.call(['python', 'math_notes/build.py'])
