@@ -8,23 +8,15 @@
     <svg id="svg" width="600" height="600" style="border: 1px solid #333"></svg>
     <script src="rbdraw.js"></script>
     <script>
-// red = true or false (false means a black node)
-//
-var node = function(red, key) {
-    if (red) {
-        return {color:"#d93232",
-                text: key};
-    } else {
-        return {color:"#444444",
-                text: key};
-    }
+var node = function(color, key) {
+    return {color: color, text: key};
 };
 
-var nodes = [null, node(false, "a"), // level 1
-             node(true, "b"), node(false, "c"), // level 2
-             node(false, "d"), node(false, "e"), node(false, "f"), null, // level 3
-             node(false, "g"), node(true, "h"), null, node(true, "i"), //level 4
-             node(true, "j"), node(true, "k"), null, null]; //level 4
+var nodes = [null, node("b", "a"), // level 1
+             node("r", "b"), node("b", "c"), // level 2
+             node("b", "d"), node("b", "e"), node("b", "f"), null, // level 3
+             node("b", "g"), node("r", "h"), null, node("r", "i"), //level 4
+             node("r", "j"), node("r", "k"), null, null]; //level 4
 
 
 var adj_n_sibling_spacing = function(n) {

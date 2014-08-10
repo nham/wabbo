@@ -149,10 +149,17 @@ var draw_rbtree = function(s, x, y, d, r, f, v, nodes) {
 
     for(var i = 1; i < poses.length; i++) {
         if ( nodes[i] !== null ) {
+            var node_color;
+            if ( nodes[i].color === "r" ) {
+                node_color = "#d93232";
+            } else {
+                node_color = "#444444";
+            }
+
             var bigCircle = s.circle(poses[i].x, poses[i].y, r);
             bigCircle.attr({
-                fill: nodes[i].color
-               ,stroke: nodes[i].color
+                fill: node_color
+               ,stroke: node_color
                ,strokeWidth: 3
             });
 
