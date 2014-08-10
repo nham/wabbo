@@ -49,6 +49,7 @@ pre {
     max-width: 620px;
     background-color: #efefef;
     white-space: pre-wrap;       /* CSS 3 */
+    padding: 5px;
 }
 
 code {
