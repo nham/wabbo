@@ -37,11 +37,13 @@ In addition, the following rules must be adhered to:
 
 Red-black trees are one instance of a class of data structures called [self-balancing binary search trees](http://en.wikipedia.org/wiki/Self-balancing_binary_search_tree).
 
-The last property gives us something interesting: every node n has a well-defined **black-height**, which is the number of black nodes in any path from n to a leaf node. We will actually define and use a slightly different property: the **level** of a node n is the number of black nodes in any path from n to a leaf node *excluding node n itself*. So if $n$ is a node, then when $n$ is black, $level(n) = black-height(n) - 1$, whereas when $n$ is red, $level(n) = black-height(n)$.
+The last rule gives us something interesting: it ensures that every node $n$ has a well-defined **black-height**, which is the number of black nodes in any path from $n$ to a leaf node. We will actually define and use a slightly different notion: the **level** of a node $n$ is the number of black nodes in any path from $n$ to a leaf node *excluding node $n$ itself*. So if $n$ is a node, then when $n$ is black, $level(n) = black-height(n) - 1$, whereas when $n$ is red, $level(n) = black-height(n)$.
 
 An **AA tree** or **Andersson tree** is a red-black tree which obeys an additional property:
 
  - Every red node is a right child
+
+(AA trees are named after Arne Andersson, who introduced them in a [paper](http://user.it.uu.se/~arnea/ps/simp.pdf) in 1993.)
 
 Let's see how we can implement an AA tree in [Rust](http://www.rust-lang.org). To model the nodes of an AA tree, we might use an `enum`, which allows one to define algebraic data types in Rust:
 
