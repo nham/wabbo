@@ -1,23 +1,24 @@
-# Introduction to AA trees, with implementation in Rust
-
+---
+title: Introduction to AA trees, with implementation in Rust
+---
 <img src="header_aa.svg" class="center"></img>
 
 ## Binary search trees
 
 You should know what a tree is. (We have to start somewhere). Each node in the trees that we will be considering will have some data attached to it. We are only interested in the cases where all the node data is of the same type.
 
-A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some ordering to it, and where for every node n:
+A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some ordering to it, and where for every node $n$:
 
- - every node in the left subtree of n has a key less than n's key
- - every node in the right subtree of n has a key greater than n's key.
+ - every node in the left subtree of $n$ has a key less than $n$'s key
+ - every node in the right subtree of $n$ has a key greater than $n$'s key.
 
 Binary search trees are useful because they can enable efficient lookups: if the key we're searching for is strictly less than the current node, we know that we only have to search the left subtree of the current node, since everything in the right subtree is bigger than the current node (and hence bigger than the key). So binary search trees can enable us to eliminate large portions of the search space with a single comparison.
 
-Note that I said "can enable", not "enable". It is possible to create degenerate binary search trees which have slow lookups. For example, if we insert keys 1, 2, 3, 4, 5 in that order, what we get is a binary search tree that looks like this:
+Note that I said "can enable", not "enable". It is possible to create degenerate binary search trees which have slow lookups. For example, if we insert keys $1, 2, 3, 4, 5$ in that order, what we get is a binary search tree that looks like this:
 
 <img src="bst.svg" class="center"></img>
 
-This is effectively a linked list, and when we do lookup we have to search all nodes in the tree. Such a tree is called **unbalanced**.
+This is effectively a linked list, and when we search for a key we have to search all nodes in the tree. Such a tree is called **unbalanced**.
 
 TODO: Talk about unbalanced BSTs, define a balanced binary search tree.
 
@@ -30,11 +31,11 @@ A **red-black tree** is a binary search tree with the following properties:
  3. Leaf nodes have neither key nor value, and must be black
  4. The root node is black
  5. Every red node has two children, and both are black
- 6. For any node n and for any descendents d and e of n, the path n -> d and the path n -> e have the same number of black nodes
+ 6. For any node $n$ and for any descendents $d$ and $e$ of $n$, the path $n \to d$ and the path $n \to e$ have the same number of black nodes
 
 Red-black trees are one instance of a class of data structures called [self-balancing binary search trees](http://en.wikipedia.org/wiki/Self-balancing_binary_search_tree).
 
-The last property gives us something interesting: every node n has a well-defined **black-height**, which is the number of black nodes in any path from n to a leaf node. We will actually define and use a slightly different property: the **level** of a node n is the number of black nodes in any path from n to a leaf node *excluding node n itself*. So if n is a node, then when n is black, level(n) = black-height(n) - 1, whereas when n is red, level(n) = black-height(n).
+The last property gives us something interesting: every node n has a well-defined **black-height**, which is the number of black nodes in any path from n to a leaf node. We will actually define and use a slightly different property: the **level** of a node n is the number of black nodes in any path from n to a leaf node *excluding node n itself*. So if $n$ is a node, then when $n$ is black, $level(n) = black-height(n) - 1$, whereas when $n$ is red, $level(n) = black-height(n)$.
 
 An **AA tree** or **Andersson tree** is a red-black tree which obeys an additional property:
 
@@ -80,9 +81,9 @@ We can take a different approach by noting that, given the level of each node in
 Then we can ensure that such a tree corresponds to an AA tree by making these rules hold:
 
  1. leaf nodes have level 1
- 2. for any node n, if n has a left child k, then level(n) = level(k) + 1
- 3. for any node n, if n has a right child k, then level(n) - level(k) = 0 or 1
- 4. for any node n, if n has a parent p and level(n) = level(p), then for any child k of n, level(n) = level(k) + 1
+ 2. for any node $n$, if $n$ has a left child $k$, then $level(n) = level(k) + 1$
+ 3. for any node $n$, if $n$ has a right child $k$, then $level(n) - level(k) = 0$ or $1$
+ 4. for any node $n$, if $n$ has a parent $p$ and $level(n) = level(p)$, then for any child $k$ of $n$, $level(n) = level(k) + 1$
 
 Rule 2 says that no red node is a left child, and rule 4 says that no child of a red node is red. So any node that obeys these 4 rules clearly corresponds to an AA tree. Similarly, we can transform any AA tree to this form by throwing away the colors and leaf nodes.
 

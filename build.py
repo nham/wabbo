@@ -26,7 +26,7 @@ def copy_file(folder, filename):
     ensure_dir(out_file)
     subprocess.call(['cp', in_file, out_file])
 
-def compile(folder, filename, is_index):
+def compile(folder, filename, is_index, use_math):
     in_file = folder + filename
     out_file = out_dir + '/' + folder + filename.replace('.md', '.html')
 
@@ -37,20 +37,25 @@ def compile(folder, filename, is_index):
     else:
         before_body = "before_body"
 
+    if use_math:
+        math = ['--mathjax']
+    else:
+        math = []
+
     pandoc_call = (['pandoc', '-s', in_file,
                   '-t', 'html5',
                   '-o', out_file,
                   '--include-in-header', include_dir + '/header.html',
                   '--include-before-body', include_dir + '/'+before_body+'.html',
                   '--include-after-body', include_dir + '/footer.html',
-                  '--smart'])
+                  '--smart'] + math)
 
     p = subprocess.call(pandoc_call)
 
 files = {}
 files[''] = ['index.md']
 files['css'] = ['style.css']
-files['essays/aa_trees'] = ['index.md', 'bst.svg', 'header_aa.svg']
+files['essays/aa_trees'] = [('index.md', 'math'), 'bst.svg', 'header_aa.svg']
 files['blog'] = ['index.md']
 files['blog/2014'] = ['22jun_28jun.md', '06jul_12jul.md', '13jul_20jul.md', '03aug_09aug.md']
 
@@ -64,10 +69,17 @@ for folder, lst in files.items():
         else:
             is_index = True
 
-        if i.endswith('.md'):
-            compile(folder, i, is_index)
+        if isinstance(i, tuple):
+            fname = i[0]
+            mathjax = i[1] == 'math'
         else:
-            copy_file(folder, i)
+            fname = i
+            mathjax = False
+
+        if fname.endswith('.md'):
+            compile(folder, fname, is_index, mathjax)
+        else:
+            copy_file(folder, fname)
 
 # ugh
 subprocess.call(['python', 'math_notes/build.py'])
