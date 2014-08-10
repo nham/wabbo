@@ -168,7 +168,7 @@ var try_connect_nodes = function(i, j) {
     if (nodes[i] !== null && nodes[j] !== null) {
         var ipos = poses[i];
         var jpos = poses[j];
-        var p = s.path("M"+ipos.x+","+ipos.y+"L"+jpos.x+","+jpos.y);
+        var p = s.line(ipos.x, ipos.y, jpos.x, jpos.y);
         p.attr({
             fill: "#000"
            ,stroke: "#000"
