@@ -5,7 +5,7 @@ title: Introduction to AA trees, with implementation in Rust
 
 ## Binary search trees
 
-You should know what a tree is. (We have to start somewhere). Each node in the trees that we will be considering will have some data attached to it. We are only interested in the cases where all the node data is of the same type.
+You should know what a [tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) is. (We have to start somewhere). Each node in the trees that we will be considering will have some data attached to it. We are only interested in the cases where all the node data is of the same type.
 
 A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some ordering to it, and where for every node $n$:
 
@@ -41,7 +41,7 @@ An **AA tree** or **Andersson tree** is a red-black tree which obeys an addition
 
  - Every red node is a right child
 
-Let's see how we can implement an AA tree in Rust. To model the nodes of an AA tree, we might use an `enum`, which allows one to define algebraic data types in Rust:
+Let's see how we can implement an AA tree in [Rust](http://www.rust-lang.org). To model the nodes of an AA tree, we might use an `enum`, which allows one to define algebraic data types in Rust:
 
     enum Node<K, V> {
         Leaf,
