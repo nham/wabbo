@@ -140,7 +140,7 @@ var adj_n_sibling_spacing = function(n) {
 
 
 var d = 4;
-var r = 7;
+var r = 9;
 var v = 50;
 var poses = get_node_coords(280, 100, d, r, adj_n_sibling_spacing, v);
 
@@ -159,37 +159,38 @@ var node = function(red) {
 
 var nodes = [null, node(false), // level 1
              node(true), node(false), // level 2
-             node(false), node(false), node(false), node(true), // level 3
-             node(false), node(true), node(false), node(true), //level 4
-             node(true), node(true), node(false), node(false)]; //level 4
+             node(false), node(false), node(false), null, // level 3
+             node(false), node(true), null, node(true), //level 4
+             node(true), node(true), null, null]; //level 4
+
+
+var try_connect_nodes = function(i, j) {
+    if (nodes[i] !== null && nodes[j] !== null) {
+        var ipos = poses[i];
+        var jpos = poses[j];
+        var p = s.path("M"+ipos.x+","+ipos.y+"L"+jpos.x+","+jpos.y);
+        p.attr({
+            fill: "#000"
+           ,stroke: "#000"
+           ,strokeWidth: 2
+        });
+    }
+};
 
 for(var i = 1; i < poses.length - (poses.length + 1)/2; i++) {
-    var curr = poses[i];
-    var left = poses[2*i];
-    var right = poses[2*i + 1];
-
-    var p = s.path("M"+curr.x+","+curr.y+"L"+left.x+","+left.y);
-    p.attr({
-        fill: "#000"
-       ,stroke: "#000"
-       ,strokeWidth: 2
-    });
-
-    p = s.path("M"+curr.x+","+curr.y+"L"+right.x+","+right.y);
-    p.attr({
-        fill: "#000"
-       ,stroke: "#000"
-       ,strokeWidth: 2
-    });
+    try_connect_nodes(i, 2*i);
+    try_connect_nodes(i, 2*i + 1);
 }
 
 for(var i = 1; i < poses.length; i++) {
-    var bigCircle = s.circle(poses[i].x, poses[i].y, r);
-    bigCircle.attr({
-        fill: nodes[i].color
-       ,stroke: nodes[i].color
-       ,strokeWidth: 3
-    });
+    if ( nodes[i] !== null ) {
+        var bigCircle = s.circle(poses[i].x, poses[i].y, r);
+        bigCircle.attr({
+            fill: nodes[i].color
+           ,stroke: nodes[i].color
+           ,strokeWidth: 3
+        });
+    }
 }
 
 
