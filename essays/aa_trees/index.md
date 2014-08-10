@@ -4,18 +4,20 @@
 
 ## Binary search trees
 
-A **binary search tree** is a binary tree where for every node n:
+You should know what a tree is. (We have to start somewhere). Each node in the trees that we will be considering will have some data attached to it. We are only interested in the cases where all the node data is of the same type.
 
- - for every node j in the left subtree of n, j's key is less than n's key
- - for every node k in the right subtree of n, k's key is greater than n's key.
+A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some ordering to it, and where for every node n:
 
-Binary search trees are useful because they can enable efficient lookups: if the key we're searching for is strictly less than the current node, we know that we only have to search the left subtree of the current node, since everything in the right subtree is bigger than the current node (and hence bigger than the key).
+ - every node in the left subtree of n has a key less than n's key
+ - every node in the right subtree of n has a key greater than n's key.
+
+Binary search trees are useful because they can enable efficient lookups: if the key we're searching for is strictly less than the current node, we know that we only have to search the left subtree of the current node, since everything in the right subtree is bigger than the current node (and hence bigger than the key). So binary search trees can enable us to eliminate large portions of the search space with a single comparison.
 
 Note that I said "can enable", not "enable". It is possible to create degenerate binary search trees which have slow lookups. For example, if we insert keys 1, 2, 3, 4, 5 in that order, what we get is a binary search tree that looks like this:
 
 <img src="bst.svg" class="center"></img>
 
-This is effectively a linked list, and when we do lookup we have to search all nodes in the tree. Such a tree is **unbalanced**.
+This is effectively a linked list, and when we do lookup we have to search all nodes in the tree. Such a tree is called **unbalanced**.
 
 TODO: Talk about unbalanced BSTs, define a balanced binary search tree.
 
