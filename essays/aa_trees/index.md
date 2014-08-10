@@ -7,7 +7,7 @@ title: Introduction to AA trees, with implementation in Rust
 
 You should know what a [tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) is. (We have to start somewhere). Each node in the trees that we will be considering will have some data attached to it. We are only interested in the cases where all the node data is of the same type.
 
-A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some ordering to it, and where for every node $n$:
+A **binary search tree** is a binary tree whose node data, which we will call the node's *key*, has some [ordering](http://en.wikipedia.org/wiki/Total_order) to it, and where for every node $n$:
 
  - every node in the left subtree of $n$ has a key less than $n$'s key
  - every node in the right subtree of $n$ has a key greater than $n$'s key.
@@ -24,14 +24,16 @@ TODO: Talk about unbalanced BSTs, define a balanced binary search tree.
 
 ## AA trees
 
-A **red-black tree** is a binary search tree with the following properties:
+A **red-black tree** is a kind of binary search tree. Each node in the tree has a color, either red or black, and there are two kinds of nodes:
 
- 1. Each node in the tree is assigned a color, either red or black
- 2. In addition to a color, any internal (non-leaf) node has a key, a value, and pointers to its children. Also, the set of all keys has some (total) ordering on it.
- 3. Leaf nodes have neither key nor value, and must be black
- 4. The root node is black
- 5. Every red node has two children, and both are black
- 6. For any node $n$ and for any descendents $d$ and $e$ of $n$, the path $n \to d$ and the path $n \to e$ have the same number of black nodes
+ - leaf node: always black, contains no data
+ - internal node: can be red or black, has both a key and a value (the set of all keys must have an ordering on it, just like with binary search trees)
+
+In addition, the following rules must be adhered to:
+
+ 1. The root node is black
+ 2. Every red node has two children, and both are black
+ 3. For any node $n$ and for any descendents $d$ and $e$ of $n$, the path $n \to d$ and the path $n \to e$ have the same number of black nodes
 
 Red-black trees are one instance of a class of data structures called [self-balancing binary search trees](http://en.wikipedia.org/wiki/Self-balancing_binary_search_tree).
 
