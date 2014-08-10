@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="bst" width="110px" height="260px">
+    <desc>Created with Snap</desc>
+    <defs></defs>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="75" y1="20" x2="37.5" x1="20"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="130" y1="75" x2="55" x1="37.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="185" y1="130" x2="72.5" x1="55"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="240" y1="185" x2="90" x1="72.5"></line>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="10" cy="20" cx="20"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="25" x="15">1</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="10" cy="75" cx="37.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="80" x="32.5">2</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="10" cy="130" cx="55"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="135" x="50">3</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="10" cy="185" cx="72.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="190" x="67.5">4</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="10" cy="240" cx="90"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="245" x="85">5</text>
+</svg>
