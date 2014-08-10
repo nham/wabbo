@@ -6,7 +6,7 @@
     </head>
 <body>
     <svg id="svg" width="600" height="600" style="border: 1px solid #333"></svg>
-    <svg id="svg2" width="110" height="260" style="border: 1px solid #333"></svg>
+    <svg id="svg2" width="520" height="255" style="border: 1px solid #333"></svg>
     <script src="rbdraw.js"></script>
     <script>
 var node = function(color, key) {
@@ -34,6 +34,7 @@ var s = Snap("#svg");
 
 var s2 = Snap("#svg2");
 
+/*
 var g = function(n) {
     return 15 - 35*(n-1);
 };
@@ -45,6 +46,34 @@ var nodes2 = [null, node("b", "1"), // level 1
              null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, node("b", 5)]; //level 5
 
 draw_rbtree(s2, 20, 20, 5, r, g, v + 5, nodes2);
+*/
+
+var g = function(n) {
+    return 0 - 11*(n-1);
+};
+
+var black = function(txt) {
+    return node("b", txt);
+}
+var red = function(txt) {
+    return node("r", txt);
+}
+
+var nodes2 = [null, black("26"),
+             black("6"), red("46"), // level 2
+             black("3"), red("21"), black("32"), black("51"), // level 3
+             null, null, black("15"), black("24"), // level 4
+             black("29"), red("43"), black("47"), black("57"), // level 4
+
+     null, null, null, null, null, red("16"), null, red("25"), // level 5
+     null, null, black("39"), black("45"), null, red("50"), null, null, // level 5
+
+     null, null, null, null,  null, null, null, null, 
+     null, null, null, null,  null, null, null, null,
+     null, null, null, null,  null, red("42"), null, null,
+     null, null, null, null,  null, null, null, null];
+
+draw_rbtree(s2, 240, 20, 6, 14, g, v - 8, nodes2);
     </script>
 </body>
 </html>

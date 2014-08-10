@@ -163,7 +163,8 @@ var draw_rbtree = function(s, x, y, d, r, f, v, nodes) {
                ,strokeWidth: 3
             });
 
-            var t = s.text(poses[i].x - 5, poses[i].y + 5, nodes[i].text);
+            var n = nodes[i].text.length;
+            var t = s.text(poses[i].x - 5*n, poses[i].y + 5, nodes[i].text);
             t.attr({
                 fill: "#fff"
                ,stroke: "#fff"

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="header_aa" width="520px" height="255px">
+    <desc>Created with Snap</desc>
+    <defs></defs>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="62" y1="20" x2="98.5" x1="240"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="62" y1="20" x2="381.5" x1="240"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="104" y1="62" x2="25" x1="98.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="104" y1="62" x2="172" x1="98.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="104" y1="62" x2="308" x1="381.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="104" y1="62" x2="455" x1="381.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="132.5" x1="172"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="211.5" x1="172"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="268.5" x1="308"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="347.5" x1="308"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="415.5" x1="455"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="146" y1="104" x2="494.5" x1="455"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="188" y1="146" x2="155" x1="132.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="188" y1="146" x2="234" x1="211.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="188" y1="146" x2="325" x1="347.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="188" y1="146" x2="370" x1="347.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="188" y1="146" x2="438" x1="415.5"></line>
+    <line stroke="#000000" fill="#000000" style="stroke-width: 2;" y2="230" y1="188" x2="339" x1="325"></line>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="20" cx="240"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="25" x="230">26</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="62" cx="98.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="67" x="93.5">6</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="62" cx="381.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="67" x="371.5">46</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="104" cx="25"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="109" x="20">3</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="104" cx="172"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="109" x="162">21</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="104" cx="308"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="109" x="298">32</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="104" cx="455"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="109" x="445">51</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="146" cx="132.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="122.5">15</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="146" cx="211.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="201.5">24</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="146" cx="268.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="258.5">29</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="146" cx="347.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="337.5">43</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="146" cx="415.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="405.5">47</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="146" cx="494.5"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="151" x="484.5">57</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="188" cx="155"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="193" x="145">16</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="188" cx="234"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="193" x="224">25</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="188" cx="325"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="193" x="315">39</text>
+    <circle stroke="#444444" fill="#444444" style="stroke-width: 3;" r="14" cy="188" cx="370"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="193" x="360">45</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="188" cx="438"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="193" x="428">50</text>
+    <circle stroke="#d93232" fill="#d93232" style="stroke-width: 3;" r="14" cy="230" cx="339"></circle>
+    <text stroke="#ffffff" fill="#ffffff" style="font-family: monospace; font-size: 16px; font-weight: normal;" y="235" x="329">42</text>
+</svg>
