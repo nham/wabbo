@@ -88,9 +88,9 @@ var get_node_coords = function(x, y, d, r, f, v) {
     // we dont use poses[0]
     poses[1] = {x: x, y: y};
 
-    /*** calculate leaf positions ***/
 
     // for each node index k, returns the n such that (k-1) and k are n-siblings
+    // only designed to be used for leaf positions
     var sibling_num = function(k) {
         if(k % 2 == 1) {
             return 1;
@@ -109,39 +109,55 @@ var get_node_coords = function(x, y, d, r, f, v) {
         }
     };
 
+    // calculate leaf positions
+    var bottom_y = y + v*(d-1);
     var i = get_level_start(d);
     poses[i] = {x: x - left_subtree_width - (f(d - 1)/2 + r), 
-                y: y + v*(d-1)};
+                y: bottom_y};
 
     for (var j = 1; j < get_level_width(d); j++) {
-        poses[i+j] = {x: poses[i].x + f(sibling_num(i+j)) + 2*r,
-                      y: poses[i].y};
+        poses[i+1] = {x: poses[i].x + f(sibling_num(i+1)) + 2*r,
+                      y: bottom_y};
+        i += 1;
+    }
+
+    // now the rest of the levels, working our way up
+    for (var j = d - 1; j > 1; j--) {
+        var this_y = y * (j-1);
+        var start = get_level_start(j);
+        for(var k = start; k < 2*start; k++) {
+            poses[k] = {x: (poses[2*k].x + poses[2*k + 1])/2,
+                        y: this_y};
+        }
     }
 
     return poses;
 };
 
 var adj_n_sibling_spacing = function(n) {
-    return 20 + 5*(n-1);
+    return 30 + 4*(n-1);
 };
 
 
-var d = 2;
+var d = 3;
 var r = 20;
-console.log(get_node_coords(100, 100, d, r, adj_n_sibling_spacing, 40));
+var poses = get_node_coords(200, 100, d, r, adj_n_sibling_spacing, 50);
+
+console.log(poses);
 
 
 var s = Snap("#svg");
-// Lets create big circle in the middle:
-var bigCircle = s.circle(150, 150, 25);
-bigCircle.attr({
-    fill: "#d93232"
-   ,stroke: "#d93232"
-//    fill: "#444"
-//   ,stroke: "#444"
-   ,strokeWidth: 3
-});
-// By default its black, lets change its attributes
+
+for(var i = 1; i < poses.length; i++) {
+    var bigCircle = s.circle(poses[i].x, poses[i].y, r);
+    bigCircle.attr({
+        fill: "#d93232"
+       ,stroke: "#d93232"
+    //    fill: "#444"
+    //   ,stroke: "#444"
+       ,strokeWidth: 3
+    });
+}
     </script>
 </body>
 </html>
