@@ -1,5 +1,6 @@
 import subprocess
 import os
+import shutil
 
 include_dir = 'includes'
 css_dir = 'css'
@@ -12,8 +13,12 @@ def ensure_dir(f):
 
 def blast_away(d):
     if os.path.exists(d):
-        subprocess.call(['rm', '-r', d])
-        os.makedirs(d)
+        for f in os.listdir(d):
+            p = d+'/'+f
+            if os.path.isdir(p):
+                shutil.rmtree(d+'/'+f)
+            else:
+                os.remove(d+'/'+f)
 
 def copy_file(folder, filename):
     in_file = folder + filename
