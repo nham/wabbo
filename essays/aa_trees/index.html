@@ -140,7 +140,7 @@ var adj_n_sibling_spacing = function(n) {
 
 
 var d = 4;
-var r = 9;
+var r = 10;
 var v = 50;
 var poses = get_node_coords(280, 100, d, r, adj_n_sibling_spacing, v);
 
@@ -149,19 +149,21 @@ var s = Snap("#svg");
 
 // red = true or false (false means a black node)
 //
-var node = function(red) {
+var node = function(red, key) {
     if (red) {
-        return {color:"#d93232"};
+        return {color:"#d93232",
+                text: key};
     } else {
-        return {color:"#444444"};
+        return {color:"#444444",
+                text: key};
     }
 };
 
-var nodes = [null, node(false), // level 1
-             node(true), node(false), // level 2
-             node(false), node(false), node(false), null, // level 3
-             node(false), node(true), null, node(true), //level 4
-             node(true), node(true), null, null]; //level 4
+var nodes = [null, node(false, "a"), // level 1
+             node(true, "b"), node(false, "c"), // level 2
+             node(false, "d"), node(false, "e"), node(false, "f"), null, // level 3
+             node(false, "g"), node(true, "h"), null, node(true, "i"), //level 4
+             node(true, "j"), node(true, "k"), null, null]; //level 4
 
 
 var try_connect_nodes = function(i, j) {
@@ -190,9 +192,18 @@ for(var i = 1; i < poses.length; i++) {
            ,stroke: nodes[i].color
            ,strokeWidth: 3
         });
+
+        var t = s.text(poses[i].x - 5, poses[i].y + 5, nodes[i].text);
+        t.attr({
+            fill: "#fff"
+           ,stroke: "#fff"
+           ,"font-family": "monospace"
+           ,"font-size": "16px"
+           ,"font-weight": "normal"
+        });
+
     }
 }
-
 
     </script>
 </body>
