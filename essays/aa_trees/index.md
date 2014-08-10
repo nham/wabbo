@@ -1,4 +1,4 @@
-# Implementing search trees via AA trees in Rust
+# Introduction to AA trees, with implementation in Rust
 
 <img src="header_aa.svg" class="center"></img>
 
