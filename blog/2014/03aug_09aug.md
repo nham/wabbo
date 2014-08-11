@@ -3,20 +3,22 @@
 
 Today I was looking at the code for [core::slice::Items](http://static.rust-lang.org/doc/master/std/slice/struct.Items.html), a standard iterator over a vector slices, when I noticed something that seemed a bit odd. Here's the [block of code](https://github.com/rust-lang/rust/blob/f5ac41185a821681f4bfaf93ef0569955d24ef4a/src/libcore/slice.rs#L902-L915) I was looking at:
 
-    if mem::size_of::<T>() == 0 {
-        // purposefully don't use 'ptr.offset' because for
-        // vectors with 0-size elements this would return the
-        // same pointer.
-        self.ptr = transmute(self.ptr as uint + 1);
+```rust
+if mem::size_of::<T>() == 0 {
+    // purposefully don't use 'ptr.offset' because for
+    // vectors with 0-size elements this would return the
+    // same pointer.
+    self.ptr = transmute(self.ptr as uint + 1);
 
-        // Use a non-null pointer value
-        Some(transmute(1u))
-    } else {
-        let old = self.ptr;
-        self.ptr = self.ptr.offset(1);
+    // Use a non-null pointer value
+    Some(transmute(1u))
+} else {
+    let old = self.ptr;
+    self.ptr = self.ptr.offset(1);
 
-        Some(transmute(old))
-    }
+    Some(transmute(old))
+}
+```
 
 To understand what's going on, you need to know three things:
 
@@ -28,9 +30,11 @@ So the above code is checking whether the type of the elements that the slice co
 
 This initially seemed nuts to me, because you literally have a pointer to memory address `1`. That's a segfault waiting to happen, surely? But I asked around in the Rust IRC channel and this was explained as follows: you don't actually need to follow any pointer to a type with zero size, because there's no bits in memory representing it. As long as you have the type, you have all you need to know about the value. In fact, it's not clear to me why this code insists on transmuting a non-zero value, because doing this seems to work just fine:
 
-    fn main() {
-        let x: &() = unsafe { std::mem::transmute(0u) };
-        println!("{}", x); // prints '()'
-    }
+```rust
+fn main() {
+    let x: &() = unsafe { std::mem::transmute(0u) };
+    println!("{}", x); // prints '()'
+}
+```
 
 It looks like a pointer to a zero-sized type is never even followed, so it doesn't matter if its null or not!

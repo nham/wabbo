@@ -3,35 +3,40 @@
 
 I ran into a Rust trait bug today. I was trying to implement an extremely generic solution to the problem of computing the sum of a tree of numbers (I actually generalized it to any type that implements Rust's [Add trait](http://static.rust-lang.org/doc/master/std/ops/trait.Add.html).) The code I wrote for that is [here](https://github.com/nham/hs_fri_job_prep/blob/master/11jul_recursion/add_tree.rs), but I don't want to discuss that example. Here's a contrived example instead. Suppose we have two traits, `Foo` and `Bar`:
 
-    trait Foo {
-        fn foo(&self);
-    }
+```rust
+trait Foo {
+    fn foo(&self);
+}
 
-    trait Bar {
-        fn bar(&self);
-    }
+trait Bar {
+    fn bar(&self);
+}
+```
 
 The `Foo` trait has just one method, `foo`, and the `Bar` trait has just one method, `bar`. Suppose that for every type that implements Bar, we want to implement `Foo` in a standard way:
 
-
-    impl<T: Bar> Foo for T {
-        fn foo(&self) { 
-            println!("I'm a Bar!");
-            self.bar() 
-        }
+```rust
+impl<T: Bar> Foo for T {
+    fn foo(&self) { 
+        println!("I'm a Bar!");
+        self.bar() 
     }
+}
+```
 
 This says that we implement Foo for every type `T` that implements `Bar` by printing "I'm a Bar!" and then calling `bar`. Simple enough.
 
 Now suppose we define a type, `Thingy`, and try to implement `Foo` for it:
 
-    struct Thingy;
+```rust
+struct Thingy;
 
-    impl Foo for Thingy {
-        fn foo(&self) {
-            println!("I'm a thingy");
-        }
+impl Foo for Thingy {
+    fn foo(&self) {
+        println!("I'm a thingy");
     }
+}
+```
 
 (`struct Thingy;` just defines a struct with no fields). We get this compiler error:
 

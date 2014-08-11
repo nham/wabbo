@@ -46,15 +46,19 @@ a, a:visited {
 }
 
 pre {
-    max-width: 620px;
-    background-color: #efefef;
+    width: 98%;
     white-space: pre-wrap;       /* CSS 3 */
     padding: 5px;
 }
 
 code {
-    background-color: #efefef;
     font-size: 14px;
+    padding: 2px;
+}
+
+pre, code {
+    background-color: #444;
+    color: #ffefdf;
 }
 
 blockquote {

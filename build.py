@@ -48,7 +48,8 @@ def compile(folder, filename, is_index, use_math):
                   '--include-in-header', include_dir + '/header.html',
                   '--include-before-body', include_dir + '/'+before_body+'.html',
                   '--include-after-body', include_dir + '/footer.html',
-                  '--smart'] + math)
+                  '--smart',
+                  '--highlight-style=espresso'] + math)
 
     p = subprocess.call(pandoc_call)
 

@@ -18,27 +18,33 @@ You use for loops like this:
 
 The key point is that the `for` loop in Rust is just syntactical sugar for some code that uses the iterator protocol. So if I have this vector of ints defined:
 
-    let values = vec![1i, 2, 3];
+```rust
+let values = vec![1i, 2, 3];
+```
 
 And I make a `for` loop like so:
 
-    // "Syntactical sugar" taking advantage of an iterator
-    for &x in values.iter() {
-        println!("{}", x);
-    }
+```rust
+// "Syntactical sugar" taking advantage of an iterator
+for &x in values.iter() {
+    println!("{}", x);
+}
+```
 
 Then the Rust documentation says it gets translated into something like this:
 
-    // Rough translation of the iteration without a `for` iterator.
-    let mut it = values.iter();
-    loop {
-        match it.next() {
-            Some(&x) => {
-                println!("{}", x);
-            }
-            None => { break }
+```rust
+// Rough translation of the iteration without a `for` iterator.
+let mut it = values.iter();
+loop {
+    match it.next() {
+        Some(&x) => {
+            println!("{}", x);
         }
+        None => { break }
     }
+}
+```
 
 (The above example was shamelessly stolen from the [Rust documentation](http://doc.rust-lang.org/std/iter/index.html))
 
@@ -53,14 +59,16 @@ There is a module in the Rust standard library, [std::prelude](http://doc.rust-l
 However, there is a way to disable this behavior. We can use the `#![no_implicit_prelude]` [attribute](http://doc.rust-lang.org/rust.html#attributes). For example, if we try to run this code:
 
 
-    #![no_implicit_prelude]
+```rust
+#![no_implicit_prelude]
 
-    fn main() {
-        let v = vec!(1i, 3i, 5i, 7i);
-        for i in v.iter() {
-            println!("{}", i);
-        }
+fn main() {
+    let v = vec!(1i, 3i, 5i, 7i);
+    for i in v.iter() {
+        println!("{}", i);
     }
+}
+```
 
 then we [get](http://is.gd/wA1doM):
 
@@ -95,97 +103,107 @@ I decided to see if I could use for loops without importing `std::iter::Iterator
 
 We'll start out by designing our own trait for iterators:
 
-    pub trait MyIterator<A> {
-        fn next(&mut self) -> Option<A>;
-    }
+```rust
+pub trait MyIterator<A> {
+    fn next(&mut self) -> Option<A>;
+}
+```
 
 Of course, the `Option` type is defined in the standard library, and we're trying to avoid importing from the standard library, so we'll need to define our own version of that. Let's call it `Mebbe` instead of `Option`, just for fun.
 
-    enum Mebbe<T> {
-        Some(T),
-        None,
-    }
+```rust
+enum Mebbe<T> {
+    Some(T),
+    None,
+}
 
-    pub trait MyIterator<A> {
-        fn next(&mut self) -> Mebbe<A>;
-    }
+pub trait MyIterator<A> {
+    fn next(&mut self) -> Mebbe<A>;
+}
+```
 
 We need to define some iterator to test with. An iterator that emits successive ints starting at some int and ending at another int is probably the simplest iterator I can think of:
 
-    struct Range {
-        curr: int,
-        stop: int, // exclusive of this
-    }
+```rust
+struct Range {
+    curr: int,
+    stop: int, // exclusive of this
+}
 
-    impl MyIterator<int> for Range {
-        fn next(&mut self) -> Mebbe<int> {
-            if self.curr == self.stop {
-                None
-            } else {
-                let out = self.curr;
-                self.curr += 1;
-                Some(out)
-            }
+impl MyIterator<int> for Range {
+    fn next(&mut self) -> Mebbe<int> {
+        if self.curr == self.stop {
+            None
+        } else {
+            let out = self.curr;
+            self.curr += 1;
+            Some(out)
         }
     }
+}
 
-    impl Range {
-        fn new(start: int, stop: int) -> Range {
-            Range { curr: start, stop: stop }
-        }
+impl Range {
+    fn new(start: int, stop: int) -> Range {
+        Range { curr: start, stop: stop }
     }
+}
+```
 
 If we define a `Range` with `start = 2` and `stop = 7`, it should iterate through the values `2, 3, 4, 5, 6` and then stop. Adding a for loop to test and putting it all together, we have this code:
 
 
-    #![no_implicit_prelude]
+```rust
+#![no_implicit_prelude]
 
-    enum Mebbe<T> {
-        Some(T),
-        None,
-    }
+enum Mebbe<T> {
+    Some(T),
+    None,
+}
 
-    pub trait MyIterator<A> {
-        fn next(&mut self) -> Mebbe<A>;
-    }
+pub trait MyIterator<A> {
+    fn next(&mut self) -> Mebbe<A>;
+}
 
-    struct Range {
-        curr: uint,
-        stop: uint, // exclusive of this
-    }
+struct Range {
+    curr: uint,
+    stop: uint, // exclusive of this
+}
 
-    impl MyIterator<uint> for Range {
-        fn next(&mut self) -> Mebbe<uint> {
-            if self.curr == self.stop {
-                None
-            } else {
-                let next = self.curr;
-                self.curr += 1;
-                Some(next)
-            }
+impl MyIterator<uint> for Range {
+    fn next(&mut self) -> Mebbe<uint> {
+        if self.curr == self.stop {
+            None
+        } else {
+            let next = self.curr;
+            self.curr += 1;
+            Some(next)
         }
     }
+}
 
-    impl Range {
-        fn new(start: uint, stop: uint) -> Range {
-            Range { curr: start, stop: stop }
-        }
+impl Range {
+    fn new(start: uint, stop: uint) -> Range {
+        Range { curr: start, stop: stop }
     }
+}
 
-    fn main() {
-        for i in Range::new(2, 7) {
-            println!("{}", i);
-        }
+fn main() {
+    for i in Range::new(2, 7) {
+        println!("{}", i);
     }
+}
+```
 
 And...it [apparently works!](http://is.gd/CpxrdP)
 
 So there's actually no reliance on `std::iter::Iterator` or `std::option::Option`, but what exactly is going on here? Is it a syntactical transformation where it literally emits the `loop` construct above, which repeatedly calls `next()` and checks whether the result is `Some` and `None`? Let's see what happens when we change the `Mebbe` type to:
 
-    enum Mebbe<T> {
-        Yap(T),
-        No,
-    }
+```rust
+enum Mebbe<T> {
+    Yap(T),
+    No,
+}
+```
 
 (Remember, we also need to change Range's `next` implementation to use `Yap` and `No` instead of `Some` and `None`). When we do this, we get:
 

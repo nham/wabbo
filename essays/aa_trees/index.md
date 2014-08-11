@@ -49,23 +49,25 @@ AA trees are named after Arne Andersson, who introduced them in a [paper](http:/
 
 Let's see how we can implement an AA tree in [Rust](http://www.rust-lang.org). To model the nodes of an AA tree, we might use an `enum`, which allows one to define algebraic data types in Rust:
 
-    enum Node<K, V> {
-        Leaf,
-        Internal(InternalNode<K, V>)
-    }
+```rust
+enum Node<K, V> {
+    Leaf,
+    Internal(InternalNode<K, V>)
+}
 
-    struct InternalNode<K, V> {
-        color: Color,
-        key: K,
-        val: V,
-        left: Box<Node<K, V>>,
-        right: Box<Node<K, V>>,
-    }
+struct InternalNode<K, V> {
+    color: Color,
+    key: K,
+    val: V,
+    left: Box<Node<K, V>>,
+    right: Box<Node<K, V>>,
+}
 
-    enum Color {
-        Red,
-        Black
-    }
+enum Color {
+    Red,
+    Black
+}
+```
 
 (For the unfamiliar: `Box` is Rust's type for "owned pointers". You might be interested in learning more [here](http://doc.rust-lang.org/guide-pointers.html#boxes))
 
@@ -94,16 +96,18 @@ Rule 2 says that no red node is a left child, and rule 4 says that no child of a
 Now that we have a more convenient representation of AA trees, let's define a type for AA trees in Rust:
 
 
-    type Link<T> = Option<Box<T>>;
+```rust
+type Link<T> = Option<Box<T>>;
 
-    struct Node<K, V> {
-        key: K,
-        value: V,
-        left: Link<Node<K, V>>,
-        right: Link<Node<K, V>>,
-        level: uint
-    }
+struct Node<K, V> {
+    key: K,
+    value: V,
+    left: Link<Node<K, V>>,
+    right: Link<Node<K, V>>,
+    level: uint
+}
 
-    struct Tree<K, V> {
-        root: Link<Node<K, V>>,
-    }
+struct Tree<K, V> {
+    root: Link<Node<K, V>>,
+}
+```
