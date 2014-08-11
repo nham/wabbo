@@ -111,3 +111,96 @@ struct Tree<K, V> {
     root: Link<Node<K, V>>,
 }
 ```
+
+The `Tree` root is optional to allow for the possibility of empty trees.
+
+Now we need to write some code so that we can *do things*. One thing we'd like to do is retrieve the value corresponding to a key if it exists in the tree. The retrieval method, which we'll call `find`, is the same for AA trees as it is for any binary search tree. In  pseudocode:
+
+```
+def find(key):
+    if key == node.key:
+        return node.value
+    else if key < node.key:
+        if node.left exists:
+            return node.left.find(key)
+        else:
+            can't find key
+    else:
+        if node.right exists:
+            return node.right.find(key)
+        else:
+            can't find key
+```
+
+Here's how it looks in Rust:
+
+
+```rust
+impl<K: Ord, V> Node<K, V> {
+    fn find(&self, key: &K) -> Option<&V> {
+        match key.cmp(&self.key) {
+            Equal => Some(&self.value),
+            Less =>
+                match self.left {
+                    None => None,
+                    Some(ref b) => b.find(key),
+                },
+            Greater =>
+                match self.right {
+                    None => None,
+                    Some(ref b) => b.find(key),
+                },
+        }
+    }
+}
+```
+Let's dissect this line by line:
+
+```rust
+impl<K: Ord, V> Node<K, V> {
+```
+
+This starts an `impl` block for `Node<K, V>`. Actually, it's a bit more specific than that. It defines two type parameters, `K` and `V`, and then stipulates a *trait bound* of `Ord` on the `K` parameter. [Ord](http://static.rust-lang.org/doc/master/std/cmp/trait.Ord.html) is a trait for types that have a total ordering on them, which is precisely the property we required of our keys in the definition of binary search trees.
+
+
+```rust
+    fn find(&self, key: &K) -> Option<&V> {
+```
+
+This defines a method named `find` that acts on instances of `Node<K, V>` (where `K` implements `Ord`). The method takes a single parameter, `key`, of type `&K`, which is a reference to a `K`. The other "parameter" you see there is the `&self` parameter, which specifies that the `find` method takes a borrow of the `Node<K, V>` instance that it's called on.
+
+```rust
+        match key.cmp(&self.key) {
+```
+
+Rust's `match` statement is basically a souped up `while` statement that can perform pattern matching. Here we're matching on the value `key.cmp(&self.key)`. The `cmp` method is the [sole method](http://static.rust-lang.org/doc/master/std/cmp/trait.Ord.html#tymethod.cmp) of the `Ord` trait, meaning it is available to all types that implement `Ord`. (Actually, that's backwards: in order to make a type implement `Ord` you have to implement the `cmp` method for that type.) `cmp` returns an [Ordering](http://static.rust-lang.org/doc/master/std/cmp/type.Ordering.html), whose definition is quite simply:
+
+```rust
+pub enum Ordering {
+    Less,
+    Equal,
+    Greater,
+}
+```
+
+So the `cmp` call is determining whether the key passed into the `find` method is less than, greater than or equal to the current node's key.
+
+
+```rust
+            Equal => Some(&self.value),
+```
+
+If the `cmp` call resulted in `Equal`, we can rejoice since we've found the key we're looking for! So we just return a reference to current node's value. Also, we're wrapping this value up in `Some`, which is one of the data constructors of the `Option` type.
+
+
+```rust
+            Less =>
+                match self.left {
+                    None => None,
+                    Some(ref b) => b.find(key),
+                },
+```
+
+This isn't a single line, but it makes sense to consider it all at once. If `key` is less than the node's key, we need to search the left subtree, if it exists. If the left subtree does not in fact exist, we return `None` because the key cannot be found. Otherwise we make a recursive call to `find` on the left child. the `ref b` inside the `Some` pattern match is needed because we only want to capture a reference to the left subtree.
+
+The remainder is exactly the same, but with `Greater` and `self.right` instead.
