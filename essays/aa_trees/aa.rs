@@ -33,15 +33,8 @@ impl<K: Ord, V> Node<K, V> {
     }
 
     fn is_bst(&self) -> bool {
-        let check_left = self.left.as_ref().map_or(true, 
-                            |n| n.is_bst() && *n.max() < self.key);
-
-        if check_left {
-            self.right.as_ref().map_or(true,
-                            |n| n.is_bst() && *n.min() > self.key)
-        } else { 
-            false 
-        }
+        self.left.as_ref().map_or(true, |n| n.is_bst() && *n.max() < self.key)
+        && self.right.as_ref().map_or(true, |n| n.is_bst() && *n.min() > self.key)
     }
 
     fn find<'a>(&'a self, key: &K) -> Option<&'a V> {
