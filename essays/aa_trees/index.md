@@ -86,7 +86,7 @@ This definition seems to be correct! Unfortunately this form is somewhat difficu
 
 Then we can ensure that such a tree corresponds to an AA tree by making these rules hold:
 
- 1. leaf nodes have level 1
+ 1. nodes that are missing at least one child have level 1
  2. for any node $n$, if $n$ has a left child $k$, then $level(n) = level(k) + 1$
  3. for any node $n$, if $n$ has a right child $k$, then $level(n) - level(k) = 0$ or $1$
  4. for any node $n$, if $n$ has a parent $p$ and $level(n) = level(p)$, then for any child $k$ of $n$, $level(n) = level(k) + 1$
