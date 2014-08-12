@@ -52,6 +52,74 @@ impl<K: Ord, V> Node<K, V> {
                 },
         }
     }
+
+    /*
+
+       In the below, 'o' represents black, '*' represents red.
+
+       First, note that deleting a red leaf requires no rebalancing at all.
+
+       ---
+
+       There's only 1 possible AA tree of size 2:
+
+       o
+        \
+         *
+
+       Deleting the root or the leaf requires no rebalancing.
+       
+       ---
+
+       For size 3 trees, we only have:
+
+         o
+        / \
+       o   o
+
+        - deleting left leaf means we have to decrease the level of root. this suffices to rebalance
+        - deleting right leaf means we have to decrease level of root but then make left leaf the 
+          new root (and former root the child of new root)
+        - deleting the root means right child is new root, left child becomes new root's right child
+
+       ---
+
+       For size 4 trees, we have either
+
+         o       o
+        / \     / \
+       o   o   o   o
+        \           \
+         *           *
+
+       There are 4 classes of deletion:
+
+        - delete red leaf (see above)
+        - delete red node's parent: make red a child of its former grandparent
+        - delete root: in the first case, red needs to become root, so increase its level and make it 
+          the new root. in the second case, right child of root needs to become new root.
+        - delete other child: in the first case, red needs to become root and the old root needs to 
+          be right child of new root. in the second case, decrease level of old root, increase level
+          of right child and make old root the child of the right child (which is the new root)
+       
+
+       ---
+
+       For size 5 trees, we have one of
+
+         o        o
+        / \      / \
+       o   o    o   *
+        \   \      / \
+         *   *    o   o
+
+       ===
+
+       One fundamental operation we need is "promote the max from the left subtree (or min from right subtree!)
+       this is used when we delete a root, for example. this seems essentially whenever we delete a node that
+       has two children.
+ 
+     */
 }
 
 fn main() {
