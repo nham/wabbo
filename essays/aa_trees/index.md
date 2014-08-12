@@ -87,11 +87,11 @@ This definition seems to be correct! Unfortunately this form is somewhat difficu
 Then we can ensure that such a tree corresponds to an AA tree by making these rules hold:
 
  1. nodes that are missing at least one child have level 1
- 2. for any node $n$, if $n$ has a left child $k$, then $level(n) = level(k) + 1$
- 3. for any node $n$, if $n$ has a right child $k$, then $level(n) - level(k) = 0$ or $1$
+ 2. for any node $n$ with a left child $k$, $level(n) = level(k) + 1$
+ 3. for any node $n$ with a right child $k$, $level(n) - level(k) = 0$ or $1$
  4. for any node $n$, if $n$ has a parent $p$ and $level(n) = level(p)$, then for any child $k$ of $n$, $level(n) = level(k) + 1$
 
-Rule 2 says that no red node is a left child, and rule 4 says that no child of a red node is red. So any node that obeys these 4 rules clearly corresponds to an AA tree. Similarly, we can transform any AA tree to this form by throwing away the colors and leaf nodes.
+Rule 1, in particular, says that leaf nodes have level 1. Rule 2 says that no red node is a left child, and rule 4 says that no child of a red node is red. So any node that obeys these 4 rules clearly corresponds to an AA tree. Similarly, we can transform any AA tree to this form by throwing away the colors and leaf nodes.
 
 Now that we have a more convenient representation of AA trees, let's define a type for AA trees in Rust:
 
