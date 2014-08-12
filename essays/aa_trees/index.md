@@ -114,6 +114,8 @@ struct Tree<K, V> {
 
 The `Tree` root is optional to allow for the possibility of empty trees.
 
+### `find` method
+
 Now we need to write some code so that we can *do things*. One thing we'd like to do is retrieve the value corresponding to a key if it exists in the tree. The retrieval method, which we'll call `find`, is the same for AA trees as it is for any binary search tree. In  pseudocode:
 
 ```
@@ -204,3 +206,27 @@ If the `cmp` call resulted in `Equal`, we can rejoice since we've found the key 
 This isn't a single line, but it makes sense to consider it all at once. If `key` is less than the node's key, we need to search the left subtree, if it exists. If the left subtree does not in fact exist, we return `None` because the key cannot be found. Otherwise we make a recursive call to `find` on the left child. the `ref b` inside the `Some` pattern match is needed because we only want to capture a reference to the left subtree.
 
 The remainder is exactly the same, but with `Greater` and `self.right` instead.
+
+### `insert` method
+
+A binary search tree's `insert` method is quite similar to `find`, but it takes both a key and a value and doesn't return anything:
+
+```
+def bst_insert(key, value):
+    if key == node.key:
+        replace node.value with value
+    else if key < node.key:
+        if node.left exists:
+            node.left.insert(key, value)
+        else:
+            node.left = new node with key and value
+    else:
+        if node.right exists:
+            node.right.insert(key, value)
+        else:
+            node.right = new node with key and value
+```
+
+We essentially walk down the tree until we either find the key (in which case we overwrite the old `node.value` with the new value), or until we find a missing child, which indicates that the key is not in the tree and that we must create a new node.
+
+We need to modify this code so that every insert into an AA tree results in something that is still an AA tree.
