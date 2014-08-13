@@ -1,0 +1,8 @@
+[package]
+name = "toy_aa"
+version = "0.0.1"
+authors = ["Nick Hamann <nick@wabbo.org>"]
+
+[[lib]]
+name = "toy_aa"
+path = "aa.rs"
