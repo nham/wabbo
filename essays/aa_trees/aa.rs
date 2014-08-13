@@ -1,7 +1,7 @@
 #![crate_name = "toy_aa"]
 #![crate_type = "dylib"]
 
-use std::fmt::{mod, Show, Formatter};
+use std::fmt::{mod, Show};
 use std::mem::{replace, swap};
 
 type Link<T> = Option<Box<T>>;
@@ -95,9 +95,9 @@ impl<K: Ord, V> Node<K, V> {
 
 
     pub fn insert(&mut self, key: K, value: V) -> Option<V> {
-        let inserted =
+        let replaced =
         {
-            let ch = match key.cmp(&self.key) {
+            let link = match key.cmp(&self.key) {
                 Equal => {
                     self.key = key;
                     return Some(replace(&mut self.value, value))
@@ -106,9 +106,9 @@ impl<K: Ord, V> Node<K, V> {
                 Greater => &mut self.right,
             };
 
-            match *ch {
+            match *link {
                 None => {
-                    *ch = Some(box Node::new(key, value));
+                    *link = Some(box Node::new(key, value));
                     None
                 },
                 Some(ref mut b) => {
@@ -119,7 +119,7 @@ impl<K: Ord, V> Node<K, V> {
 
         self.skew();
         self.split();
-        inserted
+        replaced
 
     }
 
