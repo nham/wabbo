@@ -300,6 +300,7 @@ pub fn print_tree<K: Show + Ord, V: Show>(tree: &Tree<K, V>) {
 }
 
 
+#[cfg(test)]
 mod test {
     use super::Tree;
     use std::rand;
