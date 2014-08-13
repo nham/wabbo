@@ -95,32 +95,32 @@ impl<K: Ord, V> Node<K, V> {
 
 
     pub fn insert(&mut self, key: K, value: V) -> Option<V> {
-        let replaced =
-        {
-            let link = match key.cmp(&self.key) {
-                Equal => {
-                    self.key = key;
-                    return Some(replace(&mut self.value, value))
+        let replaced = match key.cmp(&self.key) {
+            Equal => {
+                self.key = key;
+                return Some(replace(&mut self.value, value))
+            },
+            Less =>
+                match self.left {
+                    None => {
+                        self.left = Some(box Node::new(key, value));
+                        None
+                    },
+                    Some(ref mut b) => b.insert(key, value),
                 },
-                Less => &mut self.left,
-                Greater => &mut self.right,
-            };
-
-            match *link {
-                None => {
-                    *link = Some(box Node::new(key, value));
-                    None
+            Greater =>
+                match self.right {
+                    None => {
+                        self.right = Some(box Node::new(key, value));
+                        None
+                    },
+                    Some(ref mut b) => b.insert(key, value),
                 },
-                Some(ref mut b) => {
-                    b.insert(key, value)
-                },
-            }
         };
 
         self.skew();
         self.split();
         replaced
-
     }
 
 
