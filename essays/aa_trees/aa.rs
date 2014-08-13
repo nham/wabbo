@@ -1,7 +1,7 @@
 #![crate_name = "toy_aa"]
 #![crate_type = "dylib"]
 
-use std::fmt::Show;
+use std::fmt::{mod, Show, Formatter};
 use std::mem::{replace, swap};
 
 type Link<T> = Option<Box<T>>;
@@ -269,6 +269,11 @@ impl<K: Ord, V> Node<K, V> {
 }
 
 
+impl<K: Show, V: Show> Show for Node<K, V> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}:{}", self.key, self.value)
+    }
+}
 
 fn print_node_depth<K: Show, V: Show>(node: &Link<Node<K,V>>, depth: uint) {
     let mut pre = "".to_string();
@@ -280,7 +285,7 @@ fn print_node_depth<K: Show, V: Show>(node: &Link<Node<K,V>>, depth: uint) {
 
     match *node {
         Some(ref n) => {
-            println!("{}{}:{}*{}", pre, n.key, n.value, n.level);
+            println!("{}{}^{}", pre, n, n.level);
             print_node_depth(&n.left, depth + 1);
             print_node_depth(&n.right, depth + 1);
         },
