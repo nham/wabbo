@@ -1,3 +1,5 @@
+use std::mem::{replace, swap};
+
 type Link<T> = Option<Box<T>>;
 
 struct Node<K, V> {
@@ -38,19 +40,42 @@ impl<K: Ord, V> Node<K, V> {
     }
 
     fn find<'a>(&'a self, key: &K) -> Option<&'a V> {
-        match key.cmp(&self.key) {
-            Equal => Some(&self.value),
-            Less =>
-                match self.left {
-                    None => None,
-                    Some(ref b) => b.find(key),
-                },
-            Greater =>
-                match self.right {
-                    None => None,
-                    Some(ref b) => b.find(key),
-                },
+        let ch = match key.cmp(&self.key) {
+            Equal => return Some(&self.value),
+            Less => & self.left,
+            Greater => & self.right,
+        };
+
+        match *ch {
+            None => None,
+            Some(ref b) => b.find(key),
         }
+    }
+
+
+    fn insert(&mut self, key: K, value: V) -> Option<V> {
+        let ch = match key.cmp(&self.key) {
+            Equal => {
+                self.key = key;
+                return Some(replace(&mut self.value, value))
+            },
+            Less => &mut self.left,
+            Greater => &mut self.right,
+        };
+
+        match *ch {
+            None => {
+                *ch = Some(box Node::new(key, value));
+                None
+            },
+            Some(ref mut b) => {
+                let inserted = b.insert(key, value);
+                skew(b);
+                split(b);
+                inserted
+            },
+        }
+
     }
 
     /*
@@ -120,6 +145,49 @@ impl<K: Ord, V> Node<K, V> {
        has two children.
  
      */
+}
+
+
+// Remove left horizontal link by rotating right
+/*
+     a      b
+    /        \
+   b    =>    a
+    \        /
+     c      c
+
+  provided that a.level == b.level
+*/
+fn skew<K: Ord, V>(node: &mut Box<Node<K, V>>) {
+    if node.left.is_some() && node.left.get_ref().level == node.level {
+        let mut save = node.left.take_unwrap();
+        swap(&mut node.left, &mut save.right); // save.right now None
+        swap(node, &mut save);
+        node.right = Some(save);
+    }
+}
+
+
+// Remove dual horizontal link by rotating left and increasing level of
+// the parent
+/*
+    a            b
+     \          / \
+      b    =>  a   c
+     / \        \
+    d   c        d
+
+  provided that a.level == c.level
+*/
+fn split<K: Ord, V>(node: &mut Box<Node<K, V>>) {
+    if node.right.as_ref().map_or(false,
+      |x| x.right.is_some() && x.right.get_ref().level == node.level) {
+        let mut save = node.right.take_unwrap();
+        swap(&mut node.right, &mut save.left); // save.left now None
+        save.level += 1;
+        swap(node, &mut save);
+        node.left = Some(save);
+    }
 }
 
 fn main() {
