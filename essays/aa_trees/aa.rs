@@ -109,7 +109,7 @@ impl<K: Ord, V> Node<K, V> {
             match *ch {
                 None => {
                     *ch = Some(box Node::new(key, value));
-                    return None
+                    None
                 },
                 Some(ref mut b) => {
                     b.insert(key, value)
