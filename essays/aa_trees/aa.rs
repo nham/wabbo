@@ -117,8 +117,8 @@ impl<K: Ord, V> Node<K, V> {
             }
         };
 
-        skew(self);
-        split(self);
+        self.skew();
+        self.split();
         inserted
 
     }
@@ -154,6 +154,50 @@ impl<K: Ord, V> Node<K, V> {
             Some(ref n) => n.level + 1 == self.level,
         }
     }
+
+
+    // Remove red left child by rotating right
+    /*
+         a      b
+        /        \
+       b    =>    a
+        \        /
+         c      c
+
+      provided that a.level == b.level
+    */
+    fn skew(&mut self) {
+        if self.left.is_some() && self.left.get_ref().level == self.level {
+            let mut save = self.left.take_unwrap();
+            swap(&mut self.left, &mut save.right); // save.right now None
+            swap(self, &mut *save);
+            self.right = Some(save);
+        }
+    }
+
+    // Remove red right child of red right child by rotating left and increasing
+    // level of the parent
+    /*
+        a            b
+         \          / \
+          b    =>  a   c
+         / \        \
+        d   c        d
+
+      provided that a.level == c.level
+    */
+    fn split(&mut self) {
+        if self.right.as_ref().map_or(false,
+          |x| x.right.is_some() && x.right.get_ref().level == self.level) {
+            let mut save = self.right.take_unwrap();
+            swap(&mut self.right, &mut save.left); // save.left now None
+            save.level += 1;
+            swap(self, &mut *save);
+            self.left = Some(save);
+        }
+    }
+
+
 
     /*
 
@@ -222,49 +266,6 @@ impl<K: Ord, V> Node<K, V> {
        has two children.
  
      */
-}
-
-
-// Remove red left child by rotating right
-/*
-     a      b
-    /        \
-   b    =>    a
-    \        /
-     c      c
-
-  provided that a.level == b.level
-*/
-fn skew<K: Ord, V>(node: &mut Node<K, V>) {
-    if node.left.is_some() && node.left.get_ref().level == node.level {
-        let mut save = node.left.take_unwrap();
-        swap(&mut node.left, &mut save.right); // save.right now None
-        swap(node, &mut *save);
-        node.right = Some(save);
-    }
-}
-
-
-// Remove red right child of red right child by rotating left and increasing 
-// level of the parent
-/*
-    a            b
-     \          / \
-      b    =>  a   c
-     / \        \
-    d   c        d
-
-  provided that a.level == c.level
-*/
-fn split<K: Ord, V>(node: &mut Node<K, V>) {
-    if node.right.as_ref().map_or(false,
-      |x| x.right.is_some() && x.right.get_ref().level == node.level) {
-        let mut save = node.right.take_unwrap();
-        swap(&mut node.right, &mut save.left); // save.left now None
-        save.level += 1;
-        swap(node, &mut *save);
-        node.left = Some(save);
-    }
 }
 
 
