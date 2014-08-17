@@ -5,20 +5,6 @@ body {
     background-color: #aad0ff;
 }
 
-
-div#header {
-    margin: 0;
-    padding-left: 50px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: #650dff;
-}
-
-div#header h1 {
-    margin: 0;
-    color: #f9f9f9;
-}
-
 div#body {
     max-width: 680px;
     min-width: 480px;
