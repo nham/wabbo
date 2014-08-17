@@ -1,17 +1,15 @@
 ---
 title: Hi
 ---
-Here's some things I made / am making.
+I'm Nick. Here's some things I have made/am making.
 
  - [math notes](math_notes/)
-
- - [Radicle, a lisp interpreter](https://github.com/nham/radicle)
-
  - [blog](blog/)
+ - [this site](https://github.com/nham/wabbo)
+ - [Radicle, a lisp interpreter in Rust](https://github.com/nham/radicle)
 
 
 Other links:
 
  - [Github](https://github.com/nham)
- - [G+](https://plus.google.com/107239411748947572422/)
  - [Twitter](https://twitter.com/cryptomorphism)
