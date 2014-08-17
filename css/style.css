@@ -8,9 +8,9 @@ body {
 div#body {
     max-width: 680px;
     min-width: 480px;
-    margin: 20px 40px;
+    margin: 20px auto;
     padding: 20px;
-    background-color: #f6f6f0;
+    background-color: #f9f9f9;
     color: #222;
 }
 
