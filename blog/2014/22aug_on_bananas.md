@@ -12,7 +12,7 @@ It returned `false`.
 
 After double-checking the documentation and trying other examples (which all worked), I suspected that play.rust-lang.org had some strange problem with it. I decided to run a test locally. Same result. I downloaded the latest Rust nightly and ran it again. Once more, Rust informed me that "bananas" does not contain "nana".
 
-I decided to check every substring of "bananas" to make sure I hadn't had a psychotic break from reality:
+I decided to check `contains` on every substring of "bananas" to verify that this was, in fact, real life, and that I hadn't suddenly forgotten how letters work:
 
 ```rust
     fn main() {
@@ -64,7 +64,7 @@ Running this resulted in:
     true - 
     true - s
 
-"nana" was the only substring of "bananas" for which the `contains` method returned `false`. What.
+"nana" was the only substring of "bananas" for which the `contains` method returned `false`. Wats abound.
 
 I was delighted. I had found a bug in Rust's implementation of string matching. Since I had nothing better to do than spend all day hunting down an obscure bug in the standard library of a pre-release programming language, I decided to fix it.
 
@@ -96,9 +96,9 @@ However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a 
 
 My pull request to fix this first bug is [here](https://github.com/rust-lang/rust/pull/16590).
 
-It is interesting to note that without this first bug, I would not have discovered that there was a problem with `TwoWaySearcher`.
+It is interesting to note that without this first bug, I would not have discovered the original problem, nor would I have discovered that there was a problem with `TwoWaySearcher`.
 
-To diagnose the underlying problem, it was necessary to figure out what exactly `TwoWaySearcher` is trying to do. Unfortunately, the code lacks comments describing which algorithm it was attempting to implement, so I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. From the PR:
+So that change fixed the problematic example I had found, but only by forcing that match attempt to use a different, simpler string matching algorithm which is (presumably) not broken. Because there were other examples that were broken even after my first fix, it was still necessary to diagnose the problem with `TwoWaySearcher`. In order to do that, I needed to know what the code was trying to do. Unfortunately, the code lacked comments describing which algorithm it was attempting to implement, so I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. From the PR:
 
  > This changes the previously naive string searching algorithm to a two-way search like glibc, which should be faster on average while still maintaining worst case linear time complexity.
 
