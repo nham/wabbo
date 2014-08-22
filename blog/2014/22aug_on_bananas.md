@@ -10,9 +10,9 @@ Since I had never used this method, I wanted to verify that it worked in the way
 
 It returned `false`.
 
-After double-checking the documentation and trying other examples (which all worked), I suspected that play.rust-lang.org had some strange problem with it. I decided to run a test locally. Same result. I downloaded the latest Rust nightly and ran it again. Once more, Rust told me that "bananas" does not contain "nana".
+After double-checking the documentation and trying other examples (which all worked), I suspected that play.rust-lang.org had some strange problem with it. I decided to run a test locally. Same result. I downloaded the latest Rust nightly and ran it again. Once more, Rust informed me that "bananas" does not contain "nana".
 
-I was delighted. I had found a bug in Rust's implementation of string matching. Since I'm currently in [Hacker School](http://www.hackerschool.com) and have nothing better to do than spend all day hunting down obscure bugs in the standard library of a pre-release programming language, I decided to fix it.
+I was delighted. I had found a bug in Rust's implementation of string matching. Since I had nothing better to do than spend all day hunting down an obscure bug in the standard library of a pre-release programming language, I decided to fix it.
 
 This particular problem was actually the result of two separate bugs. The first bug was in [this code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L562-L576):
 
@@ -34,10 +34,14 @@ This particular problem was actually the result of two separate bugs. The first 
     }
 ```
 
-This is a constructor for a `Searcher` object, which performs the actual string matching. The intention was to use some `NaiveSearcher` type when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in this case due to the fact the faster string matching algorithm being used has some set up cost associated with it.)
+This is a constructor for a `Searcher` object, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the faster string matching algorithm, which has some set up costs associated with it).
 
-However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a very large number; we have an underflow error on our hands. This bug was causing the code to use the `TwoWaySearcher`, whatever that is, in the case of `"bananas".contains("nana")`. So not only can we fix that particular case by correcting the underflow bug, but we've seemingly established that the problem is somewhere in `TwoWaySearcher`.
+However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a very large number; we have an underflow error on our hands. This bug was causing the code to erroneously use the `TwoWaySearcher` in general for haystacks of length less than 20, but in particular for the case of `"bananas".contains("nana")`. The fix is to add `20` to the needle instead of subtracting it from the haystack:
 
-My PR to fix this first bug is [here](https://github.com/rust-lang/rust/pull/16590).
+    if needle.len() + 20 > haystack.len() {
 
-To find the second bug, TODO
+My pull request to fix this first bug is [here](https://github.com/rust-lang/rust/pull/16590).
+
+It is interesting to note that without this first bug, I would not have discovered that there was a problem with `TwoWaySearcher`.
+
+To diagnose the underlying problem, it was necessary to figure out what exactly `TwoWaySearcher` is trying to do. I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. TODO
