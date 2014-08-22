@@ -12,6 +12,60 @@ It returned `false`.
 
 After double-checking the documentation and trying other examples (which all worked), I suspected that play.rust-lang.org had some strange problem with it. I decided to run a test locally. Same result. I downloaded the latest Rust nightly and ran it again. Once more, Rust informed me that "bananas" does not contain "nana".
 
+I decided to check every substring of "bananas" to make sure I hadn't had a psychotic break from reality:
+
+```rust
+    fn main() {
+        let b = "bananas";
+        for i in range(0, b.len()) {
+            for j in range(i, b.len() + 1) {
+                let curr = b.slice(i, j);
+                println!("{} - {}", b.contains(curr), curr);
+            }
+        }
+    }
+```
+
+Running this resulted in:
+
+    true - 
+    true - b
+    true - ba
+    true - ban
+    true - bana
+    true - banan
+    true - banana
+    true - bananas
+    true - 
+    true - a
+    true - an
+    true - ana
+    true - anan
+    true - anana
+    true - ananas
+    true - 
+    true - n
+    true - na
+    true - nan
+    false - nana
+    true - nanas
+    true - 
+    true - a
+    true - an
+    true - ana
+    true - anas
+    true - 
+    true - n
+    true - na
+    true - nas
+    true - 
+    true - a
+    true - as
+    true - 
+    true - s
+
+"nana" was the only substring of "bananas" for which the `contains` method returned `false`. What.
+
 I was delighted. I had found a bug in Rust's implementation of string matching. Since I had nothing better to do than spend all day hunting down an obscure bug in the standard library of a pre-release programming language, I decided to fix it.
 
 This particular problem was actually the result of two separate bugs. The first bug was in [this code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L562-L576):
@@ -44,4 +98,16 @@ My pull request to fix this first bug is [here](https://github.com/rust-lang/rus
 
 It is interesting to note that without this first bug, I would not have discovered that there was a problem with `TwoWaySearcher`.
 
-To diagnose the underlying problem, it was necessary to figure out what exactly `TwoWaySearcher` is trying to do. I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. TODO
+To diagnose the underlying problem, it was necessary to figure out what exactly `TwoWaySearcher` is trying to do. Unfortunately, the code lacks comments describing which algorithm it was attempting to implement, so I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. From the PR:
+
+ > This changes the previously naive string searching algorithm to a two-way search like glibc, which should be faster on average while still maintaining worst case linear time complexity.
+
+After some more searching I found [this web page](http://www-igm.univ-mlv.fr/~lecroq/string/node26.html) and [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf) about the so-called "Two-Way algorithm". So it was going to be simple, right? Just read the paper, understand the algorithm and then figure out where the current implementation is wrong.
+
+Then I saw the pseudocode in the paper:
+
+![Two-Way algorithm pseudocode](two_way_pseudocode.png)
+
+This didn't look impossible to understand, but it certainly seemed non-trivial, and I had little desire to wade through it. There was also the fact that the algorithm seemingly worked correctly for the vast majority of examples (recall that "nana" was the only substring of "bananas" for which the algorithm was buggy). I decided to try to try to understand how the code worked at a high level so that I could make an educated guess about where the bug might be.
+
+
