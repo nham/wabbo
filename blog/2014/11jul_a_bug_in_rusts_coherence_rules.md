@@ -1,5 +1,6 @@
-# 11 Jul 2014
-## A bug in Rust's coherence rules {#rust_coherence}
+---
+title: A bug in Rust's coherence rules
+---
 
 I ran into a Rust trait bug today. I was trying to implement an extremely generic solution to the problem of computing the sum of a tree of numbers (I actually generalized it to any type that implements Rust's [Add trait](http://static.rust-lang.org/doc/master/std/ops/trait.Add.html).) The code I wrote for that is [here](https://github.com/nham/hs_fri_job_prep/blob/master/11jul_recursion/add_tree.rs), but I don't want to discuss that example. Here's a contrived example instead. Suppose we have two traits, `Foo` and `Bar`:
 

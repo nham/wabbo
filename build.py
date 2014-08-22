@@ -58,7 +58,10 @@ files[''] = ['index.md']
 files['css'] = ['style.css']
 files['essays/aa_trees'] = [('index.md', 'math'), 'bst.svg', 'header_aa.svg']
 files['blog'] = ['index.md']
-files['blog/2014'] = ['22jun_28jun.md', '06jul_12jul.md', '13jul_20jul.md', '03aug_09aug.md']
+files['blog/2014'] = ['11jul_a_bug_in_rusts_coherence_rules.md',
+                      '16jul_for_loops_in_rust_no_std.md',
+                      '03aug_09aug.md',
+                      '22aug_on_bananas.md']
 
 blast_away(out_dir)
 

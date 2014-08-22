@@ -1,5 +1,6 @@
-# 16 Jul 2014
-## For loops in Rust without the standard library {#for_loops_rust_no_std}
+---
+title: For loops in Rust without the standard library
+---
 
 ### For loops and iterators in Rust
 There is a language construct in Rust for `for` loops. They aren't like for loops from C. Instead, they work around [iterators](http://doc.rust-lang.org/std/iter/), which is a trait for types that yield some sequence of values. I will steal the description from the documentation because it's unlikely I would be able to improve on it:
