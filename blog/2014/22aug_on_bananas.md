@@ -98,7 +98,7 @@ My pull request to fix this first bug is [here](https://github.com/rust-lang/rus
 
 It is interesting to note that without this first bug, I would not have discovered the original problem, nor would I have discovered that there was a problem with `TwoWaySearcher`.
 
-So that change fixed the problematic example I had found, but only by forcing that match attempt to use a different, simpler string matching algorithm which is (presumably) not broken. Because there were other examples that were broken even after my first fix, it was still necessary to diagnose the problem with `TwoWaySearcher`. In order to do that, I needed to know what the code was trying to do. Unfortunately, the code lacked comments describing which algorithm it was attempting to implement, so I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. From the PR:
+So that change fixed the problematic example I had found, but only by forcing that match attempt to use a different, simpler string matching algorithm which was (presumably) not broken. Because there were other examples that were broken even after my first fix, it was still necessary to diagnose the problem with `TwoWaySearcher`. In order to do that, I needed to know what the code was trying to do. Unfortunately, the code lacked comments describing which algorithm it was attempting to implement, so I looked at the [PR](https://github.com/rust-lang/rust/pull/14135) that introduced this code in order to try to get more context. From the PR:
 
  > This changes the previously naive string searching algorithm to a two-way search like glibc, which should be faster on average while still maintaining worst case linear time complexity.
 
@@ -108,6 +108,34 @@ Then I saw the pseudocode in the paper:
 
 ![Two-Way algorithm pseudocode](two_way_pseudocode.png)
 
-This didn't look impossible to understand, but it certainly seemed non-trivial, and I had little desire to wade through it. There was also the fact that the algorithm seemingly worked correctly for the vast majority of examples (recall that "nana" was the only substring of "bananas" for which the algorithm was buggy). I decided to try to try to understand how the code worked at a high level so that I could make an educated guess about where the bug might be.
+This didn't look impossible to understand, but it certainly seemed non-trivial, and I had little desire to wade through it. There was also the fact that the algorithm seemingly worked correctly for the vast majority of examples (recall that "nana" was the only substring of "bananas" for which the algorithm was buggy. Also, this implementation had been in Rust master for 3 months and I was the first person to report an issue). I decided to try to fix the bug without completely understanding how the algorithm worked.
 
+Here's what you need to know: the algorithm takes a string called the haystack, and a string called the needle, and attempts find the first `i` for which the slice `haystack[i:needle.length]` is equal to `needle` (that is, the starting position of the first occurrence of `needle` in `haystack`). To do this, it first "factorizes" the needle into two halves, `(u, v)` (where both `u` and `v` are strings such that `needle = u + v`)
+
+As mentioned above, I found the paper to be a tough read. However [glibc's implementation of Two-way](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), was helpful due to the fact that it is extraordinarily well-documented. Since the Rust version mostly lacks comments, I decided to read through at least the `glibc` comments to try to get a sense of what was going on.
+
+As it turns out, there's a large `if` statement in glibc's `two_way_long_needle` function that looks like this:
+
+```c
+  if (CMP_FUNC (needle, needle + period, suffix) == 0)
+    {
+      /* Entire needle is periodic; a mismatch can only advance by the
+	 period, so use memory to avoid rescanning known occurrences
+	 of the period.  */
+      ...
+    }
+  else
+    {
+      /* The two halves of needle are distinct; no extra memory is
+	 required, and any mismatch results in a maximal shift.  */
+      ...
+    }
+```
+
+Here `suffix` is the starting index of the right half of the needle factorization, and `period` is the period of the right half (for example, the string "abcabcabc" has a period of 3 since the string repeats every 3 characters). Also, `CMP_FUNC` is a macro that the glibc source describes in the following way:
+
+```c
+     CMP_FUNC(p1, p2, l) A macro that returns 0 iff the first L
+                         characters of P1 and P2 are equal.
+```
 
