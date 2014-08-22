@@ -14,7 +14,7 @@ After double-checking the documentation and trying other examples (which all wor
 
 I was delighted. I had found a bug in Rust's implementation of string matching. Since I'm currently in [Hacker School](http://www.hackerschool.com) and have nothing better to do than spend all day hunting down obscure bugs in the standard library of a pre-release programming language, I decided to fix it.
 
-This particular problem was actually the result of two separate bugs. The first bug was in this code:
+This particular problem was actually the result of two separate bugs. The first bug was in [this code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L562-L576):
 
 ```rust
     impl Searcher {
