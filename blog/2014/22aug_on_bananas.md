@@ -15,15 +15,15 @@ After double-checking the documentation and trying other examples (which all wor
 I decided to check `contains` on every substring of "bananas" to verify that this was, in fact, real life, and that I hadn't suddenly forgotten how letters work:
 
 ```rust
-    fn main() {
-        let b = "bananas";
-        for i in range(0, b.len()) {
-            for j in range(i, b.len() + 1) {
-                let curr = b.slice(i, j);
-                println!("{} - {}", b.contains(curr), curr);
-            }
+fn main() {
+    let b = "bananas";
+    for i in range(0, b.len()) {
+        for j in range(i, b.len() + 1) {
+            let curr = b.slice(i, j);
+            println!("{} - {}", b.contains(curr), curr);
         }
     }
+}
 ```
 
 Running this resulted in:
@@ -71,21 +71,21 @@ I was delighted. I had found a bug in Rust's implementation of string matching. 
 This particular problem was actually the result of two separate bugs. The first bug was in [this code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L562-L576):
 
 ```rust
-    impl Searcher {
-        fn new(haystack: &[u8], needle: &[u8]) -> Searcher {
-            // FIXME: Tune this.
-            if needle.len() > haystack.len() - 20 {
-                Naive(NaiveSearcher::new())
+impl Searcher {
+    fn new(haystack: &[u8], needle: &[u8]) -> Searcher {
+        // FIXME: Tune this.
+        if needle.len() > haystack.len() - 20 {
+            Naive(NaiveSearcher::new())
+        } else {
+            let searcher = TwoWaySearcher::new(needle);
+            if searcher.memory == uint::MAX { // If the period is long
+                TwoWayLong(searcher)
             } else {
-                let searcher = TwoWaySearcher::new(needle);
-                if searcher.memory == uint::MAX { // If the period is long
-                    TwoWayLong(searcher)
-                } else {
-                    TwoWay(searcher)
-                }
+                TwoWay(searcher)
             }
         }
     }
+}
 ```
 
 This is a constructor for a `Searcher` object, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the faster string matching algorithm, which has some set up costs associated with it).
@@ -100,4 +100,62 @@ It is interesting to note that without this first bug, I would not have discover
 
 So that change fixed the problematic "bananas" example I had found, but only by causing the method to use a different, simpler string matching algorithm which was (presumably) not broken. Because there were other examples that were broken even after my first fix, it was still necessary to diagnose the problem with `TwoWaySearcher`. 
 
-I did spend some time doing this, and have submitted a [proposed fix](https://github.com/rust-lang/rust/pull/16612), but discovering this was far messier and I am far less confident in its correctness, so I will not go into details. It involved bouncing back and forth between [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf) and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which was helpful due to it being exceptionally well-commented, unlike the Rust implementation.
+This problem turned out to be far more difficult, and I am not as confident that my proposed fix is correct, so I will just describe it briefly. The `TwoWaySearcher` type is an implementation of the "Two-way algorithm", first introduced in [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf). By reading this and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which has excellent comments, I noticed that one part of the Rust code did not exactly match what was in the paper. Specifically, on p. 670 of the paper you can find this function:
+
+![Pseudocode for Small-Period function](small_period_pseudocode.png)
+
+Compare it with the code for the [TwoWaySearcher constructor](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L423-L459) in the Rust implementation:
+
+```rust
+fn new(needle: &[u8]) -> TwoWaySearcher {
+    let (critPos1, period1) = TwoWaySearcher::maximal_suffix(needle, false);
+    let (critPos2, period2) = TwoWaySearcher::maximal_suffix(needle, true);
+
+    let critPos;
+    let period;
+    if critPos1 > critPos2 {
+        critPos = critPos1;
+        period = period1;
+    } else {
+        critPos = critPos2;
+        period = period2;
+    }
+
+    let byteset = needle.iter()
+                        .fold(0, |a, &b| (1 << ((b & 0x3f) as uint)) | a);
+
+    if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
+        TwoWaySearcher {
+            critPos: critPos,
+            period: period,
+            byteset: byteset,
+
+            position: 0,
+            memory: 0
+        }
+    } else {
+        TwoWaySearcher {
+            critPos: critPos,
+            period: cmp::max(critPos, needle.len() - critPos) + 1,
+            byteset: byteset,
+
+            position: 0,
+            memory: uint::MAX // Dummy value to signify that the period is long
+        }
+    }
+}
+```
+
+It matches almost exactly, with the exception of this line:
+
+    if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
+
+In Python-like pseudocode, this code is checking if `needle[:l] == needle[(n-l):]`, where I'm using `l` for `critPos` and `n` for the length of the needle. Compare this to the paper, which stipulates that we should check if `needle[:l]` is a suffix for needle[l:(p+l]`, where `p` is the period of the suffix of the needle.
+
+The fix I proposed is to change the above line to this:
+
+    if needle.slice_to(critPos) == needle.slice(period, period + critPos) {
+
+This is matches the paper exactly. It also matches the glibc implementation. And after making this change, all the examples that were failing before now work.
+
+I have an [open PR](https://github.com/rust-lang/rust/pull/16612) for this change, though since I did not take the time to fully understand the algorithm I am not completely confident that it is correct.
