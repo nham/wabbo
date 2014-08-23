@@ -88,7 +88,7 @@ impl Searcher {
 }
 ```
 
-This is a constructor for a `Searcher` object, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the more sophisticated string matching algorithm, which has some set up costs associated with it).
+This is a constructor for a `Searcher`, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the more sophisticated string matching algorithm, which has some set up costs associated with it).
 
 However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a very large number; we have an underflow error on our hands. This bug was causing the code to erroneously use the `TwoWaySearcher` in general for haystacks of length less than 20, but in particular for the case of `"bananas".contains("nana")`. The fix is to add `20` to the needle instead of subtracting it from the haystack:
 
@@ -96,7 +96,7 @@ However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a 
 
 My pull request to fix this first bug is [here](https://github.com/rust-lang/rust/pull/16590).
 
-So that change fixed the problematic "bananas" example I had found, but only by causing the method to use a different, simpler string matching algorithm which was (presumably) not broken. But there was still a problem somewhere in the other string matching algorithm, `TwoWaySearcher`.
+So that change fixed the problematic "bananas" example I had found, but only by causing the method to use a different, simpler string matching algorithm which was (presumably) not broken. But there was still a problem somewhere in the other string matching algorithm, `TwoWaySearcher`. For example, `"012345678901234567890anana".contains("nana")` still returns false since the haystack is large enough that `TwoWaySearcher` gets used.
 
 This problem (predictably) turned out to be more difficult to pinpoint, and I am not as confident that my proposed fix is correct, so I will just describe it briefly. The `TwoWaySearcher` type is an implementation of the "Two-way algorithm", first introduced in [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf). By reading this and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which has excellent comments, I noticed that one part of the Rust code did not exactly match what was in the paper. Specifically, on p. 670 of the paper you can find this function:
 
