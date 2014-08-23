@@ -1,7 +1,7 @@
 ---
 title: Hi
 ---
-I'm Nick. Here's some things I have made/am making.
+I'm Nick. Here are some things I have made/am making.
 
  - [math notes](math_notes/)
  - [blog](blog/)
