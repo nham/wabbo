@@ -160,7 +160,32 @@ An equivalent way of checking whether `needle[:l]` is a suffix for `needle[l:(p+
     needle.slice_to(critPos) == needle.slice(period, period + critPos)
 ```
 
-This is matches the paper exactly. It also matches the glibc implementation. And after making this change, all the examples that were failing before now work.
+This new logic also seems to match the glibc implementation, since the `two_way_long_needle` function has the following if statement:
+
+
+```c
+  /* Perform the search. Each iteration compares the right half
+     first. */
+  if (CMP_FUNC (needle, needle + period, suffix) == 0)
+    {
+      /* Entire needle is periodic; a mismatch can only advance by the
+	 period, so use memory to avoid rescanning known occurrences
+	 of the period.  */
+
+      ...
+
+    }
+  else
+    {
+      /* The two halves of needle are distinct; no extra memory is
+	 required, and any mismatch results in a maximal shift.  */
+
+      ...
+
+    }
+```
+
+(You'll have to look at the `CMP_FUNC` macro to see why it's the same). Also, after making the above change, all the examples that were failing before now work.
 
 I have an [open PR](https://github.com/rust-lang/rust/pull/16612) for this change, though since I did not take the time to fully understand the algorithm I am not completely confident that it is correct.
 
