@@ -61,7 +61,8 @@ files['blog'] = ['index.md']
 files['blog/2014'] = ['11jul_a_bug_in_rusts_coherence_rules.md',
                       '16jul_for_loops_in_rust_no_std.md',
                       '03aug_09aug.md',
-                      '22aug_on_bananas.md', 'two_way_pseudocode.png']
+                      '22aug_on_bananas.md', 'two_way_pseudocode.png', 
+                      'small_period_pseudocode.png']
 
 blast_away(out_dir)
 

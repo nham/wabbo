@@ -117,18 +117,24 @@ As mentioned above, I found the paper to be a tough read. However [glibc's imple
 As it turns out, there's a large `if` statement in glibc's `two_way_long_needle` function that looks like this:
 
 ```c
+  /* Perform the search. Each iteration compares the right half
+     first. */
   if (CMP_FUNC (needle, needle + period, suffix) == 0)
     {
       /* Entire needle is periodic; a mismatch can only advance by the
 	 period, so use memory to avoid rescanning known occurrences
 	 of the period.  */
+
       ...
+
     }
   else
     {
       /* The two halves of needle are distinct; no extra memory is
 	 required, and any mismatch results in a maximal shift.  */
+
       ...
+
     }
 ```
 
@@ -139,3 +145,87 @@ Here `suffix` is the starting index of the right half of the needle factorizatio
                          characters of P1 and P2 are equal.
 ```
 
+So the `if` statement is checking whether (using Python slice notation) `needle[:suffix] == needle[period : (period + suffix)]`.
+
+I then looked at the Rust implementation to see whether there was comparable logic. I found this:
+
+
+```rust
+    if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
+        ...
+    } else {
+        ...
+    }
+```
+
+To understand this properly, know that `critPos` is the equivalent of `suffix` from the glibc code. It's similar, but not quite the same. Also there were no comments to explain what it was doing, but I tried replacing that check with this:
+
+```rust
+    if needle.slice_to(critPos) == needle.slice(period, period + critPos) {
+        ...
+    } else {
+        ...
+    }
+```
+
+I tried many examples and they all worked! Bug fixed? Well, not quite, because "I don't understand what this code does, but I adapted it from another implementation and it seems to work" does not inspire confidence. I wanted to understand at least a little bit about where it came from.
+
+Going back to the paper, we can find this pseudocode on p. 670:
+
+![Pseudocode for Small-Period function](small_period_pseudocode.png)
+
+Hmm, this looks familiar... Compare it with the [full code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L423-L459) for the `TwoWaySearcher` constructor in the Rust implementation (the original code, not with my proposed fix from above):
+
+    fn new(needle: &[u8]) -> TwoWaySearcher {
+        let (critPos1, period1) = TwoWaySearcher::maximal_suffix(needle, false);
+        let (critPos2, period2) = TwoWaySearcher::maximal_suffix(needle, true);
+
+        let critPos;
+        let period;
+        if critPos1 > critPos2 {
+            critPos = critPos1;
+            period = period1;
+        } else {
+            critPos = critPos2;
+            period = period2;
+        }
+
+        let byteset = needle.iter()
+                            .fold(0, |a, &b| (1 << ((b & 0x3f) as uint)) | a);
+
+        if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
+            TwoWaySearcher {
+                critPos: critPos,
+                period: period,
+                byteset: byteset,
+
+                position: 0,
+                memory: 0
+            }
+        } else {
+            TwoWaySearcher {
+                critPos: critPos,
+                period: cmp::max(critPos, needle.len() - critPos) + 1,
+                byteset: byteset,
+
+                position: 0,
+                memory: uint::MAX // Dummy value to signify that the period is long
+            }
+        }
+
+Ignoring the `byteset` thing, which I do not understand in the slightest, we can see that this is more or less the same code. This pattern is followed in both:
+
+    compute critical_position
+    compute period
+    
+    if [some check] {
+        use period
+    } else {
+        use max(critical_position, needle.length - critical_position) + 1
+    }
+
+In the paper, `l` is the `critical_position` and `p` is `period`, whereas in the Rust code `criticalPos` and `period` plays these respective roles. The only difference seems to be the check on the if statement. In the paper we check whether `needle[:l]` is a suffix of `needle[l:(p+l)]`, whereas the Rust code above checks whether `needle[:l]` equals `needle[(n-l):]`, which is not the same thing.
+
+But where does the logic from glibc come into play? The glibc code is checking whether `[needle:l]` equals `needle[p:(p+l)]`, which is... exactly how you check if `needle[:l]` is a suffix of `needle[l:(p+l)]`.
+
+So maybe this fix works. Maybe it doesn't and I should actually take the time to properly understand the algorithm before proposing a fix, or at least leave the fix to someone willing to do that. Maybe this should just be rewritten to use an algorithm that is easier to understand.
