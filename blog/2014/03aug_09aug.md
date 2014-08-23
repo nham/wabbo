@@ -1,5 +1,5 @@
 ---
-title: A Rust curiosity: pointers to zero-sized types
+title: "A Rust curiosity: pointers to zero-sized types"
 ---
 
 Today I was looking at the code for [core::slice::Items](http://static.rust-lang.org/doc/master/std/slice/struct.Items.html), a standard iterator over a vector slices, when I noticed something that seemed a bit odd. Here's the [block of code](https://github.com/rust-lang/rust/blob/f5ac41185a821681f4bfaf93ef0569955d24ef4a/src/libcore/slice.rs#L902-L915) I was looking at:
