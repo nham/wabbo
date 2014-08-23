@@ -96,15 +96,15 @@ However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a 
 
 My pull request to fix this first bug is [here](https://github.com/rust-lang/rust/pull/16590).
 
-It is interesting to note that without this first bug, I would not have discovered the original problem, nor would I have discovered that there was a problem with `TwoWaySearcher`.
+So that change fixed the problematic "bananas" example I had found, but only by causing the method to use a different, simpler string matching algorithm which was (presumably) not broken. But there was still a problem somewhere in the other string matching algorithm, `TwoWaySearcher`.
 
-So that change fixed the problematic "bananas" example I had found, but only by causing the method to use a different, simpler string matching algorithm which was (presumably) not broken. Because there were other examples that were broken even after my first fix, it was still necessary to diagnose the problem with `TwoWaySearcher`. 
-
-This problem turned out to be far more difficult, and I am not as confident that my proposed fix is correct, so I will just describe it briefly. The `TwoWaySearcher` type is an implementation of the "Two-way algorithm", first introduced in [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf). By reading this and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which has excellent comments, I noticed that one part of the Rust code did not exactly match what was in the paper. Specifically, on p. 670 of the paper you can find this function:
+This problem (predictably) turned out to be more difficult to pinpoint, and I am not as confident that my proposed fix is correct, so I will just describe it briefly. The `TwoWaySearcher` type is an implementation of the "Two-way algorithm", first introduced in [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf). By reading this and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which has excellent comments, I noticed that one part of the Rust code did not exactly match what was in the paper. Specifically, on p. 670 of the paper you can find this function:
 
 ![Pseudocode for Small-Period function](small_period_pseudocode.png)
 
-Compare it with the code for the [TwoWaySearcher constructor](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L423-L459) in the Rust implementation:
+As a bit of background, the Two-way algorithm takes a string called the "haystack" and a string called the "needle" and attempts to find the starting position of the first occurrence of `needle` in `haystack`, provided that it exists. The first step in this particular algorithm is to "factorize" the needle into halves, (that is, find a pair of strings `(u, v)` such that `needle = u + v`), in a way that obeys certain properties (you can read the paper for the gory details).
+
+Now compare the pseudocode above with the code for the [TwoWaySearcher constructor](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L423-L459) in the Rust implementation:
 
 ```rust
 fn new(needle: &[u8]) -> TwoWaySearcher {
@@ -146,16 +146,22 @@ fn new(needle: &[u8]) -> TwoWaySearcher {
 }
 ```
 
-It matches almost exactly, with the exception of this line:
+Pay particular attention to the `if` statement at the end of `TwoWaySearcher::new()`. The first branch uses `period`, and the second branch uses `max(critPos, needle.len() - critPos) + 1)`. These two lines match lines 5 and 6 from the pseudocode above. The rest of it is a fairly close match as well, with the exception of the condition checked by the if statement:
 
-    if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
+```rust
+    needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos)
+```
 
 In Python-like pseudocode, this code is checking if `needle[:l] == needle[(n-l):]`, where I'm using `l` for `critPos` and `n` for the length of the needle. Compare this to the paper, which stipulates that we should check if `needle[:l]` is a suffix for `needle[l:(p+l]`, where `p` is the period of the suffix of the needle. These two checks are not the same. I strongly suspected that this was the source of the problem.
 
-The fix I proposed is to change the above line to this:
+An equivalent way of checking whether `needle[:l]` is a suffix for `needle[l:(p+l)]` is to check if `needle[:l] == needle[p:(p+l)]`. So I guessed that we needed to change the if condition in the Rust code to this:
 
-    if needle.slice_to(critPos) == needle.slice(period, period + critPos) {
+```rust
+    needle.slice_to(critPos) == needle.slice(period, period + critPos)
+```
 
 This is matches the paper exactly. It also matches the glibc implementation. And after making this change, all the examples that were failing before now work.
 
 I have an [open PR](https://github.com/rust-lang/rust/pull/16612) for this change, though since I did not take the time to fully understand the algorithm I am not completely confident that it is correct.
+
+It is interesting to note that without the first bug, I would not have discovered the second bug.
