@@ -88,7 +88,7 @@ impl Searcher {
 }
 ```
 
-This is a constructor for a `Searcher` object, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the faster string matching algorithm, which has some set up costs associated with it).
+This is a constructor for a `Searcher` object, which performs the actual string matching. The intention of this code to use `NaiveSearcher` when the difference between the length of the `haystack` (the string we're searching in) and the length of the `needle` (the string we're searching for) is less than 20, and to otherwise use `TwoWaySearcher`. (NaiveSearcher is an implementation of the naive string matching algorithm, which I'm guessing is preferred in cases like this because it ends up being faster than the more sophisticated string matching algorithm, which has some set up costs associated with it).
 
 However, when `haystack.len()` is less than 20, `haystack.len() - 20` will be a very large number; we have an underflow error on our hands. This bug was causing the code to erroneously use the `TwoWaySearcher` in general for haystacks of length less than 20, but in particular for the case of `"bananas".contains("nana")`. The fix is to add `20` to the needle instead of subtracting it from the haystack:
 
@@ -150,7 +150,7 @@ It matches almost exactly, with the exception of this line:
 
     if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
 
-In Python-like pseudocode, this code is checking if `needle[:l] == needle[(n-l):]`, where I'm using `l` for `critPos` and `n` for the length of the needle. Compare this to the paper, which stipulates that we should check if `needle[:l]` is a suffix for needle[l:(p+l]`, where `p` is the period of the suffix of the needle.
+In Python-like pseudocode, this code is checking if `needle[:l] == needle[(n-l):]`, where I'm using `l` for `critPos` and `n` for the length of the needle. Compare this to the paper, which stipulates that we should check if `needle[:l]` is a suffix for `needle[l:(p+l]`, where `p` is the period of the suffix of the needle. These two checks are not the same. I strongly suspected that this was the source of the problem.
 
 The fix I proposed is to change the above line to this:
 
