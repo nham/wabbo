@@ -158,7 +158,9 @@ I then looked at the Rust implementation to see whether there was comparable log
     }
 ```
 
-To understand this properly, know that `critPos` is the equivalent of `suffix` from the glibc code. It's similar, but not quite the same. Also there were no comments to explain what it was doing, but I tried replacing that check with this:
+To understand this properly, know that `critPos` is the equivalent of `suffix` from the glibc code. The check is similar, but not quite the same. This is checking whether (using the same notation as before) `needle[:suffix] == needle[(n - suffix):]`, where `n` is the length of the needle.
+
+I wondered what would happen if I changed the line in the Rust code to use the same logic from glibc, like so:
 
 ```rust
     if needle.slice_to(critPos) == needle.slice(period, period + critPos) {
@@ -168,7 +170,7 @@ To understand this properly, know that `critPos` is the equivalent of `suffix` f
     }
 ```
 
-I tried many examples and they all worked! Bug fixed? Well, not quite, because "I don't understand what this code does, but I adapted it from another implementation and it seems to work" does not inspire confidence. I wanted to understand at least a little bit about where it came from.
+Answer: it seems to work! I tried all of the erroneous examples I had found and they all came out correct. Bug fixed? Well, not quite, because "I don't understand what this code does, but I adapted it from another implementation and it seems to work" does not inspire confidence. I wanted to understand at least a little bit about where it came from.
 
 Going back to the paper, we can find this pseudocode on p. 670:
 
@@ -213,7 +215,7 @@ Hmm, this looks familiar... Compare it with the [full code](https://github.com/r
             }
         }
 
-Ignoring the `byteset` thing, which I do not understand in the slightest, we can see that this is more or less the same code. This pattern is followed in both:
+Ignoring the `byteset` thing, which I do not understand in the slightest, we can see that this is more or less the same code. Both the paper and the Rust code have essentially this structure:
 
     compute critical_position
     compute period
@@ -228,4 +230,4 @@ In the paper, `l` is the `critical_position` and `p` is `period`, whereas in the
 
 But where does the logic from glibc come into play? The glibc code is checking whether `[needle:l]` equals `needle[p:(p+l)]`, which is... exactly how you check if `needle[:l]` is a suffix of `needle[l:(p+l)]`.
 
-So maybe this fix works. Maybe it doesn't and I should actually take the time to properly understand the algorithm before proposing a fix, or at least leave the fix to someone willing to do that. Maybe this should just be rewritten to use an algorithm that is easier to understand.
+So maybe this fix works. Maybe it doesn't and I should actually take the time to properly understand the algorithm before proposing a fix, or at least leave the fix to someone willing to do that. I've opened a PR for this change [here](https://github.com/rust-lang/rust/pull/16612), but am not very confident that it is correct, for obvious reasons.
