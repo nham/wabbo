@@ -113,7 +113,7 @@ def verify_candidate(cells) {
 This seems a lot nicer than what we started out with. We're still randomly generating solutions, but what we do generate is constrained enough that we won't waste a bunch of time checking obviously wrong solutions.
 
 
-## Dead Cthulhu waits dreaming (of recursion)
+## Systematically generating solutions
 
 How can we improve on this? I'm not sure we can remove the final diagonal check in `verify_candidate`, since if each of our candidates adhered to that as well it'd already be a solution to the problem. The thing that feels wrong about what we have so far is the random element to it, primarily because we might randomly generate the same candidate more than once. It's obviously a waste of time to check a candidate more than once. It seems like we should try to modify the algorithm to systematically generate candidates to test.
 
@@ -195,6 +195,8 @@ def queens() {
 ```
 
 I know, I know, this code is horrible, but it should be easy enough to understand. Now we can try to modify it to skip over bad classes of permutations. It seems like as soon as we detect, for example, that a = 0 and b = 1, then we should be able to break out of that second for loop and skip to a = 1, since none of the permutations that start out (0, 1, ...) will work, as mentioned above. But how can we detect bad permutations in general?
+
+## Dead Cthulhu waits dreaming (of recursion)
 
 My instinct here was to play around with the 4-queens problem to find an example. However the 4 queens problem seemed to be a bit too small, so I went to the 5 queens problem instead and quickly found this example:
 
