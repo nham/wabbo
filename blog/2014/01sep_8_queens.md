@@ -367,7 +367,6 @@ The above algorithm is where I end my investigations. I have no doubt it can be 
 What follows is a direct translation of the code into Rust, with a slight modification: the code generates all possible solutions in order to verify that it is correct.
 
 ```rust
-
 use std::collections::HashSet;
 
 type Solution = Vec<(uint, uint)>;
@@ -556,4 +555,4 @@ This sounds like the solution I came up with. Yay?
 
 ## Conclusion
 
-The problem isn't impossible to solve if you've never seen it, as I hoped I've illustrated above. However, I'm somewhat doubtful I could have done this in an interview, especially if I was expected to come up with this in an hour or less.
+The problem isn't impossible to solve if you've never seen it, as I hope I've illustrated above. However, I'm somewhat doubtful I could have done this in an interview, especially if I was expected to come up with this in an hour or less.
