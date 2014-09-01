@@ -1,4 +1,6 @@
-# Solving the 8 queens problem from scratch
+---
+title: Solving the 8 queens problem from scratch
+---
 
 I recently read a highly-upvoted comment on Reddit expressing exasperation that someone hiring for a software development role would ask a candidate to solve the 8 Queens problem on a whiteboard during an interview. Quoth the redditor:
 
