@@ -1,11 +1,15 @@
 ---
 title: Hi
 ---
-I'm Nick. Here are some things I have made/am making.
+
+## written stuff
 
  - [math notes](math_notes/)
- - [blog](blog/)
- - [this site](https://github.com/nham/wabbo)
+ - [On bananas and string matching algorithms](written/bananas_string_matching_algorithms.html)
+ - [Solving the 8-queens problem from scratch](written/8-queens.html)
+
+## projects
+
  - [Radicle, a lisp interpreter in Rust](https://github.com/nham/radicle)
 
 
