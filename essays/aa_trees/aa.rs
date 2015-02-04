@@ -123,6 +123,29 @@ impl<K: Ord, V> Node<K, V> {
         replaced
     }
 
+    pub fn remove(&mut self, key: &K) -> Option<V> {
+        let removed = match key.cmp(&self.key) {
+            Less =>
+                match self.left {
+                    None => return None,
+                    Some(ref mut b) => b.remove(key),
+                },
+            Greater =>
+                match self.right {
+                    None => return None,
+                    Some(ref mut b) => b.remove(key),
+                },
+            Equal => {
+                // replace self with largest predecessor
+                // delete the node (call it on the swapped key afte we switch?)
+            },
+        };
+
+        self.skew();
+        self.split();
+        replaced
+    }
+
 
     // To be an AA tree, it must be a binary search tree and, for all nodes n:
     //   - if n is missing a child, its level must be 1
@@ -172,6 +195,24 @@ impl<K: Ord, V> Node<K, V> {
             swap(&mut self.left, &mut save.right); // save.right now None
             swap(self, &mut *save);
             self.right = Some(save);
+        }
+    }
+
+    // repeat [skew current node, follow right child] until no right child
+    fn skew_subtree(&mut self) {
+        self.skew();
+        match self.right {
+            None => {},
+            Some(ref mut n) => n.skew_subtree(),
+        }
+    }
+
+    // repeat [split current node, follow right child] until no right child
+    fn split_subtree(&mut self) {
+        self.split();
+        match self.right {
+            None => {},
+            Some(ref mut n) => n.split_subtree(),
         }
     }
 
