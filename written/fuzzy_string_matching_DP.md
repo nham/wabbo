@@ -38,13 +38,19 @@ The formal definition of this function is a bit complicated, but I'm going to gi
 
 For any strings $s, t$, we define a function $L_{s,t}: |s| \times |t| \to \mathbb{N}$ so that $L_{s, t}(i, j)$ is the length of the smallest edit sequence that turns $s_1 \cdots s_i$ into $t_1 \cdots t_j$. Formally we can do this by:
 
-    $$L_{s,t}(i, j) = \begin{cases}
-        j & i = 0 \\
-        i & j = 0 \\
-        min{L_{s,t}(i-1, j) + 1, L_{s,t}(i, j-1) + 1, L_{s,t}(i-1, j-1) + \delta(s_i, t_j)} & \text{otherwise}
-        \end{cases}$$
+$$L_{s,t}(i, j) := \begin{cases}
+    j & i = 0 \\
+    i & j = 0 \\
+    \min \begin{cases}
+        L_{s,t}(i-1, j) + 1 \\
+        L_{s,t}(i, j-1) + 1 \\
+        L_{s,t}(i-1, j-1) + \delta(s_i, t_j)
+    \end{cases} & \text{ otherwise }
+\end{cases}$$
 
-where $\delta$ is defined so that $\delta(x, y) = 1$ iff $x = y$. We then define $ed(s, t) = L_{s,t}(|s|, |t|)$.
+where $\delta$ is defined so that $\delta(x, y) = 1$ iff $x = y$. We then define 
+
+$$ed(s, t) := L_{s,t}(|s|, |t|)$$
 
 Once you get past all the symbols, this really ain't so bad. It says that:
 
@@ -81,30 +87,34 @@ Since this essay is ostensibly about programming, probably we should do some of 
 
 Here is my attempt at translating the math above into Rust code:
 
-    fn ed<'a, 'b>(s: &'a [char], t: &'b [char]) -> usize {
-        let (i, j) = (s.len(), t.len());
-        if i == 0 {
-            j
-        } else if j == 0 {
-            i
-        } else {
-            let (a, b) = (i-1, j-1);
-            let v = vec![
-                ed(&s[..a], &t[..b]) + if s[a] == t[b] { 0 } else { 1 },
-                ed(&s[..a], t) + 1,
-                ed(s, &t[..b]) + 1
-            ];
-            v.into_iter().min().unwrap()
-        }
+```rust
+fn ed<'a, 'b>(s: &'a [char], t: &'b [char]) -> usize {
+    let (i, j) = (s.len(), t.len());
+    if i == 0 {
+        j
+    } else if j == 0 {
+        i
+    } else {
+        let (a, b) = (i-1, j-1);
+        let v = vec![
+            ed(&s[..a], &t[..b]) + if s[a] == t[b] { 0 } else { 1 },
+            ed(&s[..a], t) + 1,
+            ed(s, &t[..b]) + 1
+        ];
+        v.into_iter().min().unwrap()
     }
+}
+```
 
 A couple of differences and technical notes: I'm using slices of chars rather than strings because strings in Rust are UTF-8, which makes going to the previous char in a string a bit tricky (there's a way to do it, but the code was less readable). This means you have to convert any strings to a slice of chars in order to use this. I ended up defining a simple conversion function for this:
 
-    fn lev<'a, 'b>(s: &'a str, t: &'b str) -> usize {
-        let s_chars: Vec<char> = s.chars().collect();
-        let t_chars: Vec<char> = t.chars().collect();
-        ed(&s_chars[], &t_chars[])
-    }
+```rust
+fn lev<'a, 'b>(s: &'a str, t: &'b str) -> usize {
+    let s_chars: Vec<char> = s.chars().collect();
+    let t_chars: Vec<char> = t.chars().collect();
+    ed(&s_chars[], &t_chars[])
+}
+```
 
 To calculate the min I'm using [IterExt::min](http://doc.rust-lang.org/std/iter/trait.IteratorExt.html#tymethod.min) method from the Rust standard library.
 

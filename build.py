@@ -56,13 +56,9 @@ def compile(folder, filename, is_index, use_math):
 files = {}
 files[''] = ['index.md']
 files['css'] = ['style.css']
-files['essays/aa_trees'] = [('index.md', 'math'), 'bst.svg', 'header_aa.svg']
-files['blog'] = ['index.md']
-files['blog/2014'] = ['11jul_a_bug_in_rusts_coherence_rules.md',
-                      '16jul_for_loops_in_rust_no_std.md',
-                      '03aug_09aug.md',
-                      '22aug_on_bananas.md', 'small_period_pseudocode.png',
-                      '01sep_8_queens.md']
+files['written'] = ['bananas_string_matching_algorithms.md', 'small_period_pseudocode.png',
+                      '8-queens.md',
+                      ('fuzzy_string_matching_DP.md', 'math')]
 files['essays/diff'] = ['diff_viz.html', 'diffdraw.js',
                                          'snap.svg-min.js',
                                          'jquery-2.1.1.min.js']
