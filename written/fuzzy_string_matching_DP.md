@@ -32,11 +32,11 @@ The approach below will hinge on being able to compute some kind of distance bet
 
   - inserting a symbol into $s$ ("metric" => "meatric")
   - deleting a symbol from $s$ ("chat" => "cat")
-  - replacing one symbol in $s$ with ("hello" => "jello")
+  - replacing one symbol in $s$ with another ("hello" => "jello")
 
-The formal definition of this function is a bit complicated, but I'm going to give it anyway and you're just going to have to deal with it. A bit of notation: for any string $s$, $s_i$ denotes the $i$-th symbol in $s$, starting at $1$. So $s = s_1 \cdots s_n$ for some $n$. We also denote the length of $s$ (i.e. $n$ in the last example) by $|s|$.
+The formal definition of this function is a bit complicated, but I'm going to give it anyway and you're just going to have to deal with it. A bit of notation: for any string $s$, $s_i$ denotes the $i$-th symbol in $s$, starting at $1$. So $s = s_1 \cdots s_n$ for some $n$ and some symbols $s_i$. I also denote the length of $s$ (i.e. $n$ in the last example) by $|s|$, and substrings $s_i \cdots s_j$ by $s_{i..j}$.
 
-For any strings $s, t$, we define a function $L_{s,t}: |s| \times |t| \to \mathbb{N}$ so that $L_{s, t}(i, j)$ is the length of the smallest edit sequence that turns $s_1 \cdots s_i$ into $t_1 \cdots t_j$. Formally we can do this by:
+For any strings $s, t$, let's define a function $L_{s,t}: |s| \times |t| \to \mathbb{N}$ so that $L_{s, t}(i, j)$ is the length of the smallest edit sequence that turns $s_{1..i}$ into $t_{1..j}$. The formal definition (brace yourself) is as follows:
 
 $$L_{s,t}(i, j) := \begin{cases}
     j & i = 0 \\
@@ -54,14 +54,13 @@ $$ed(s, t) := L_{s,t}(|s|, |t|)$$
 
 Once you get past all the symbols, this really ain't so bad. It says that:
 
-  - when $i$ is the empty string, the shortest edit sequence is just inserting all the characters of $t$
-  - when $j$ is the empty string, the shortest edit sequence is deleting all the characters of $s$
-  - otherwise, it's the shortest of these 3:
+  - the shortest edit sequence that turns the empty string into $t$ is just inserting all the characters of $t$
+  - the shortest edit sequence that turns $s$ into the empty string is deleting all the characters of $s$
+  - when $s_{1..i}$ and $t_{1..j}$ are non-empty prefixes of $s$ and $t$, respectively, then the shortest edit sequence turning $s_{1..i}$ into $t_{1..j} is the smallest of these three:
     
-     1. The shortest sequence turning $s_1 \cdots s_{i-1}$ into $t_1 \cdots t_j$ followed by deletion of $s_i$
-     2. The shortest sequence turning $s_1 \cdots s_i$ into $t_1 \cdots t_{j-1}$ followed by insertion of $t_j$.
-     3. If $s_i = t_j$, we can just use the shortest sequence turning $s_1 \cdots s_{i-1}$ into $t_1 \cdots t_{j-1}$. Otherwise, it's that sequence followed by replacing $s_i$ with $t_j$.
-
+     1. The shortest sequence turning $s_{1..i-1}$ into $t_{1..j}$ followed by deletion of $s_i$
+     2. The shortest sequence turning $s_{1..i}$ into $t_{1..j-1}$ followed by insertion of $t_j$.
+     3. If $s_i = t_j$, we can just use the shortest sequence turning $s_{1..i-1}$ into $t_{1..j-1}$. Otherwise, it's that sequence followed by replacing $s_i$ with $t_j$.
 
 Hopefully I've convinced you this is a well-defined function. But are we justified in calling this a "distance" function? Does it have all the properties we would expect such a function to have? What even is distance?
 
@@ -215,7 +214,7 @@ or
 
 $$L_{s,t}(i-1, j-1) > L_{s, t}(i, j-1) + 1$$
 
-This is due to the triangle inequality holding for the Levenshtein distance. ($L_{s, t}(i-1, j-1)$ is the distance between $s_1 \cdots s_{i-1}$ and $t_1 \cdots t_{j-1}$, $L_{s,t}(i-1, j)$ is the distance between $s_1 \cdots s_{i-1}$ and $t_1 \cdots t_j$, and $1$ is the distance between $t_1 \cdots t_{j-1}$ and $t_1 \cdots t_j$ (and similarly for the other case).)
+This is due to the triangle inequality holding for the Levenshtein distance. ($L_{s, t}(i-1, j-1)$ is the distance between $s_{1..i-1}$ and $t_{1..j-1}$, $L_{s,t}(i-1, j)$ is the distance between $s_{1..i-1}$ and $t_{1..j}$, and $1$ is the distance between $t_{1..j-1}$ and $t_{1..j}$ (and similarly for the other case).)
 
 The `if` statement now becomes:
 
