@@ -1,7 +1,5 @@
 # Fuzzy string matching through dynamic programming
 
-## Motivation
-
 I've been studying math recently, and order to organize my studies I built a small command-line tool called [hippo](https://github.com/nham/hippo). All it does is schedule review of items (definitions, proofs of theorems, ideas) using [spaced repetition](http://en.wikipedia.org/wiki/Spaced_repetition). One of the commands, the `list` command, shows items that match a particular pattern. So if I type `hippo list interior`, it will give me a list of all items containing the string "interior", which currently looks like this:
 
      21 : def interior of subset of top. space
@@ -9,9 +7,9 @@ I've been studying math recently, and order to organize my studies I built a sma
      26 : proof interior is largest open subset
      30 : proof closure is disjoint union of interior and boundary
      34 : proof for any set S the whole space is partitioned into interior/boundary/exterior
-     38 : proof isolated points may either be boundary or interior points
-     39 : proof limit points may either be boundary or interior points
-     46 : proof why isn't nowhere dense defined to be sets with empty interior
+     38 : example isolated points may either be boundary or interior points
+     39 : example limit points may either be boundary or interior points
+     46 : example why isn't nowhere dense defined to be sets with empty interior
      69 : proof interior of the complement is the complement of the closure
 
 Unfortunately this doesn't work quite as well as I expected, because I discovered that I'm not always consistent about how I enter terms into the system. When I do `hippo list hausdorff`, I get:
@@ -206,6 +204,8 @@ fn ed<'a, 'b>(rect: &mut MemoMatrix<usize>, s: &'a [char], t: &'b [char]) -> usi
 
 The only real difference is that `ed` now takes a `MemoMatrix` and uses it.
 
+Using the table to store values, the algorithm now has a time complexity of $O(|s||t|)$ on average (we must compute all the values in the table).
+
 The above `ed` implementation can actually be slightly improved upon. In computing $L_{s, t}(i, j)$, if $s_i = t_j$, then there is no need to evaluate the edit sequences involving $L_{s, t}(i-1, j)$ or $L_{s, t}(i, j-1)$, because it cannot be the case that
 
 $$L_{s,t}(i-1, j-1) > L_{s, t}(i-1, j) + 1$$
@@ -238,9 +238,112 @@ The `if` statement now becomes:
     };
 ```
 
-Computing `lev("tyrannosaurus rex", "oedipus rex")` happens instantly now.
+Computing `lev("tyrannosaurus rex", "oedipus rex")` happens instantly now, so that's a start.
 
 
 ## Let's get fuzzy
 
-What we've done so far is implemented a function that quantifies the fuzziness between two strings, which is a great start, but that's not what we were aiming for. We were aiming for a way to determine if some pattern string `p` can be found in some other text string `t` up to a certain degree of fuzziness (which will have to be defined through trial and error I suspect).
+What we've done so far is implemented a function that quantifies the fuzziness between two strings, which is a great start, but that's not what we were aiming for. We were aiming for a way to determine if some pattern string `p` can be found in some other text string `t` up to a certain degree of fuzziness. To be more precise, we would like to know if there are any substrings of `t` that are within an edit distance of `k` from our pattern string `p`. Can we somehow use or modify our function for computing the Levenshtein metric to accomplish this task?
+
+One idea is to modify our edit distance function to allow for insertion of any number of symbols into the beginning of `p` at zero cost. For example, suppose we want to find `p = "eieio"` in the string `t = "Karl Weierstrass"`. It should be clear that the substrings "eie", "eier", and "eiers" of `t` are all edit distance 2 away from `p`. If we have a function `f` that computes the "distance" between `p` and `t`, but allows us to insert "Karl W" into the beginning of `p` at zero cost, then calling `f("eieio", "Karl Weie")`, `f("eieio", "Karl Weier"), or `f("eieio", "Karl Weiers")` will all give a "distance" of 2.
+
+I've used the word "distance" in "scare quotes" in the last paragraph because by making this modification, `f` is no longer a metric due to the fact that we have introduced an asymmetry. Let's give this function `f` a better name. I'm going to go with `ed_skip`, named because it's like the edit distance but allows you to skip for free to any point in `t` and calculate the edit distance from there. It's not great, but naming is hard.
+
+So the algorithmic idea here is that for every prefix `s` of `t`, we compute `ed_skip(p, s)`. We return whether one of these is `k` or less. In pseudocode:
+
+
+    fuzzy_contains(p, t, k):
+        return fuzzy_sub_dist(p, t) <= k
+            
+    fuzzy_sub_dist(p, t):
+        let min = some really big integer
+        for each prefix s of t:
+            let res = ed_skip(p, s)
+            if res <= min:
+                min = res
+        return min
+
+And here's an implementation of it in Rust:
+
+```rust
+fn fuzzy_contains<'a, 'b>(p: &'a str, t: &'b str, k: usize) -> bool {
+    fuzzy_sub_dist(p, t) <= k
+}
+
+fn fuzzy_sub_dist<'a, 'b>(p: &'a str, t: &'b str) -> usize {
+    let p_chars: Vec<char> = p.chars().collect();
+    let t_chars: Vec<char> = t.chars().collect();
+
+    // rect(i, j) is the minimal cost of an edit sequence that turns p[..i] into t[..j]
+    // but now with free "initial insertions" into p
+    let n = t.chars().count();
+    let mut rect = MemoMatrix::new(p.chars().count() + 1, n + 1);
+
+    let mut min = usize::MAX;
+    for k in 0..(n+1) {
+        let dist = ed_skip(&mut rect, &p_chars[], &t_chars[..k]);
+        if dist < min {
+            min = dist;
+        }
+    }
+
+    min
+}
+
+fn ed_skip<'a, 'b>(rect: &mut MemoMatrix<usize>, p: &'a [char], t: &'b [char]) -> usize {
+    let (i, j) = (p.len(), t.len());
+
+    // check if this has already been computed and use it if so
+    match rect[(i, j)] {
+        Some(dist) => return dist,
+        None => {},
+    }
+
+
+    let dist = if i == 0 {
+        0
+    } else if j == 0 {
+        i
+    } else {
+        let (a, b) = (i-1, j-1);
+        if p[a] == t[b] {
+            ed_skip(rect, &p[..a], &t[..b])
+        } else {
+            let v = vec![
+                ed_skip(rect, &p[..a], &t[..b]),
+                ed_skip(rect, &p[..a], t),
+                ed_skip(rect, p, &t[..b])
+            ];
+            v.into_iter().min().unwrap() + 1
+        }
+    };
+
+    rect[(i, j)] = Some(dist);
+    dist
+}
+```
+
+By running a few examples we can verify that this seems to work:
+
+```rust
+fn main() {
+    println!("{}", fuzzy_contains("nana", "bananas", 0));
+    println!("{}", fuzzy_contains("I", "team", 0));
+    println!("{}", fuzzy_contains("annually", "simulated annealing", 2));
+    println!("{}", fuzzy_contains("annually", "simulated annealing", 3));
+}
+```
+
+The results:
+
+    true
+    false
+    false
+    true
+
+Note that when we call `fuzzy_contains` with `k = 0`, we just have regular non-fuzzy string matching (though I doubt it is quite as good as dedicated non-fuzzy algorithms). 
+
+## Conclusion
+
+There are various improvements you can make to what I've presented above. One major one, noted in the book by Navarro and Raffinot, is that it's possible to modify the algorithm to work with $O(|p|)$ space instead of $O(|p||t|)$ space. There are also non-dynamic-programming-based algorithms for doing fuzzy string matching. I don't really feel like getting into any of this so I'm just going to stop writing!
+
