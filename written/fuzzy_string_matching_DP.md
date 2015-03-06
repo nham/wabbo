@@ -1,4 +1,6 @@
-# Fuzzy string matching through dynamic programming
+---
+title: Fuzzy string matching through dynamic programming
+---
 
 I've been studying math recently, and order to organize my studies I built a small command-line tool called [hippo](https://github.com/nham/hippo). All it does is schedule review of items (definitions, proofs of theorems, ideas) using [spaced repetition](http://en.wikipedia.org/wiki/Spaced_repetition). One of the commands, the `list` command, shows items that match a particular pattern. So if I type `hippo list interior`, it will give me a list of all items containing the string "interior", which currently looks like this:
 
@@ -50,11 +52,11 @@ where $\delta$ is defined so that $\delta(x, y) = 1$ iff $x = y$. We then define
 
 $$ed(s, t) := L_{s,t}(|s|, |t|)$$
 
-Once you get past all the symbols, this really ain't so bad. It says that:
+Once you get past all the symbols, this really isn't so bad. It says that
 
   - the shortest edit sequence that turns the empty string into $t$ is just inserting all the characters of $t$
   - the shortest edit sequence that turns $s$ into the empty string is deleting all the characters of $s$
-  - when $s_{1..i}$ and $t_{1..j}$ are non-empty prefixes of $s$ and $t$, respectively, then the shortest edit sequence turning $s_{1..i}$ into $t_{1..j} is the smallest of these three:
+  - when $s_{1..i}$ and $t_{1..j}$ are non-empty prefixes of $s$ and $t$, respectively, then the shortest edit sequence turning $s_{1..i}$ into $t_{1..j}$ is the smallest of these three:
     
      1. The shortest sequence turning $s_{1..i-1}$ into $t_{1..j}$ followed by deletion of $s_i$
      2. The shortest sequence turning $s_{1..i}$ into $t_{1..j-1}$ followed by insertion of $t_j$.
@@ -68,15 +70,13 @@ Actually, mathematicians have an answer for that last question. What we're reall
   - symmetric: $ed(s,t) = ed(t,s)$ for all $s$ and $t$
   - transitive: $ed(s, u) \leq ed(s, t) + ed(t, u)$
 
-By definition we have non-negativity, and clearly the only way we can get an edit sequence of 0 is for the strings to be identical. Transitivity is also very easy to see: the smallest edit sequence taking $s$ to $t$ concatenated with the smallest edit sequence taking $t$ to $u$ is in fact an edit sequence of length $ed(s,t) + ed(t, u)$ that takes $s$ to $u$, and we've defined $ed(s, u)$ to be the *smallest* edit sequence that does that.
+By definition we have non-negativity, and clearly the only way we can get an edit sequence of length 0 is for the strings to be identical. Transitivity is also easy to see: the smallest edit sequence taking $s$ to $t$ concatenated with the smallest edit sequence taking $t$ to $u$ is in fact an edit sequence of length $ed(s,t) + ed(t, u)$ that takes $s$ to $u$, and we've defined $ed(s, u)$ to be the *smallest* edit sequence that does that.
 
-The symmetricity of $ed$ is not any harder, but seems a bit clunkier to state. The idea I have in mind is that for any operation on $s$, there's a well-defined inverse operation on $t$. So if we insert a symbol $a$ into $s$ at some point, the inverse is deleting $a$ from $t$, and vice versa for deleting a symbol from $s$. The inverse of replacing symbol $a$ in $s$ with symbol $b$ is to replace symbol $b$ in $t$ with symbol $a$. So for any edit sequence turning $s$ into $t$, reverse it and find the inverse of each operation to obtain an edit sequence turning $t$ into $s$.
+The symmetricity of $ed$ is not much harder to prove, but the proof I have seems a bit clunky: the idea is that for any operation on $s$, there's a well-defined inverse operation on $t$. So if we insert a symbol $a$ into $s$ at some point, the inverse is deleting $a$ from $t$, and vice versa for deleting a symbol from $s$. The inverse of replacing symbol $a$ in $s$ with symbol $b$ is to replace symbol $b$ in $t$ with symbol $a$. So for any edit sequence turning $s$ into $t$, reverse it and find the inverse of each operation to obtain an edit sequence turning $t$ into $s$.
 
-(I would like to note that since $ed$ is positive-definite, symmetric and obeys the triangle inequality, it is a metric space and hence a Hausdorff topological space, which leads us right back to where we started. Topology is destiny.)
+(I would like to point out that since $ed$ is a metric, the collection of all strings equipped with $ed$ is a metric space. But by basic topology all metric spaces are Hausdorff, so we're right back where we started. Topology is destiny.)
 
-There's a way to generalize the Levenshtein metric as well. Instead of talking about the length of the edit sequence, we can assign each operation type some non-negative cost. Then $ed(s,t)$ is defined to be the minimal cost of all edit sequences taking $s$ to $t$. (I'm not going to explore this, but I thought it was worth mentioning.)
-
-P.S. I'm not really going to use the fact that the edit distance is a bona fide metric in what follows. I just thought it was interesting, and also wanted to trick you into learning some math.
+There's a way to generalize the Levenshtein metric as well. Instead of talking about the length of the edit sequence, we can assign each operation type some non-negative cost (provided at least one of the costs is positive). Then $ed(s,t)$ is defined to be the minimal cost of all edit sequences taking $s$ to $t$. (I'm not going to explore this, but I thought it was worth mentioning.)
 
 ## Implementing the Levenshtein metric
 
@@ -121,7 +121,7 @@ The good news is that this program is correct (I think). The bad news is that it
 
 The reason it is slow isn't too hard to see: the time complexity is exponential since for each call that doesn't have one of the strings empty, we will make 3 other calls. A lower bound on the time complexity is $3^{\min(|s|, |t|)}$ since we must make at least $\min(|s|, |t|)$ calls before hitting the base case of an empty string.
 
-How to make this actually usable? Notice that even though the run-time of the above implementation is exponential, *there aren't actually an exponential number of distinct calls that can be made*. There are $|s| + 1$ prefixes of $s$ and $|t| + 1$ prefixes of $t$, so there are only $(|s| + 1)(|t| + 1)$ different calls. The slowdown must be due to the fact that we are repeating some of the calls over and over. So one idea is to just save the results in a lookup table so we aren't being wasteful by re-computing them many times.
+How can we make this function actually usable? Notice that even though the run-time of the above implementation is exponential, *there aren't actually an exponential number of distinct calls that can be made*. There are $|s| + 1$ prefixes of $s$ and $|t| + 1$ prefixes of $t$, so there are only $(|s| + 1)(|t| + 1)$ different calls. The slowdown must be due to the fact that we are repeating some of the calls over and over. So one idea is to just save the results in a lookup table so we aren't being wasteful by re-computing them many times.
 
 Here's a data structure I wrote for this lookup table:
 
@@ -162,7 +162,7 @@ impl<T> IndexMut<(usize, usize)> for MemoMatrix<T> {
 }
 ```
 
-`MemoMatrix` is a 2-d lookup table (implemented via `Vec`). The default entries are `None`, and whenever we compute the cost for cell `(i, j)` we update the corresponding entry of `MemoMatrix` to be `Some(cost)`. The implementations of `Index` and `IndexMut` are primarily for ease of use in the new `ed` function:
+`MemoMatrix` is a "2-dimensional" lookup table (with values stored in a `Vec`, which is the Rust standard library's dynamic array). The default entries are `None`, and whenever we compute the cost for cell `(i, j)` we update the corresponding entry of `MemoMatrix` to be `Some(cost)`. The implementations of `Index` and `IndexMut` are so that we can use the indexing syntax `[]` on any MemoMatrix. This makes it easier to use in the new `ed` implementation:
 
 
 ```rust
@@ -202,9 +202,9 @@ fn ed<'a, 'b>(rect: &mut MemoMatrix<usize>, s: &'a [char], t: &'b [char]) -> usi
 }
 ```
 
-The only real difference is that `ed` now takes a `MemoMatrix` and uses it.
+The only real difference is that `ed` now takes a `MemoMatrix` and, on every call, checks it to see if the value being requested has already been computed.
 
-Using the table to store values, the algorithm now has a time complexity of $O(|s||t|)$ on average (we must compute all the values in the table).
+By using the table to store values, the algorithm now has a time complexity of $O(|s||t|)$ on average (we must compute all the values in the table).
 
 The above `ed` implementation can actually be slightly improved upon. In computing $L_{s, t}(i, j)$, if $s_i = t_j$, then there is no need to evaluate the edit sequences involving $L_{s, t}(i-1, j)$ or $L_{s, t}(i, j-1)$, because it cannot be the case that
 
@@ -238,7 +238,7 @@ The `if` statement now becomes:
     };
 ```
 
-Computing `lev("tyrannosaurus rex", "oedipus rex")` happens instantly now, so that's a start.
+Computing `lev("tyrannosaurus rex", "oedipus rex")` happens instantaneously on my machine now. Huzzah!
 
 
 ## Let's get fuzzy
