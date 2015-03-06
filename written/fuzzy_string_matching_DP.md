@@ -48,16 +48,16 @@ $$L_{s,t}(i, j) := \begin{cases}
     \end{cases} & \text{ otherwise }
 \end{cases}$$
 
-where $\delta$ is defined so that $\delta(x, y) = 1$ iff $x = y$. We then define 
+where $\delta$ is defined so that $\delta(x, y) = 1$ iff $x = y$. We then define
 
 $$ed(s, t) := L_{s,t}(|s|, |t|)$$
 
 Once you get past all the symbols, this really isn't so bad. It says that
 
-  - the shortest edit sequence that turns the empty string into $t$ is just inserting all the characters of $t$
-  - the shortest edit sequence that turns $s$ into the empty string is deleting all the characters of $s$
+  - the shortest edit sequence that turns the empty string into $t$ is just inserting all the symbols of $t$
+  - the shortest edit sequence that turns $s$ into the empty string is deleting all the symbols of $s$
   - when $s_{1..i}$ and $t_{1..j}$ are non-empty prefixes of $s$ and $t$, respectively, then the shortest edit sequence turning $s_{1..i}$ into $t_{1..j}$ is the smallest of these three:
-    
+
      1. The shortest sequence turning $s_{1..i-1}$ into $t_{1..j}$ followed by deletion of $s_i$
      2. The shortest sequence turning $s_{1..i}$ into $t_{1..j-1}$ followed by insertion of $t_j$.
      3. If $s_i = t_j$, we can just use the shortest sequence turning $s_{1..i-1}$ into $t_{1..j-1}$. Otherwise, it's that sequence followed by replacing $s_i$ with $t_j$.
@@ -109,7 +109,7 @@ A couple of differences and technical notes: I'm using slices of chars rather th
 fn lev<'a, 'b>(s: &'a str, t: &'b str) -> usize {
     let s_chars: Vec<char> = s.chars().collect();
     let t_chars: Vec<char> = t.chars().collect();
-    ed(&s_chars[], &t_chars[])
+    ed(&s_chars[..], &t_chars[..])
 }
 ```
 
@@ -171,7 +171,7 @@ fn lev<'a, 'b>(s: &'a str, t: &'b str) -> usize {
     let t_chars: Vec<char> = t.chars().collect();
     // rect(i, j) is the minimal cost of an edit sequence that turns s[..i] into t[..j]
     let mut rect = MemoMatrix::new(s.chars().count() + 1, t.chars().count() + 1);
-    ed(&mut rect, &s_chars[], &t_chars[])
+    ed(&mut rect, &s_chars[..], &t_chars[..])
 }
 
 fn ed<'a, 'b>(rect: &mut MemoMatrix<usize>, s: &'a [char], t: &'b [char]) -> usize {
@@ -245,12 +245,22 @@ Computing `lev("tyrannosaurus rex", "oedipus rex")` happens instantaneously on m
 
 What we've done so far is implemented a function that quantifies the fuzziness between two strings, which is a great start, but that's not what we were aiming for. We were aiming for a way to determine if some pattern string `p` can be found in some other text string `t` up to a certain degree of fuzziness. To be more precise, we would like to know if there are any substrings of `t` that are within an edit distance of `k` from our pattern string `p`. Can we somehow use or modify our function for computing the Levenshtein metric to accomplish this task?
 
-One idea is to modify our edit distance function to allow for insertion of any number of symbols into the beginning of `p` at zero cost. For example, suppose we want to find `p = "eieio"` in the string `t = "Karl Weierstrass"`. It should be clear that the substrings "eie", "eier", and "eiers" of `t` are all edit distance 2 away from `p`. If we have a function `f` that computes the "distance" between `p` and `t`, but allows us to insert "Karl W" into the beginning of `p` at zero cost, then calling `f("eieio", "Karl Weie")`, `f("eieio", "Karl Weier"), or `f("eieio", "Karl Weiers")` will all give a "distance" of 2.
+The simplest idea is probably this: we add two new operations, both with zero cost. The new operations are inserting a prefix of `t` into the beginning of `s`, and inserting a suffix of `t` at the end of `s`. For example, suppose we want to do a fuzzy search `p = "eieio"` in the string `t = "Karl Weierstrass"`. It should be clear that the substring "eiers" of `t` is edit distance 2 away from `p`. So under this new "distance" function, one edit sequence that turns `p` into `t` is:
 
-I've used the word "distance" in "scare quotes" in the last paragraph because by making this modification, `f` is no longer a metric due to the fact that we have introduced an asymmetry. Let's give this function `f` a better name. I'm going to go with `ed_skip`, named because it's like the edit distance but allows you to skip for free to any point in `t` and calculate the edit distance from there. It's not great, but naming is hard.
+  1. prefix insert of "Karl W" ["eieio" => "Karl Weieio"]
+  2. replacement of "i" with "r" ["Karl Weieio" => "Karl Weiero"]
+  3. replacement of "o" with "s" ["Karl Weiero" => "Karl Weiers"]
+  4. suffix insert of "trass" ["Karl Weiers" => "Karl Weierstrass"]
 
-So the algorithmic idea here is that for every prefix `s` of `t`, we compute `ed_skip(p, s)`. We return whether one of these is `k` or less. In pseudocode:
+As mentioned before, the first and last operations have zero cost, so the total cost of this sequence is 2. With this new "distance" function in hand, we can just see if `new_dist(p, t)` does not exceed `k`. There's nothing more to it than that.
 
+It should be clear that this new "distance" function is not actually a metric since we have introduced an asymmetry in the way distance is calculated. It's actually a bit worse than that: it fails positive definiteness as well since whenever `p` is a (non-fuzzy) substring of `t`, we have an edit cost of zero.
+
+(Bit of a tangent: a metric that potentially fails the "definiteness" part of positive-definiteness is called a [pseudo-metric](http://en.wikipedia.org/wiki/Pseudometric_space), and a metric that potentially fails symmetric property is called a [quasi-metric](http://en.wikipedia.org/wiki/Metric_%28mathematics%29#Quasimetrics). So it seems we have a ["quasi-pseudo-metric"](http://link.springer.com/article/10.1007%2FBF01301400), or maybe a ["pseudoquasimetric"](http://en.wikipedia.org/wiki/Metric_%28mathematics%29#Pseudoquasimetrics) on our hands here.)
+
+In lieu of directly implementing the new distance function described above, there's a way to implement it with minimal change to the `ed` function. We will define an `ed_sub` function whose only difference is that `ed(p, t) = 0` whenever `p` is empty. This effectively lets us skip to anywhere in `t` at zero cost, so it implements the prefix insert operation above. To implement the suffix insert part, we just call `ed_sub` on all prefixes of `s` (calculating on a prefix of `t` means that we're leaving out a suffix of `t`, which is effectively the same thing as a zero-cost suffix insert operation).
+
+Here's what this looks like in pseudocode:
 
     fuzzy_contains(p, t, k):
         return fuzzy_sub_dist(p, t) <= k
@@ -258,7 +268,7 @@ So the algorithmic idea here is that for every prefix `s` of `t`, we compute `ed
     fuzzy_sub_dist(p, t):
         let min = some really big integer
         for each prefix s of t:
-            let res = ed_skip(p, s)
+            let res = ed_sub(p, s)
             if res <= min:
                 min = res
         return min
@@ -281,7 +291,7 @@ fn fuzzy_sub_dist<'a, 'b>(p: &'a str, t: &'b str) -> usize {
 
     let mut min = usize::MAX;
     for k in 0..(n+1) {
-        let dist = ed_skip(&mut rect, &p_chars[], &t_chars[..k]);
+        let dist = ed_sub(&mut rect, &p_chars[..], &t_chars[..k]);
         if dist < min {
             min = dist;
         }
@@ -290,7 +300,7 @@ fn fuzzy_sub_dist<'a, 'b>(p: &'a str, t: &'b str) -> usize {
     min
 }
 
-fn ed_skip<'a, 'b>(rect: &mut MemoMatrix<usize>, p: &'a [char], t: &'b [char]) -> usize {
+fn ed_sub<'a, 'b>(rect: &mut MemoMatrix<usize>, p: &'a [char], t: &'b [char]) -> usize {
     let (i, j) = (p.len(), t.len());
 
     // check if this has already been computed and use it if so
@@ -307,12 +317,12 @@ fn ed_skip<'a, 'b>(rect: &mut MemoMatrix<usize>, p: &'a [char], t: &'b [char]) -
     } else {
         let (a, b) = (i-1, j-1);
         if p[a] == t[b] {
-            ed_skip(rect, &p[..a], &t[..b])
+            ed_sub(rect, &p[..a], &t[..b])
         } else {
             let v = vec![
-                ed_skip(rect, &p[..a], &t[..b]),
-                ed_skip(rect, &p[..a], t),
-                ed_skip(rect, p, &t[..b])
+                ed_sub(rect, &p[..a], &t[..b]),
+                ed_sub(rect, &p[..a], t),
+                ed_sub(rect, p, &t[..b])
             ];
             v.into_iter().min().unwrap() + 1
         }
@@ -341,9 +351,8 @@ The results:
     false
     true
 
-Note that when we call `fuzzy_contains` with `k = 0`, we just have regular non-fuzzy string matching (though I doubt it is quite as good as dedicated non-fuzzy algorithms). 
+Note that when we call `fuzzy_contains` with `k = 0`, we just have regular non-fuzzy string matching (though I doubt it is quite as good as dedicated non-fuzzy algorithms).
 
 ## Conclusion
 
-There are various improvements you can make to what I've presented above. One major one, noted in the book by Navarro and Raffinot, is that it's possible to modify the algorithm to work with $O(|p|)$ space instead of $O(|p||t|)$ space. There are also non-dynamic-programming-based algorithms for doing fuzzy string matching. I don't really feel like getting into any of this so I'm just going to stop writing!
-
+There are various improvements you can make to what I've presented above. One major one, noted in the book by Navarro and Raffinot, is that it's possible to modify the algorithm to work with $O(|p|)$ space instead of $O(|p||t|)$ space. There are also non-dynamic-programming-based algorithms for doing fuzzy string matching. I don't really feel like getting into any of this so I'm just going to stop writing.
