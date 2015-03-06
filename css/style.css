@@ -22,7 +22,7 @@ h1 {
     line-height: 1.1em;
 }
 
-ul {
+ul, ol {
     line-height: 1.5em;
 }
 
