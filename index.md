@@ -13,4 +13,4 @@ title: Hi
 My incarnations on various sites:
 
  - [Github](https://github.com/nham)
- - [Twitter](https://twitter.com/cryptomorphism)
+ - [Twitter](https://twitter.com/n_hamann)
