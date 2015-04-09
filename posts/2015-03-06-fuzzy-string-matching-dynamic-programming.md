@@ -1,5 +1,7 @@
 ---
 title: Fuzzy string matching through dynamic programming
+date: March 6, 2015
+tags: programming, math
 ---
 
 I've been studying math recently, and order to organize my studies I built a small command-line tool called [hippo](https://github.com/nham/hippo). All it does is schedule review of items (definitions, proofs of theorems, ideas) using [spaced repetition](http://en.wikipedia.org/wiki/Spaced_repetition). One of the commands, the `list` command, shows items that match a particular pattern. So if I type `hippo list interior`, it will give me a list of all items containing the string "interior", which currently looks like this:

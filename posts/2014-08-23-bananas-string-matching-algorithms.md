@@ -1,5 +1,7 @@
 ---
 title: On bananas and string matching algorithms
+date: August 23, 2014
+tags: programming, rust
 ---
 
 Earlier this week I noticed that some of the methods for [string slices in Rust](http://static.rust-lang.org/doc/master/std/str/trait.StrSlice.html) were missing documentation examples, so I endeavored to write some. The first method I tried to write an example for was the `contains` method, which tests if one string is a substring of another. After some thought I settled on this example:
@@ -100,7 +102,7 @@ So that change fixed the problematic "bananas" example I had found, but only by 
 
 This problem (predictably) turned out to be more difficult to pinpoint, and I am not as confident that my proposed fix is correct, so I will just describe it briefly. The `TwoWaySearcher` type is an implementation of the "Two-way algorithm", first introduced in [this paper](http://www-igm.univ-mlv.fr/~mac/Articles-PDF/CP-1991-jacm.pdf). By reading this and the [glibc implementation of Two-way algorithm](https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=string/str-two-way.h;hb=HEAD), which has excellent comments, I noticed that one part of the Rust code did not exactly match what was in the paper. Specifically, on p. 670 of the paper you can find this function:
 
-![Pseudocode for Small-Period function](small_period_pseudocode.png)
+![Pseudocode for Small-Period function](/images/small_period_pseudocode.png)
 
 As a bit of background, the Two-way algorithm takes a string called the "haystack" and a string called the "needle" and attempts to find the starting position of the first occurrence of `needle` in `haystack`, provided that it exists. The first step in this particular algorithm is to "factorize" the needle into halves, (that is, find a pair of strings `(u, v)` such that `needle = u + v`), in a way that obeys certain properties (you can read the paper for the gory details).
 
