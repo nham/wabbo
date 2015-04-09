@@ -1,6 +1,12 @@
 <div class="info">
-    $date$
-    <span id="post_tags">Tags: $tags$.</span>
+    <div id="entry_date">
+        $date$
+    </div>
+    <div id="entry_tags">
+        $if(tags)$
+        Tags: $tags$
+        $endif$
+    </div>
 </div>
 
 $body$

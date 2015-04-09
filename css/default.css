@@ -55,11 +55,7 @@ nav ul li { display: inline; }
 
 
 /** Tags **/
-span#post_tags {
-    display: block;
-    margin-top: 3px;
-}
-span#post_tags a:visited { 
+div#entry_tags a:visited {
     color: #1952B5;
 }
 
