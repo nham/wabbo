@@ -33,7 +33,6 @@ main = hakyll $ do
         route   $ setExtension ".html"
         compile $ do
             pandocMathCompiler
-                >>= saveSnapshot "content"
                 >>= loadAndApplyTemplate "templates/entry.html" (postCtx tags)
                 >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
