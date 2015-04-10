@@ -26,10 +26,10 @@ main = hakyll $ do
         compile compressCssCompiler
 
     -- Build tags
-    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+    tags <- buildTags "entries/*" (fromCapture "tags/*.html")
 
-    -- Render each and every post
-    match "posts/*" $ do
+    -- Render entries
+    match "entries/*" $ do
         route   $ setExtension ".html"
         compile $ do
             pandocMathCompiler
@@ -38,11 +38,11 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 
-    -- Post list
+    -- Entry list
     create ["entries.html"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "entries/*"
             let ctx = constField "title" "Entries" <>
                         listField "posts" (postCtx tags) (return posts) <>
                         defaultContext
@@ -51,11 +51,10 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
-    -- Post tags
+    -- Entry tags
     tagsRules tags $ \tag pattern -> do
         let title = "Entries tagged " ++ tag
 
-        -- Copied from posts, need to refactor
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll pattern
@@ -70,7 +69,7 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "entries/*"
             let indexCtx =
                     listField "posts" (postCtx tags) (return posts) <>
                     constField "title" "Home"                <>
