@@ -65,6 +65,30 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
+
+    -- Render logs
+    match "logs/*" $ do
+        route   $ setExtension ".html"
+        compile $ do
+            pandocMathCompiler
+                >>= loadAndApplyTemplate "templates/log.html" (postCtx tags)
+                >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                >>= relativizeUrls
+
+    -- Log list
+    create ["logs.html"] $ do
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll "logs/*"
+            let ctx = constField "title" "Logs" <>
+                        listField "posts" (postCtx tags) (return posts) <>
+                        defaultContext
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/logs.html" ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= relativizeUrls
+
+
     match "index.html" $ do
         route idRoute
         compile $ do
