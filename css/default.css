@@ -86,3 +86,7 @@ div.info {
 pre {
     font-size: 14px;
 }
+
+#disqus_thread {
+    margin-top: 20px;
+}
