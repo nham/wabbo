@@ -1,6 +1,6 @@
 ---
 title: The complex numbers
-date: April 12, 2015
+date: April 17, 2015
 tags: math, complex numbers
 ---
 
@@ -120,3 +120,7 @@ $$w + x = 0$$
 But this implies
 
 $$w = \pm x$$
+
+
+## More to do
+There are other basic topics to cover (notably, polar representation of complex numbers), but those will have to wait for a future post.
