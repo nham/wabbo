@@ -187,5 +187,31 @@ Returns a copy of `s` with the first `n` non-overlapping instances of `old` repl
 
 ### Code
 
-    Insert some string matching algorithm + counting algorithm here.
+If `old == new`, `n == 0`, or there's no instances of `old` in `s`, just return s.
 
+If `n == -1` or `m < n`, we will do `m` replacements. Otherwise we do `n` replacements.
+
+Pseudocode
+
+    def Replace(s, old, new string, n int) string {
+        if old == new || n == 0 {
+            return s // avoid allocation
+        }
+
+        m := Count(s, old); // Compute number of replacements.
+
+        if m == 0 {
+            return s // avoid allocation
+        }
+
+        var k
+        if n < 0 || m < n {
+            k = m
+        } else {
+            k = n
+        }
+
+        diff := k * (len(new) - len(old))
+        t := make([]byte, len(s) + diff)
+        (...)
+    }
