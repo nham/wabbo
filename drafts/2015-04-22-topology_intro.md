@@ -1,5 +1,5 @@
 ---
-title: "Introduction to topological spaces"
+title: Introduction to topological spaces
 ---
 
 A **topology** on any set $X$ is a collection $\mathcal{T}$ of subsets of $X$ that is
@@ -12,26 +12,16 @@ The pair $(X, \mathcal{T})$ is said to be a **topological space**. (Usually we a
 
 The sets in the topology are said to be the **open subsets** of $X$. A subset $U \subseteq X$ is said to be a **neighborhood** of $x \in X$ if both $x \in U$ and $U$ is open.
 
-If you're trying to understand what the above definition of a topology *means*, stop trying and read what [Terence Tao has to say](http://mathoverflow.net/a/30231) about it:
+If you're trying to understand what the above definition of a topology *means*, well, keep wondering, but do take this into account:
 
  > ... a topology is really a package of several different structures: the notion of openness, the notion of closedness, the notion of neighbourhoods, the notion of convergence, the notion of continuity, the notion of a homeomorphism, the notion of a homotopy, and so forth. They are all important, and it is somewhat artificial to try to designate one of them as being more "fundamental" than the other. But the notion of openness happens to generate all the other notions, and has a particularly elegant and simple axiomatisation, so we have elected to make it the basis for the standard minimalist definition of a topology. But it is important to realise that this is by no means the only way to define a topology, and adopting a more package-oriented point of view can be preferable in some cases (for instance, when generalising the notion of a topology to more abstract structures, such as topoi, in which open sets no longer are the most convenient foundation to begin with).
 
-## Examples
+-- [Terence Tao](http://mathoverflow.net/a/30231)
 
-Probably the most important class of examples of topological spaces are [metric spaces](http://en.wikipedia.org/wiki/Metric_space). $\mathbb{R}$ itself is a metric space, as are any subsets of $\mathbb{R}$.
 
 ## Why study them?
 
-A topological space is a set equipped with a "nearness structure". We can then ask whether a map between two topological spaces "preserves nearness". The maps that do preserve nearness are called **continuous maps**.
-
-There's an even stronger form of continuous map: if $X$ and $Y$ are topological spaces, then $f: X \to Y$ is said to be a **homeomorphism** when
-
- - $f$ is a bijection
- - $f$ is continuous
- - $f^{-1}$ is continuous
-
-Homeomorphisms are one important kind of topological isomorphism. Many properties are *preserved* by homeomorphism. This means that when spaces $X$ and $Y$ are homeomorphic, then $X$ has property $P$ iff $Y$ does. Connectedness and compactness are two examples of properties preserved by homeomorphism (often called **topological properties**), but there are [many more](https://en.wikipedia.org/wiki/Topological_property)
-
+The short answer is because you can define continuous functions between topological spaces, and continuous functions are important and worthy of study. Another answer is that lots of things are topological spaces. Probably the most important class of examples are [metric spaces](http://en.wikipedia.org/wiki/Metric_space). Common examples include $\mathbb{R}$, $\mathbb{C}$, $\mathbb{R}^n$ and $\mathbb{C}^n$ for any $n$, also any subsets of these sets. These sets have many interesting topological properties and can serve as a building block for more exotic spaces like [topological manifolds](http://en.wikipedia.org/wiki/Topological_manifold) and [differentiable manifolds](http://en.wikipedia.org/wiki/Differentiable_manifold).
 
 ## What is a continuous function anyway
 
@@ -65,7 +55,7 @@ Here's a few alternative definitions of continuity that you can prove are equiva
 
 ## Here's the problem
 
-The problem is there's a whole mess of definitions and proofs you have to learn. This is because scholarship is hard and life is unfair.
+The problem is that to continue learning this topic there's a whole mess of definitions and proofs you have to learn. This is because scholarship is hard and life is unfair.
 
 
 ## Interior, closure, closed sets.
@@ -78,26 +68,26 @@ It is straightforward to prove that open subsets are precisely the sets that are
 
 ### Another characterization of closure and interior
 
-The interior of any set ``S`` is the union of all open sets contained in ``S``, while the closure of ``S`` is the intersection of all closed sets that contain ``S``.
+The interior of any set $S$ is the union of all open sets contained in $S$, while the closure of $S$ is the intersection of all closed sets that contain $S$.
 
 To prove the former, note that the union of all open subsets contains every interior point, and that every point in said union is in one open subset and so must be an interior point.
 
-To prove the latter, note that the closure of ``S`` is a closed set containing ``S``, and that every closed superset ``Z`` of ``S`` contains all its closure points. The closure points of any subset of ``Z`` are also closure points of ``Z`` itself, so ``Z`` contains the closure of ``S``.
+To prove the latter, note that the closure of $S$ is a closed set containing $S$, and that every closed superset $Z$ of $S$ contains all its closure points. The closure points of any subset of $Z$ are also closure points of $Z$ itself, so $Z$ contains the closure of $S$.
 
-By these definitions, the interior is *the largest open set contained in ``S``*, and the closure is *the smallest closed set containing ``S``*.
+By these definitions, the interior is *the largest open set contained in $S$*, and the closure is *the smallest closed set containing $S$*.
 
 
 ## Boundary
 
-A **boundary point** of a set is a point that is neither in the interior of the set, nor in the interior of the complement of the set. Equivalently, every neighborhood of a boundary point intersects both ``S`` and ``X - S``. The **boundary** of a set ``S`` is the collection of all boundary points of ``S``, sometimes denoted ``\partial S``.
+A **boundary point** of a set is a point that is neither in the interior of the set, nor in the interior of the complement of the set. Equivalently, every neighborhood of a boundary point intersects both $S$ and $X - S$. The **boundary** of a set $S$ is the collection of all boundary points of $S$, sometimes denoted $\partial S$.
 
-Notice that by definition, the boundary of ``X - S`` is the same as the boundary ``S`` (because ``X - (X - S) = X``).
+Notice that by definition, the boundary of $X - S$ is the same as the boundary $S$ (because $X - (X - S) = X$).
 
 ## Closure is partitioned into the interior and the boundary
 
 The closure of a set is the disjoint union of the interior and the boundary.
 
-*Proof:* Take any closure point ``x`` of ``S``. Then either every neighborhood around ``x`` intersects both ``S`` and ``X - S``, or one doesn't and so is contained in ``S``.
+*Proof:* Take any closure point $x$ of $S$. Then either every neighborhood around $x$ intersects both $S$ and $X - S$, or one doesn't and so is contained in $S$.
 
 
 ## A set is closed iff contains boundary, open iff contains no boundary point
@@ -108,36 +98,36 @@ Similarly, open subsets are those equal to their interiors, and boundary points 
 
 ## A set is closed iff complement is open
 
-A set ``S`` is closed in a top. space ``X`` iff ``X - S`` is open. The reason: ``S`` and ``X - S`` have the same boundary, so ``S`` contains the boundary iff ``X - S`` contains none of it.
+A set $S$ is closed in a top. space $X$ iff $X - S$ is open. The reason: $S$ and $X - S$ have the same boundary, so $S$ contains the boundary iff $X - S$ contains none of it.
 
 
 ## The axioms for closed sets
 
-Now we can prove, using DeMorgan's laws, that the collection of all closed subsets of a space ``X`` is
+Now we can prove, using DeMorgan's laws, that the collection of all closed subsets of a space $X$ is
 
   - closed under arbitrary intersection
   - closed under finite union
-  - contains ``\emptyset`` and ``X``
+  - contains $\emptyset$ and $X$
 
-The first two follow immediately from ``X - \bigcap_i C_i = \bigcup_i (X - C_i)``, ``X - \bigcup_i C_i = \bigcap_i (X - C_i)`` , and the topology axioms. The third is because ``\emptyset`` and ``X`` are complements of one another.
+The first two follow immediately from $X - \bigcap_i C_i = \bigcup_i (X - C_i)$, $X - \bigcup_i C_i = \bigcap_i (X - C_i)$ , and the topology axioms. The third is because $\emptyset$ and $X$ are complements of one another.
 
 
 ## Clopen subsets
 
-By the way, did you notice that ``\emptyset`` and ``X`` are simultaneously closed and open in every topological space? Such sets are sometimes called **clopen**.
+By the way, did you notice that $\emptyset$ and $X$ are simultaneously closed and open in every topological space? Such sets are sometimes called **clopen**.
 
 ## Exterior
 
-If ``X`` is a space and ``S \subseteq X``, then the interior of ``X - S`` is identically the complement of the closure of ``S``.
+If $X$ is a space and $S \subseteq X$, then the interior of $X - S$ is identically the complement of the closure of $S$.
 
-To prove this, note that the points of ``X`` that fail to be closure points of ``S`` are exactly the ones that have a neighborhood contained in ``X - S``, i.e. the interior points of ``X - S``.
+To prove this, note that the points of $X$ that fail to be closure points of $S$ are exactly the ones that have a neighborhood contained in $X - S$, i.e. the interior points of $X - S$.
 
-We define the **exterior of ``S``** to be ``\text{int}(X - S)``.
+We define the **exterior of $S$** to be $\text{int}(X - S)$.
 
 ## Partioning into interior/boundary/exterior
 
-For any space ``X`` and any subset ``S``, ``X`` is partitioned into the closure and exterior of ``S`` (by definition of exterior), and the closure of ``S`` is partitioned into the interior and boundary of ``S``.
+For any space $X$ and any subset $S$, $X$ is partitioned into the closure and exterior of $S$ (by definition of exterior), and the closure of $S$ is partitioned into the interior and boundary of $S$.
 
 ## Boundary is closed
 
-The boundary of any set ``S`` is closed because it is the complement of an open set (the union of the interior of ``S`` and the interior of ``X - S``).
+The boundary of any set $S$ is closed because it is the complement of an open set (the union of the interior of $S$ and the interior of $X - S$).
