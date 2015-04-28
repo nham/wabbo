@@ -28,6 +28,13 @@ main = hakyll $ do
     -- Build tags
     tags <- buildTags "entries/*" (fromCapture "tags/*.html")
 
+
+    match (fromList ["about.md"]) $ do
+        route   $ setExtension "html"
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
+
     -- Render entries
     match "entries/*" $ do
         route   $ setExtension ".html"
