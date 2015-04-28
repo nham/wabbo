@@ -1,8 +1,9 @@
 ---
 title: Notes on probability theory, part 1
+tags: math, probability
 ---
 
-Probability is, to at least some extent, about measuring the likelihood of events. So it seems to me that the probability theory that follows is an attempt to formalize ideas about such measurement.
+Probability is, to at least some extent, about measuring the likelihood of events. So it seems to me that the probability theory that follows is an attempt to formalize ideas about such measurement. The main goal in this post is to define probability spaces and introduce some terminology for discussing their components.
 
 
 ## Algebras and $\sigma$-algebras
@@ -45,8 +46,6 @@ Borel algebras of particular importance are the ones on the standard $d$-dimensi
 
 
 ## Probability spaces
-
-In what follows, to say "$(X, \mathcal{A})$ is a measurable space", is to say that $\mathcal{A}$ is a $\sigma$-algebra for $X$.
 
 From now on, we'll use $\Omega$ to denote the set on which a $\sigma$-algebra $\mathcal{E}$ is defined. Let's call $\Omega$ the **sample space**, and the sets in $\mathcal{E}$ the **events**.
 
