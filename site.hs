@@ -72,13 +72,6 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
-        -- Create RSS feed as well
-        version "rss" $ do
-            route   $ setExtension "xml"
-            compile $ loadAllSnapshots pattern "content"
-                >>= fmap (take 10) . recentFirst
-                >>= renderRss (feedConfiguration title) feedCtx
-
 
     match "index.html" $ do
         route idRoute
@@ -100,9 +93,8 @@ main = hakyll $ do
     create ["rss.xml"] $ do
         route idRoute
         compile $ do
-            loadAllSnapshots "entries/*" "content"
-                >>= fmap (take 10) . recentFirst
-                >>= renderRss (feedConfiguration "All posts") feedCtx
+            entries <- fmap (take 10) . recentFirst =<< loadAll "entries/*"
+            renderRss (feedConfiguration "All posts") feedCtx entries
 
 
 --------------------------------------------------------------------
@@ -113,12 +105,12 @@ postCtx tags = mconcat
     , defaultContext
     ]
 
-
 feedCtx :: Context String
 feedCtx = mconcat
     [ bodyField "description"
     , defaultContext
     ]
+
 
 pandocMathCompiler :: Compiler (Item String)
 pandocMathCompiler =
