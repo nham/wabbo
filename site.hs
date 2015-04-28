@@ -72,6 +72,14 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
+        -- Create RSS feed as well
+        version "rss" $ do
+            route   $ setExtension "xml"
+            compile $ loadAllSnapshots pattern "content"
+                >>= fmap (take 10) . recentFirst
+                >>= renderRss (feedConfiguration title) feedCtx
+
+
     match "index.html" $ do
         route idRoute
         compile $ do
@@ -88,12 +96,13 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
-
-    -- Render the 404 page, we don't relativize URLs here.
-    match "404.html" $ do
+    -- Render RSS feed
+    create ["rss.xml"] $ do
         route idRoute
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+        compile $ do
+            loadAllSnapshots "entries/*" "content"
+                >>= fmap (take 10) . recentFirst
+                >>= renderRss (feedConfiguration "All posts") feedCtx
 
 
 --------------------------------------------------------------------
@@ -115,3 +124,14 @@ pandocMathCompiler =
                           writerHTMLMathMethod = MathJax ""
                         }
     in pandocCompilerWith defaultHakyllReaderOptions writerOptions
+
+
+
+feedConfiguration :: String -> FeedConfiguration
+feedConfiguration title = FeedConfiguration
+    { feedTitle       = "Notes - " ++ title
+    , feedDescription = "Notes on programming and math and maybe other stuff."
+    , feedAuthorName  = "Nick Hamann"
+    , feedAuthorEmail = "nick@wabbo.org"
+    , feedRoot        = "http://www.wabbo.org"
+    }
