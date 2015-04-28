@@ -36,9 +36,7 @@ In words: $f$ is continuous at $a$ when you can always find an open ball (in $X$
 
 A function $f: X \to Y$ is just said to be **continuous** when it is continuous at $a$ for all $a \in X$.
 
-Now,
-
-It turns out that you can prove this:
+Now, it turns out that you can prove this:
 
 A function $f: X \to Y$ between metric spaces is continuous iff for every $V \subseteq Y$ that is open in $Y$, the preimage $f^{pre}(V)$ is open in $X$. ("Open" here meaning w.r.t. the metric space topologies on $X$ and $Y$, respectively)
 
@@ -46,7 +44,9 @@ A function $f: X \to Y$ between metric spaces is continuous iff for every $V \su
 
 Right. So a function $f: X \to Y$ between topological spaces is said to be **continuous** when for every $V \subseteq Y$ open in $Y$, $f^{pre}(V)$ is open in $X$.
 
-Here's a few alternative definitions of continuity that you can prove are equivalent without too much trouble:
+This may look strange, but from the last section we see that this definition is just a generalization of the one for continuous functions between metric spaces. (Actually, proving that topological spaces are more general than metric spaces (that is, that there are non-metrizable topological spaces) is highly non-trivial.)
+
+Here's a few alternative definitions of continuity that you can prove are equivalent without too much trouble. Hopefully just reading these will give you a better feel for what continuous functions are:
 
  - For every $x \in X$ and any neighborhood $V$ of $f(x)$ in $Y$, there is a neighborhood $U$ of $x$ such that $f(U) \subseteq V$.
  - $f^{pre}(C)$ is closed for every $C$ closed in $Y$
