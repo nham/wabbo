@@ -113,6 +113,13 @@ postCtx tags = mconcat
     , defaultContext
     ]
 
+
+feedCtx :: Context String
+feedCtx = mconcat
+    [ bodyField "description"
+    , defaultContext
+    ]
+
 pandocMathCompiler :: Compiler (Item String)
 pandocMathCompiler =
     let mathExtensions = [Ext_tex_math_dollars, Ext_tex_math_double_backslash,
