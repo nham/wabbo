@@ -90,4 +90,24 @@ skip, TODO later
 
 
 ## Error detection
-TODO
+
+ - error correction goes along with error detection.
+ - two approaches:
+    - notify sender when message was corrupted so sender can retransmit
+    - alternatively, use error-correcting codes to detect incorrect messages and reconstruct correct message
+
+One of most common approaches is CRC. Is used in nearly all link-level protocols described above:  HDLC, DDCMP, also in CSMA (described later)
+
+The basic idea of an error detection scheme: add redundant information to the frame.
+
+ - one approach: transmit 2 (or N) copies of data, compare the two. If they differ, one or both are corrupted.
+ - ^ is bad. n extra bits for a n-bit message.
+ - other approaches can do much better. e.g. on Ethernet, frame carries up to 1500 bytes, and only needs 32-bit CRC to catch errors.
+ - the extra bits that get added by the sender in the case of error detection are determined by some algorithm. Both sender and receiver know the algorithm ahead of time. Receiver can then use the procedure on the received message and compare with the result that was sent by the sender (e.g. a checksum)
+ - the extra bits in general are referred to as **error-detecting codes**
+ - in specific cases (usually when addition is involved), may be called a **checksum**
+ - the Internet checksum is an error check that uses a summing algorithm.
+
+### Two-dimensional parity
+
+TODO, p. 93
