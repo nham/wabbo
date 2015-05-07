@@ -44,9 +44,34 @@ The proof of the general version is a simple proof by induction, so I'll omit it
 Note the intuitive explanation for the case of three events: in adding up the probabilities of $A$, $B$ and $C$, we double count $A \cap B$, $A \cap C$, and $B \cap C$. In particular this means that the event $A \cap B \cap C$ was *triple counted*, but notice that by subtracting $\mathbb{P}(A \cap B)$,  $\mathbb{P}(A \cap C)$, and $\mathbb{P}(B \cap C)$ that we've subtracted the probability of $A \cap B \cap C$ three times. That is, we've subtracted *too much*, and now $\mathbb{P}(A \cap B \cap C)$ is missing entirely and must be added back in. This is the reason for the name "inclusion/exclusion principle": we bounce back and forth between removing events that were counted too many times and adding in events that weren't counted.
 
 
-## Todo
+## The continuity of probability measures
 
-Discuss limit of a sequence of probabilities for a nested sequence of events. Wasserman calls this (and he's right) the continuity of probability.
+In Wasserman's book *All of Statistics*, he calls the following property the *continuity of probability*: If $(A_n)$ is an increasing sequence of events (in the sence that $A_n \subseteq A_{n+1}$ for all $n$), then
+
+$$\mathbb{P}(\bigcup_1^{\infty} A_n) = lim_{n \to \infty} \mathbb{P}(A_n)$$
+
+Similarly, if $(A_n)$ is instead a decreasing sequence of events, then
+
+$$\mathbb{P}(\bigcap_1^{\infty} A_n) = lim_{n \to \infty} \mathbb{P}(A_n)$$
+
+Here's the proof of the increasing case: you can partition $\bigcup_1^{\infty} A_n$ into disjoint events $B_1, B_2, \ldots$ defined by
+
+$$B_1 := A_1$$
+
+$$B_{n+1} := A_{n+1} - \bigcup_1 A_n$$
+
+They're disjoint by definition, and it is easy to verify they union to $\bigcup_1^{\infty} A_n$, so
+
+$$\mathbb{P}(\bigcap_1^{\infty} A_n) = \sum_1^{\infty} \mathbb{P}(B_n)$$
+
+Due to the way we've defined the $B_n$'s it is simple to verify that $\mathbb{P}(A_n) = \sum_1^n \mathbb{P}(B_n)$, which completes the proof.
+
+Why is this called continuity? Recall that continuous functions between metric spaces have a *sequential characterization*: a function $f: X \to Y$ between metric spaces $X$ and $Y$ is continuous at $a \in X$ iff for every sequence $(x_n)$ in $X$ that converges to $a$, the "image sequence" $(f(x_n))$ converges to $f(a)$ in $Y$. Essentially, $f$ is continuous at $a$ precisely when the image of the sequence limit is the limit of the image sequence for any sequence $(x_n) \to a$.
+
+In order to apply this pattern to the present situation, think of $\bigcup_1^{\infty} A_n$ ($\bigcap_1^{\infty} A_n$) as the limit of the increasing (decreasing) sequence $(A_n)$. That's all that this result says.
+
+
+## Todo
 
 Define condition probability $\mathbb{P}(A | B)$ when $\mathbb{P}(B) > 0$.
 
