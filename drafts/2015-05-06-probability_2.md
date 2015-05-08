@@ -60,7 +60,7 @@ $$B_1 := A_1$$
 
 $$B_{n+1} := A_{n+1} - \bigcup_1 A_n$$
 
-They're disjoint by definition, and it is easy to verify they union to $\bigcup_1^{\infty} A_n$, so
+These $B_n$'s are disjoint by definition, and it is easy to verify they union to $\bigcup_1^{\infty} A_n$, so
 
 $$\mathbb{P}(\bigcap_1^{\infty} A_n) = \sum_1^{\infty} \mathbb{P}(B_n)$$
 
@@ -70,10 +70,18 @@ Why is this called continuity? Recall that continuous functions between metric s
 
 In order to apply this pattern to the present situation, think of $\bigcup_1^{\infty} A_n$ ($\bigcap_1^{\infty} A_n$) as the limit of the increasing (decreasing) sequence $(A_n)$. That's all that this result says.
 
+## Conditional probability
+
+It is often useful to assess the probability of an event $A$ *conditional on some other event $B$ having occurred*. In other words, we assume that we conducted a random trial and obtained some outcome $\omega \in B$, and then we would like to know what is the probability that $\omega$ is also in $A$.
+
+To do this, for any given event $B$ with $\mathbb{P}(B) > 0$, we define the **conditional probability** of $A$ given $B$ to be
+
+$$\mathbb{P}(A | B) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$$
+
+One way to visualize this is as zooming in on the event $B$ so that it's the whole sample space. Then $\mathbb{P}(A | B)$ is the (probability of the) fraction of $B$ that overlaps with $A$.
+
 
 ## Todo
-
-Define condition probability $\mathbb{P}(A | B)$ when $\mathbb{P}(B) > 0$.
 
 If you have a partition of the sample space by events, with each partition having non-zero probability, you can decompose probability of an event using conditional probability.
 
