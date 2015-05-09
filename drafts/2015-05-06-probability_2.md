@@ -11,6 +11,11 @@ tags: math, probability
 
 The next task is to analyze the basic properties of these things.
 
+## But first, a definition
+
+I neglected to define this in the last post. If $A$ is an event such that $\mathbb{P}(A) = 0$, then it is said to be a **null event**.
+
+
 ## Basic properties
 
 In what follows, let $(\Sigma, \mathcal{E}, \mathbb{P})$ be a probability space.
@@ -82,17 +87,59 @@ In order to apply this pattern to the present situation, think of $\bigcup_1^{\i
 
 It is often useful to assess the probability of an event $A$ *conditional on some other event $B$ having occurred*. In other words, we assume that we conducted a random trial and obtained some outcome $\omega \in B$, and then we would like to know what is the probability that $\omega$ is also in $A$.
 
-To do this, for any given event $B$ with $\mathbb{P}(B) > 0$, we define the **conditional probability** of $A$ given $B$ to be
+To do this, for any given non-null event $B$, we define the **conditional probability** of $A$ given $B$ to be
 
 $$\mathbb{P}(A | B) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$$
 
 One way to visualize this is as zooming in on the event $B$ so that it's the whole sample space. Then $\mathbb{P}(A | B)$ is the (probability of the) fraction of $B$ that overlaps with $A$.
 
 
-## Todo
+## An application of conditional probability
 
-If you have a partition of the sample space by events, with each partition having non-zero probability, you can decompose probability of an event using conditional probability.
+First, note that given any events $A$ and $B$, if $B$ is non-null then we must have
 
-Bayes theorem? It's just writing out the definition of conditional probability?
+$$\mathbb{P}(A B) = \mathbb{P}(B) \mathbb{P}(A | B)$$
 
-Independent events. Show how it relates to conditional probability.
+And similarly when the roles of $A$ and $B$ are reversed.
+
+Here's one useful application of conditional probability. Given a partition $B_1, \ldots, B_n$ of the sample space such that each $B_i$ is an event and is not null, for any event $A$ we have
+
+$$\mathbb{P}(A) = \sum_1^n \mathbb{P}(A | B_i) \mathbb{P}(B_i)$$
+
+This is because
+
+$$\sum_1^n \mathbb{P}(A | B_i) \mathbb{P}(B_i) = \sum_1^n \mathbb{P}(A B_i)$$
+
+The result follows from this because the sets $A B_i$ partition $A$ ($\bigcup_1^n A B_i = A \cap (\bigcup_1^n B_i) = A \cap \Omega = A$, and they are disjoint since the $B_i$'s are).
+
+
+## Independent events
+
+Let us say two events $A$ and $B$ are **independent** whenever
+
+$$\mathbb{P}(A B) = \mathbb{P}(A) \mathbb{P}(B)$$
+
+Note that for any null event $A$, every event $B$ forms an independent pair of events with $A$ (because $A B \subseteq A$, so $0 \leq \mathbb{P}(A B) \leq 0$).
+
+If $A$ and $B$ are independent events, then whenever $B$ is non-null we must have (see above) that
+
+$$\mathbb{P}(A) = \mathbb{P}(A | B)$$
+
+So that's the interpretation for an independent pair of events: knowing that $B$ occurred does not change the probability that $A$ occurred.
+
+
+## Bayes' Theorem
+
+If both $A$ and $B$ are non-null, then Bayes' theorem states that
+
+$$\mathbb{P}(A | B) = \frac{\mathbb{P}(B | A) \mathbb{P}(A)}{\mathbb{P}(B)}$$
+
+The proof is just expanding the equation
+
+$$\mathbb{P}(A B) = \mathbb{P}(A B)$$
+
+by using conditional probability in two different ways.
+
+In this case, $\mathbb{P}(A)$ ($\mathbb{P}(B)$) is generally called the **prior probability of $A$ ($B$)**, and $\mathbb{P}(A | B)$ ($\mathbb{P}(B | A)$) is called the **posterior probability of $A$ given $B$ ($B$ given $A$)**.
+
+
