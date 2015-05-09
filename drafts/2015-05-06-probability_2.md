@@ -3,7 +3,13 @@ title: Notes on probability, part 2
 tags: math, probability
 ---
 
-[Last time](2015-04-27-probability-1.html) we had just defined probability spaces. The next task is to analyze the basic properties of these things.
+[Last time](2015-04-27-probability-1.html) we had just defined probability spaces. A probability space is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
+
+ - the set of all possible outcomes, called the **sample space**.
+ - a collection of subsets of the sample space whose probability we are able to measure, called the **events**
+ - and an actual assignment of probability to each event, called the **probability measure**.
+
+The next task is to analyze the basic properties of these things.
 
 ## Basic properties
 
@@ -11,7 +17,9 @@ In what follows, let $(\Sigma, \mathcal{E}, \mathbb{P})$ be a probability space.
 
 If $A$ and $B$ are events such that $A \subseteq B$, then $\mathbb{P}(B - A) = \mathbb{P}(B) - \mathbb{P}(A)$. The proof is by the additivity since $B$ is the disjoint union of $A$ and $B - A$.
 
-An immediate corollary is that $\mathbb{P}(A^c) = 1 - \mathbb{P}(A)$. One way to think of this: the probability of the complement of $A$ is the complement of the probability of $A$.
+Since the probability of any event is non-negative, an immediate corollary is that $\mathbb{P}(A) \leq \mathbb{P}(B)$ whenever $A \subseteq B$.
+
+Another corollary is that $\mathbb{P}(A^c) = 1 - \mathbb{P}(A)$. One way to think of this: the probability of the complement of $A$ is the complement of the probability of $A$.
 
 ## Inclusion/exclusion principle
 
