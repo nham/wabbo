@@ -28,6 +28,13 @@ main = hakyll $ do
     -- Build tags
     tags <- buildTags "entries/*" (fromCapture "tags/*.html")
 
+
+    match (fromList ["about.md"]) $ do
+        route   $ setExtension "html"
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
+
     -- Render entries
     match "entries/*" $ do
         route   $ setExtension ".html"
@@ -65,6 +72,7 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
+
     match "index.html" $ do
         route idRoute
         compile $ do
@@ -81,12 +89,12 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
-
-    -- Render the 404 page, we don't relativize URLs here.
-    match "404.html" $ do
+    -- Render RSS feed
+    create ["rss.xml"] $ do
         route idRoute
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+        compile $ do
+            entries <- fmap (take 10) . recentFirst =<< loadAll "entries/*"
+            renderRss (feedConfiguration "All posts") feedCtx entries
 
 
 --------------------------------------------------------------------
@@ -96,6 +104,13 @@ postCtx tags = mconcat
     , tagsField "tags" tags
     , defaultContext
     ]
+
+feedCtx :: Context String
+feedCtx = mconcat
+    [ bodyField "description"
+    , defaultContext
+    ]
+
 
 pandocMathCompiler :: Compiler (Item String)
 pandocMathCompiler =
@@ -108,3 +123,14 @@ pandocMathCompiler =
                           writerHTMLMathMethod = MathJax ""
                         }
     in pandocCompilerWith defaultHakyllReaderOptions writerOptions
+
+
+
+feedConfiguration :: String -> FeedConfiguration
+feedConfiguration title = FeedConfiguration
+    { feedTitle       = "Notes - " ++ title
+    , feedDescription = "Notes on programming and math and maybe other stuff."
+    , feedAuthorName  = "Nick Hamann"
+    , feedAuthorEmail = "nick@wabbo.org"
+    , feedRoot        = "http://www.wabbo.org"
+    }
