@@ -11,10 +11,11 @@ tags: math, probability
 
 The next task is to analyze the basic properties of these things.
 
-## But first, a definition
+## But first, a definition and some notation
 
 I neglected to define this in the last post. If $A$ is an event such that $\mathbb{P}(A) = 0$, then it is said to be a **null event**.
 
+Also, it is common to notate the intersection $A \cap B$ of two events by just $A B$ (i.e. omitting the $\cap$). I use this below.
 
 ## Basic properties
 
@@ -30,11 +31,11 @@ Another corollary is that $\mathbb{P}(A^c) = 1 - \mathbb{P}(A)$. One way to thin
 
 Now it is time for the famous [inclusion/exclusion](http://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle), which states that
 
-$$\mathbb{P}(A \cup B) = \mathb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$$
+$$\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$$
 
 for any events $A$ and $B$. One way to prove it is to first note that, by additivity of disjoint events:
 
-$$\mathbb{P}(A \cup B) = \mathb{P}(A - B) + \mathbb{P}(B - A) + \mathbb{P}(A \cap B)$$
+$$\mathbb{P}(A \cup B) = \mathbb{P}(A - B) + \mathbb{P}(B - A) + \mathbb{P}(A \cap B)$$
 
 Now, since
 
@@ -50,22 +51,22 @@ The intuitive interpretation is that by adding up the probabilities of $A$ and $
 
 There's a more general form of the inclusion/exclusion principle for unions of any finite number of events. For example, here's what it looks like with  three events, $A, B, C$.
 
-$$\mathbb{P}(A \cup B \cup C) = \mathb{P}(A) + \mathbb{P}(B) + \mathbb{P}(C) - \mathbb{P}(A \cap B) - \mathbb{P}(A \cap C) - \mathbb{P}(B \cap C) + \mathbb{P}(A \cap B \cap C)$$
+$$\mathbb{P}(A \cup B \cup C) = \mathbb{P}(A) + \mathbb{P}(B) + \mathbb{P}(C) - \mathbb{P}(A B) - \mathbb{P}(A C) - \mathbb{P}(B C) + \mathbb{P}(A B C)$$
 
 The proof of the general version is a simple proof by induction, so I'll omit it here.
 
-Note the intuitive explanation for the case of three events: in adding up the probabilities of $A$, $B$ and $C$, we double count $A \cap B$, $A \cap C$, and $B \cap C$. In particular this means that the event $A \cap B \cap C$ was *triple counted*, but notice that by subtracting $\mathbb{P}(A \cap B)$,  $\mathbb{P}(A \cap C)$, and $\mathbb{P}(B \cap C)$ that we've subtracted the probability of $A \cap B \cap C$ three times. That is, we've subtracted *too much*, and now $\mathbb{P}(A \cap B \cap C)$ is missing entirely and must be added back in. This is the reason for the name "inclusion/exclusion principle": we bounce back and forth between removing events that were counted too many times and adding in events that weren't counted.
+Note the intuitive explanation for the case of three events: in adding up the probabilities of $A$, $B$ and $C$, we double count $A \cap B$, $A \cap C$, and $B \cap C$. In particular this means that the event $A \cap B \cap C$ was *triple counted*, but notice that by subtracting $\mathbb{P}(A B)$,  $\mathbb{P}(A C)$, and $\mathbb{P}(B C)$ that we've subtracted the probability of $A \cap B \cap C$ three times. That is, we've subtracted *too much*, and now $\mathbb{P}(A B C)$ is missing entirely and must be added back in. This is the reason for the name "inclusion/exclusion principle": we bounce back and forth between removing events that were counted too many times and adding in events that weren't counted.
 
 
 ## The continuity of probability measures
 
 In Wasserman's book *All of Statistics*, he calls the following property the *continuity of probability*: If $(A_n)$ is an increasing sequence of events (in the sence that $A_n \subseteq A_{n+1}$ for all $n$), then
 
-$$\mathbb{P}(\bigcup_1^{\infty} A_n) = lim_{n \to \infty} \mathbb{P}(A_n)$$
+$$\mathbb{P}(\bigcup_1^{\infty} A_n) = \lim_{n \to \infty} \mathbb{P}(A_n)$$
 
 Similarly, if $(A_n)$ is instead a decreasing sequence of events, then
 
-$$\mathbb{P}(\bigcap_1^{\infty} A_n) = lim_{n \to \infty} \mathbb{P}(A_n)$$
+$$\mathbb{P}(\bigcap_1^{\infty} A_n) = \lim_{n \to \infty} \mathbb{P}(A_n)$$
 
 Here's the proof of the increasing case: you can partition $\bigcup_1^{\infty} A_n$ into disjoint events $B_1, B_2, \ldots$ defined by
 
@@ -89,7 +90,7 @@ It is often useful to assess the probability of an event $A$ *conditional on som
 
 To do this, for any given non-null event $B$, we define the **conditional probability** of $A$ given $B$ to be
 
-$$\mathbb{P}(A | B) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}$$
+$$\mathbb{P}(A | B) := \frac{\mathbb{P}(A B)}{\mathbb{P}(B)}$$
 
 One way to visualize this is as zooming in on the event $B$ so that it's the whole sample space. Then $\mathbb{P}(A | B)$ is the (probability of the) fraction of $B$ that overlaps with $A$.
 
@@ -141,6 +142,11 @@ $$\mathbb{P}(A B) = \mathbb{P}(A B)$$
 by using conditional probability in two different ways.
 
 In this case, $\mathbb{P}(A)$ ($\mathbb{P}(B)$) is generally called the **prior probability of $A$ ($B$)**, and $\mathbb{P}(A | B)$ ($\mathbb{P}(B | A)$) is called the **posterior probability of $A$ given $B$ ($B$ given $A$)**.
+
+
+## Conclusion
+
+I'm looking at doing random variables in the next post, provided I didn't miss anything major above.
 
 
 [prob-1]: /entries/2015-04-27-probability-1.html
