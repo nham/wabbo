@@ -3,7 +3,7 @@ title: Notes on probability, part 2
 tags: math, probability
 ---
 
-[Last time](2015-04-27-probability-1.html) we had just defined probability spaces. A probability space is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
+[Last time][prob-1] we had just defined probability spaces. A probability space is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
 
  - the set of all possible outcomes, called the **sample space**.
  - a collection of subsets of the sample space whose probability we are able to measure, called the **events**
@@ -143,3 +143,4 @@ by using conditional probability in two different ways.
 In this case, $\mathbb{P}(A)$ ($\mathbb{P}(B)$) is generally called the **prior probability of $A$ ($B$)**, and $\mathbb{P}(A | B)$ ($\mathbb{P}(B | A)$) is called the **posterior probability of $A$ given $B$ ($B$ given $A$)**.
 
 
+[prob-1]: /entries/2015-04-27-probability-1.html
