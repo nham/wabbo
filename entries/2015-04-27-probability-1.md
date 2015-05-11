@@ -1,5 +1,5 @@
 ---
-title: Notes on probability theory, part 1
+title: Notes on probability, part 1
 tags: math, probability
 ---
 
