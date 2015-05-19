@@ -1,5 +1,6 @@
 ---
 title: Notes on probability, part 3: Measurable functions
+tags: math, probability
 ---
 
 Previously: [part 1][part1], [part 2][part2]
@@ -30,7 +31,7 @@ is a $\sigma$-algebra for $X$.
 
 Recall that when we say $(X, \mathcal{A})$ is a measurable space, we mean that $X$ is a set and $\mathcal{A}$ is a $\sigma$-algebra on $X$.
 
-If $(X, \mathcal{A})$ and $(Y, \mathcal{B})$ are measurable spaces, a function $f: X \to Y$ is said to be **$(\mathcal{A}, \mathcal{B})$-measurable function** (or just **measurable** when $\mathcal{A}$ and $\mathcal{B}$ are known) when $f^{pre}(V) \in \mathcal{A}$ for all $V \in \mathcal[B}$. In other words, $f$ is measurable whenever $f^{pre}[\mathcal{B}]$ is a sub-$\sigma$-algebra of $\mathcal{A}$.
+If $(X, \mathcal{A})$ and $(Y, \mathcal{B})$ are measurable spaces, a function $f: X \to Y$ is said to be **$(\mathcal{A}, \mathcal{B})$-measurable function** (or just **measurable** when $\mathcal{A}$ and $\mathcal{B}$ are known) when $f^{pre}(V) \in \mathcal{A}$ for all $V \in \mathcal{B}$. In other words, $f$ is measurable whenever $f^{pre}[\mathcal{B}]$ is a sub-$\sigma$-algebra of $\mathcal{A}$.
 
 Measurable functions are structure-preserving functions between measurable spaces (similar to how linear and continuous functions are structure-preserving maps between vector spaces and topological] spaces, respectively). As with many (all?) structure-preserving maps, the composition of two measurable functions is again a measurable function. The proof is not too hard, so I'll omit it here.
 
@@ -65,7 +66,7 @@ Also, $X_2 \subseteq X_1$ because every interval $(\infty, b]$ is closed, so $\s
 
 Finally, to prove the converse, note that for any $a < b$, $(a, \infty) \in \sigma X_2$ (it is the complement of $(-\infty, a]$), so $(a, b] = (a, \infty) \cap (-\infty, b]$ is in $\sigma X_2$. Hence since
 
-$$(a, b) = \bigcup_{n = 1}^{\infty} (a, b - \frac{1}{n}]$$
+$$(a, b) = \bigcup_{n = 1}^{\infty} (a, b - 1/n]$$
 
 we have that $(a, b) \in \sigma X_2$ for all $a < b$. It is a theorem from topology that every open subset of $\mathbb{R}$ is a countable union of disjoint open intervals, which completes the proof that $\mathcal{B}(\mathbb{R}) \subseteq \sigma X_2$.
 
@@ -74,9 +75,9 @@ we have that $(a, b) \in \sigma X_2$ for all $a < b$. It is a theorem from topol
 
 Here's the definition of a random variable from Grimmett and Stirzaker's book *Probability and Random Processes* (slightly altered):
 
- > A **random variable** is a function $X: \Omega \to \mathbb{R} with the property that $\{\omega \in \Omega : X(\omega) \leq a\} \in \mathcal{A}$ for each $a \in \mathbb{R}$. Such a function is said to be $\mathcal{A}$-measurable.
+ > A **random variable** is a function $X: \Omega \to \mathbb{R}$ with the property that $\{\omega \in \Omega : X(\omega) \leq a\} \in \mathcal{A}$ for each $a \in \mathbb{R}$. Such a function is said to be $\mathcal{A}$-measurable.
 
-So you can see that a random variable is just a measurable function from any measurable space into the Borel space on $\mathcal{R}$. Notice how $\{\omega \in \Omega : X(\omega) \leq a\}$ is just the preimage, under $X$, of the set $(-\infty, a]$. This condition suffices, as explained above, because the intervals $(-\infty a]$ generate $\mathcal{B}(\mathbb{R})$. So there should be no mystery about why random variables are defined the way they are.
+So you can see that a random variable is just a measurable function from any measurable space into the Borel space on $\mathcal{R}$. Notice how $\{\omega \in \Omega : X(\omega) \leq a\}$ is just the preimage, under $X$, of the set $(-\infty, a]$. This condition suffices, as explained above, because the intervals $(-\infty, a]$ generate $\mathcal{B}(\mathbb{R})$. So there should be no mystery about why random variables are defined the way they are.
 
 
 [part1]: /entries/2015-04-27-probability-1.html
