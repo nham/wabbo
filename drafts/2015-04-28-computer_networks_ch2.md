@@ -7,7 +7,7 @@ tags: networking
 
 To even begin thinking about networking, you need some medium that electromagnetic waves can propagate in. Examples of such mediums include space (in the case of radio waves) or a length of wire or optical fiber. Such a physical medium is called a **link**.
 
-Two major flavors of links are [point-to-point](http://en.wikipedia.org/wiki/Point-to-point_%28telecommunications%29) links and [multiple-access](https://en.wikipedia.org/wiki/Channel_access_method) links.
+Two major flavors of links are [point-to-point](http://en.wikipedia.org/wiki/Point-to-point_%28telecommunications%29) links (connections are between pairs of nodes) and [multiple-access](https://en.wikipedia.org/wiki/Channel_access_method) links.
 
 Once you have solved the problems of making physical links, there are still five more problems to solve, according to Peterson and Davie:
 
@@ -38,7 +38,7 @@ BISYNC
  - there is a text section containing the message to be transmitted
  - also there are sentinels for start header, start text, end text.
  - after the end of frame sentinel there is a CRC section, Cyclic Redundancy Check
- - one complication is having to escape any occurrences of "frame end" sentinel in the text portion.
+ - one complication is having to escape any occurrences of "frame end" sentinel (ETX?) in the text portion.
 
 character stuffing is inserting extra characters (escapes in the case above) into the data portion of the frame.
 
