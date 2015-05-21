@@ -45,7 +45,26 @@ Compare this to Turing's version:
 
 ![Turing's formulation of the factor principle](/images/turing_factor_principle.png)\
 
-Comparing this with my formulation above, $A$ is the theory, and $B$ is the data or the evidence.
+Comparing this with my formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*.
+
+
+### An example
+
+Turing provides quite a morbid example for how to use the factor principle:
+
+ > Suppose that one man in five dies of heart failure, and that of the men who die of heart failure two in three die in their beds, but of the men who die from other causes only one in four die in their beds. (My facts are no doubt hopelessly inaccurate). Now suppose we know that a certain man died in his bed. What is the probability that he died of heart failure?
+
+Let $H$ be the event that a man dies of heart failure, and $B$ the event that a man dies in their bed. We are given that
+
+$$\begin{align}
+\mathbb{P}(H) &= 1/5 \\
+\mathbb{P}(B | H) &= 2/3 \\
+\mathbb{P}(B | \neg H) &= 1/4
+\end{align}$$
+
+We would like to now find $\mathbb{P}(H | B)$. From the givens we have that $O(H) = 1/4$, and the factor is $8/3$, so the a posteriori odds ($O(H | B)$) are $2/3$.
+
+The key point to look at is whether the factor is less than or greater than 1. A factor greater than 1 means that the observed evidence increases our belief that the theory is true, and similarly a factor less than 1 decreases it.
 
 [part1]: /entries/2015-04-27-probability-1.html
 [part2]: /entries/2015-05-11-probability-2.html
