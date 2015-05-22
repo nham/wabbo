@@ -15,6 +15,8 @@ $$\frac{\mathbb{P}(A)}{1 - \mathbb{P}(A)}$$
 
 This is undefined when $\mathbb{P}(A) = 1$, but in what follows we will exclude events that are null or uncertain altogether, so don't worry about that. Denote the odds ratio of event $A$ by $O(A)$.
 
+![$P/(1 - P)$ versus $P$](/images/plot_odds.png)
+
 Note that the expression used to convert from an odds ratio to a probability is
 
 $$\mathbb{P}(A) = \frac{O(A)}{1 + O(A)}$$
@@ -62,11 +64,34 @@ $$\begin{align}
 \mathbb{P}(B | \neg H) &= 1/4
 \end{align}$$
 
-We would like to now find $\mathbb{P}(H | B)$. From the givens we have that $O(H) = 1/4$, and the factor is $8/3$, so the a posteriori odds ($O(H | B)$) are $2/3$.
+We would like to now find $\mathbb{P}(H | B)$. From the givens we have that $O(H) = 1/4$, and the factor is $8/3$, so the *a posteriori* odds ($O(H | B)$) are $2/3$.
 
-The key point to look at is whether the factor is less than or greater than 1. A factor greater than 1 means that the observed evidence increases our belief that the theory is true, and similarly a factor less than 1 decreases it.
+One key point is to look at is whether the factor is less than or greater than 1. A factor greater than 1 means that the observed evidence increases our belief that the theory is true, and similarly a factor less than 1 decreases it.
+
+## Log odds and decibanage
+
+There is one last reformulation of Bayes' theorem that gives a useful perspective. Recall that in the factor principle, the factor is something we multiply our *a priori* odds by to obtain the a posteriori odds. Logarithms turn products into sums of course, so we obtain the following equation by taking the log (the base can be whatever, but here it is 10) of both sides:
+
+$$\log O(A | B) = \log O(A) + \log \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)}$$
+
+Quantities of the form $\log O(A)$ or $\log O(A | B)$ are (naturally enough) called *log odds*. We can also express this in terms of the [logit][wiki-logit] function:
+
+$$\text{logit}(P) := \log \frac{P}{1 - P}$$
+
+![$\text{logit}(P)$ versus $P$](/images/plot_log_odds.png)
+
+The term
+
+$$\log \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)}$$
+
+is called the *banage in favor of the theory $B$*. A *ban* is a unit of evidence.
+
+Why introduce this? If we have multiple pieces of evidence to consider (which is often the case), it can be more intuitive to work with sums than products.
+
+TODO
 
 [part1]: /entries/2015-04-27-probability-1.html
 [part2]: /entries/2015-05-11-probability-2.html
 [part3]: /entries/2015-05-19-probability-3.html
 [turing-prob-crypto]: http://arxiv.org/abs/1505.04714
+[wiki-logit]: http://en.wikipedia.org/wiki/Logit
