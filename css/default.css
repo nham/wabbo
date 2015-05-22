@@ -36,6 +36,11 @@ div#logo a {
     text-decoration: none;
 }
 
+div.figure {
+    text-align: center;
+    margin: 60px 0;
+}
+
 /** Navigation **/
 nav {
     text-align: right;
