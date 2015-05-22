@@ -47,7 +47,7 @@ Compare this to Turing's version:
 
 ![Turing's formulation of the factor principle](/images/turing_factor_principle.png)\
 
-Comparing this with my formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*.
+Comparing this with my formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*. In the paper *Studies in the history of probability and statistics. XXXVII AM Turing's statistical work in World War II*, I. J. Good (who was Turing's assistant in statistics during World War II) calls this the **Bayes factor**.
 
 
 ### An example
@@ -84,7 +84,7 @@ The term
 
 $$\log \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)}$$
 
-is called the *banage in favor of the theory $B$*. A *ban* is a unit of evidence.
+is called the *banage in favor of the theory $B$*. A [ban][wiki-ban] is a unit of evidence or information, which Turing says was named after "the famous town of Banbury".
 
 Why introduce this? If we have multiple pieces of evidence to consider (which is often the case), it can be more intuitive to work with sums than products.
 
@@ -95,3 +95,4 @@ TODO
 [part3]: /entries/2015-05-19-probability-3.html
 [turing-prob-crypto]: http://arxiv.org/abs/1505.04714
 [wiki-logit]: http://en.wikipedia.org/wiki/Logit
+[wiki-ban]: http://en.wikipedia.org/wiki/Ban_%28unit%29
