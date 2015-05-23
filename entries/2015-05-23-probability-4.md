@@ -23,7 +23,25 @@ $$\mathbb{P}(A) = \frac{O(A)}{1 + O(A)}$$
 
 For example, an odds ratio of $\frac{m}{n}$ corresponds to an event probability of $\frac{m}{m+n}$. An odds ratio like this is usually written $m:n$ instead.
 
-A few examples are probably needed to make the concept more familiar. An almost trivial example is the odds ratio of heads from a fair coin toss, which is $1:1$.
+A few examples are probably needed to make the concept more familiar. An almost trivial example is the odds ratio of heads from a fair coin toss, which is $1:1$. Another example rolling two dice and summing the results:
+
+Sum  Probability   Odds
+--- ------------- ------
+  2      1/36       1:35
+  3      2/36       1:17
+  4      3/36       1:11
+  5      4/36        1:8
+  6      5/36       5:31
+  7      6/36        1:5
+  8      5/36       5:31
+  9      4/36        1:8
+ 10      3/36       1:11
+ 11      2/36       1:17
+ 12      1/36       1:35
+
+
+Two more examples: the probability of rolling 7 or higher in this $21/36$, which corresponds to odds of $7:5$, while the probability of rolling 9 or higher is $11/36$, which corresponds to odds of $11:25$.
+
 
 ## The factor principle
 
@@ -92,7 +110,7 @@ One issue is that 1 ban is quite a lot of evidence. In order to have
 
 $$\log \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)} = 1$$
 
-we must have a factor of 10. Recall that in the example above with heart disease and men dying in their beds, the factor was less than 3. So it is often more convenient to use a smaller unit. For this reason Turing introduces the *deciban*, or one-tenth of a ban. I. J. Good says of the deciban:
+the factor $\mathbb{P}(B | A) / \mathbb{P}(B | \neg A)$ must equal 10. Recall that in the example above with heart disease and men dying in their beds, the factor was less than 3. So it is often more convenient to use a smaller unit. For this reason Turing introduces the *deciban*, or one-tenth of a ban. I. J. Good says of the deciban:
 
  > A deciban or half-deciban is about the smallest change in weight of evidence that is directly perceptible to human intuition.
 
