@@ -13,7 +13,7 @@ The odds of an event $A$ occurring is defined to be the ratio
 
 $$\frac{\mathbb{P}(A)}{1 - \mathbb{P}(A)}$$
 
-This is undefined when $\mathbb{P}(A) = 1$, but in what follows we will exclude events that are null or uncertain altogether, so don't worry about that. Denote the odds ratio of event $A$ by $O(A)$.
+This is undefined when $\mathbb{P}(A) = 1$, but in what follows we will exclude events that are null or certain altogether, so don't worry about that. Denote the odds ratio of event $A$ by $O(A)$.
 
 ![$P/(1 - P)$ versus $P$](/images/plot_odds.png)
 
