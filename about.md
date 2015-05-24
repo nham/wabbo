@@ -8,5 +8,3 @@ Reasons why I might write a thing here:
  - I wanted to learn something and I thought that explaining it publicly would help focus my learning efforts
  - to practice writing
  - to discover what I know (and don't know) about a topic
-
-Some of the things on this site do not adhere to the above criteria. I think these are among my less successful writings, and I will try to avoid this in the future.
