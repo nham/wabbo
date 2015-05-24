@@ -23,7 +23,7 @@ $$\mathbb{P}(A) = \frac{O(A)}{1 + O(A)}$$
 
 For example, an odds ratio of $\frac{m}{n}$ corresponds to an event probability of $\frac{m}{m+n}$. An odds ratio like this is usually written $m:n$ instead.
 
-A few examples are probably needed to make the concept more familiar. An almost trivial example is the odds ratio of heads from a fair coin toss, which is $1:1$. Another example rolling two dice and summing the results:
+A few examples are probably needed to make the concept more familiar. Perhaps the simplest example is the odds ratio of heads from a fair coin toss, which is $1:1$. Another example rolling two dice and summing the results:
 
 Sum  Probability   Odds
 --- ------------- ------
