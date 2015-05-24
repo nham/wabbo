@@ -40,7 +40,7 @@ Sum  Probability   Odds
  12      1/36       1:35
 
 
-Two more examples: the probability of rolling 7 or higher in this $21/36$, which corresponds to odds of $7:5$, while the probability of rolling 9 or higher is $11/36$, which corresponds to odds of $11:25$.
+Two more examples: the probability of rolling 7 or higher in this $21/36$, which corresponds to odds of $7:5$, while the probability of rolling 9 or higher is $10/36$, which corresponds to odds of $5:13$.
 
 
 ## The factor principle
