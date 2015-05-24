@@ -71,7 +71,7 @@ Comparing this with the formulation above, $A$ is the theory, and $B$ is the dat
 
 ### An example
 
-Turing provides quite a morbid example for how to use the factor principle:
+Turing provides a somewhat morbid example for how to use the factor principle:
 
  > Suppose that one man in five dies of heart failure, and that of the men who die of heart failure two in three die in their beds, but of the men who die from other causes only one in four die in their beds. (My facts are no doubt hopelessly inaccurate). Now suppose we know that a certain man died in his bed. What is the probability that he died of heart failure?
 
@@ -83,7 +83,7 @@ $$\begin{align}
 \mathbb{P}(B | \neg H) &= 1/4
 \end{align}$$
 
-We would like to now find $\mathbb{P}(H | B)$. From the givens we have that $O(H) = 1/4$, and the factor is $8/3$, so the *a posteriori* odds ($O(H | B)$) are $2/3$.
+We would now like to find $\mathbb{P}(H | B)$. From the givens we have that $O(H) = 1/4$, and the factor is $8/3$, so the *a posteriori* odds ($O(H | B)$) are $2/3$.
 
 One key point is to look at is whether the factor is less than or greater than 1. A factor greater than 1 means that the observed evidence increases our belief that the theory is true, and similarly a factor less than 1 decreases it.
 
