@@ -3,7 +3,7 @@ title: Notes on probability, part 2
 tags: math, probability
 ---
 
-[Last time][prob-1] we had just defined probability spaces. A probability space is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
+[Last time][prob-1] we had just defined probability spaces. A [probability space][part1-prob-space] is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
 
  - the set of all possible outcomes, called the **sample space**.
  - a collection of subsets of the sample space whose probability we are able to measure, called the **events**
@@ -11,9 +11,9 @@ tags: math, probability
 
 The next task is to analyze the basic properties of these things.
 
-## But first, a definition and some notation
+## Null and certain events, some notation
 
-I neglected to define this in the last post. If $A$ is an event such that $\mathbb{P}(A) = 0$, then it is said to be a **null event**.
+But first, a definition and some notation. If $A$ is an event such that $\mathbb{P}(A) = 0$, then it is said to be a **null event**.
 
 Also, it is common to notate the intersection $A \cap B$ of two events by just $A B$ (i.e. omitting the $\cap$). I use this below.
 
@@ -150,3 +150,4 @@ I'm looking at doing random variables in the next post, provided I didn't miss a
 
 
 [prob-1]: /entries/2015-04-27-probability-1.html
+[part1-prob-space]: /entries/2015-04-27-probability-1.html#probability-spaces
