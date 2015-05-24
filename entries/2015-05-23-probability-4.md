@@ -10,7 +10,7 @@ This post was inspired by a recently declassified text written by Alan Turing ti
 
 ## Odds
 
-The odds of an event $A$ occurring is defined to be the ratio
+The odds of an [event][part1-prob-space] $A$ occurring is defined to be the ratio
 
 $$\frac{\mathbb{P}(A)}{1 - \mathbb{P}(A)}$$
 
@@ -118,6 +118,7 @@ the factor $\mathbb{P}(B | A) / \mathbb{P}(B | \neg A)$ must equal 10. Recall th
 Given a factor $F$, how many decibans is it? Well, $F = 10^{k/10}$ would be $k$ decibans, so $10 \log F$ should give the number of decibans in general. Going back to our heart attack example, the factor gives $10 \log 8/3 \approx 4.26$ decibans of evidence for the theory that the man died of a heart attack.
 
 [part1]: /entries/2015-04-27-probability-1.html
+[part1-prob-space]: /entries/2015-04-27-probability-1.html#probability-spaces
 [part2]: /entries/2015-05-11-probability-2.html
 [part3]: /entries/2015-05-19-probability-3.html
 [turing-prob-crypto]: http://arxiv.org/abs/1505.04714
