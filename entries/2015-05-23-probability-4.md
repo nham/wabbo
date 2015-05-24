@@ -14,7 +14,7 @@ The odds of an [event][part1-prob-space] $A$ occurring is defined to be the rati
 
 $$\frac{\mathbb{P}(A)}{1 - \mathbb{P}(A)}$$
 
-This is undefined when $\mathbb{P}(A) = 1$, but in what follows we will exclude events that are null or certain altogether, so don't worry about that. Denote the odds ratio of event $A$ by $O(A)$.
+This is undefined when $\mathbb{P}(A) = 1$, but in what follows we will exclude events that are [null or certain][part2-null-certain] altogether, so don't worry about that. Denote the odds ratio of event $A$ by $O(A)$.
 
 ![$P/(1 - P)$ versus $P$](/images/plot_odds.png)
 
@@ -120,6 +120,7 @@ Given a factor $F$, how many decibans is it? Well, $F = 10^{k/10}$ would be $k$ 
 [part1]: /entries/2015-04-27-probability-1.html
 [part1-prob-space]: /entries/2015-04-27-probability-1.html#probability-spaces
 [part2]: /entries/2015-05-11-probability-2.html
+[part2-null-certain]: /entries/2015-05-11-probability-2.html#null-and-certain-events
 [part3]: /entries/2015-05-19-probability-3.html
 [turing-prob-crypto]: http://arxiv.org/abs/1505.04714
 [wiki-logit]: http://en.wikipedia.org/wiki/Logit

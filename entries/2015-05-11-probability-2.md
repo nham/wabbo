@@ -1,6 +1,7 @@
 ---
 title: Notes on probability, part 2
 tags: math, probability
+updated: 2015-05-24
 ---
 
 [Last time][prob-1] we had just defined probability spaces. A [probability space][part1-prob-space] is a mathematical representation of an experiment or any situation where the outcome is not certain. The basic data consists of
@@ -11,7 +12,7 @@ tags: math, probability
 
 The next task is to analyze the basic properties of these things.
 
-## Null and certain events, some notation
+## Null and certain events, some notation {#null-and-certain-events}
 
 But first, a definition and some notation. If $A$ is an event such that $\mathbb{P}(A) = 0$, then it is said to be a **null event**.
 
