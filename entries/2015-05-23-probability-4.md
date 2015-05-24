@@ -61,11 +61,11 @@ Turing calls this equation the **factor principle**. We can simplify it further 
 
 $$O(A | B) = O(A) \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)}$$
 
-Compare this to Turing's version:
+Here is Turing's version:
 
 ![Turing's formulation of the factor principle](/images/turing_factor_principle.png)\
 
-Comparing this with my formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*. In the paper *Studies in the history of probability and statistics. XXXVII AM Turing's statistical work in World War II*, I. J. Good (who was Turing's assistant in statistics during World War II) calls this the **Bayes factor**.
+Comparing this with the formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*. In the paper *Studies in the history of probability and statistics. XXXVII AM Turing's statistical work in World War II*, I. J. Good (who was Turing's assistant in statistics during World War II) calls this the **Bayes factor**.
 
 
 ### An example
