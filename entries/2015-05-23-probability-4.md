@@ -1,6 +1,7 @@
 ---
 title: Notes on probability, part 4: Odds, the factor principle, decibanage
 tags: math, probability
+updated: 2015-05-24
 ---
 
 Previously: [part 1][part1], [part 2][part2], [part 3][part3]
