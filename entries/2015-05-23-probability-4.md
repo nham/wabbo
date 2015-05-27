@@ -1,7 +1,7 @@
 ---
 title: Notes on probability, part 4: Odds, the factor principle, decibanage
 tags: math, probability
-updated: 2015-05-24
+updated: 2015-05-27
 ---
 
 Previously: [part 1][part1], [part 2][part2], [part 3][part3]
@@ -24,7 +24,7 @@ $$\mathbb{P}(A) = \frac{O(A)}{1 + O(A)}$$
 
 For example, an odds ratio of $\frac{m}{n}$ corresponds to an event probability of $\frac{m}{m+n}$. An odds ratio like this is usually written $m:n$ instead.
 
-A few examples are probably needed to make the concept more familiar. Perhaps the simplest example is the odds ratio of heads from a fair coin toss, which is $1:1$. Another example rolling two dice and summing the results:
+A few examples are probably needed to make the concept more familiar. Perhaps the simplest example is the odds ratio of heads from a fair coin toss, which is $1:1$. Another example is rolling two dice and summing the results:
 
 Sum  Probability   Odds
 --- ------------- ------
@@ -66,7 +66,7 @@ Here is Turing's version:
 
 ![Turing's formulation of the factor principle](/images/turing_factor_principle.png)\
 
-Comparing this with the formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*. In the paper *Studies in the history of probability and statistics. XXXVII AM Turing's statistical work in World War II*, I. J. Good (who was Turing's assistant in statistics during World War II) calls this the **Bayes factor**.
+Comparing this with the formulation above, $A$ is the theory, and $B$ is the data or the evidence. Turing calls the ratio on the right the *factor*, but I've also seen it called the *likelihood ratio*. In the paper *Studies in the history of probability and statistics. XXXVII AM Turing's statistical work in World War II*, I. J. Good (who was Turing's assistant in statistics during World War II) mentions it is sometimes called the **Bayes factor**.
 
 
 ### An example
