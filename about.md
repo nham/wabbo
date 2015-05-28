@@ -11,8 +11,6 @@ Reasons why I might write a thing here:
 
 ## License
 
-This site is licensed under a
-
-[Creative Commons Attribution-ShareAlike 4.0 International License][CC-BY-SA-4].
+This site is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License][CC-BY-SA-4].
 
 [CC-BY-SA-4]: http://creativecommons.org/licenses/by-sa/4.0/
