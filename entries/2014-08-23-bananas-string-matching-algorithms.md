@@ -68,7 +68,7 @@ Running this resulted in:
 
 "nana" was the only substring of "bananas" for which the `contains` method returned `false`. Wats abound.
 
-I was delighted. I had found a bug in Rust's implementation of string matching. Since I was at [Recurse Center](http://www.recurse.com) (formerly "Hacker School") at the time and had nothing better to do than spend all day hunting down an obscure bug in the standard library of a pre-release programming language, I decided to fix it.
+I was delighted. I had found a bug in Rust's implementation of string matching. Since I was at the [Recurse Center](http://www.recurse.com) at the time and had nothing better to do than spend all day hunting down an obscure bug in the standard library of a pre-release programming language, I decided to fix it.
 
 This particular problem was actually the result of two separate bugs. The first bug was in [this code](https://github.com/rust-lang/rust/blob/c88feffde4f5043adf07a6837026f228e20b67e6/src/libcore/str.rs#L562-L576):
 
