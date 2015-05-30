@@ -103,7 +103,7 @@ The term
 
 $$\log \frac{\mathbb{P}(B | A)}{\mathbb{P}(B | \neg A)}$$
 
-is called the *banage in favor of the theory $B$*. A [ban][wiki-ban] is a unit of evidence or information, which Turing says was named after "the famous town of Banbury" (I've never heard of it prior to now).
+is called the *banage in favor of the theory $B$*. A [ban][wiki-ban] is a unit of evidence or information, which Turing says was named after "the famous town of Banbury".
 
 Why introduce this? If we have multiple pieces of evidence to consider (which is often the case), it can be more intuitive to work with sums than products.
 
