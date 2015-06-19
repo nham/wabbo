@@ -2,6 +2,10 @@
 title: The Riemann and Darboux integrals
 ---
 
+## Preface
+
+This post is based on pp. xv-xvii in Donald L. Cohn's book *Measure Theory*, 2nd ed.
+
 ## Prerequisites
 
 A function $f: X \to \mathbb{R}$ being **bounded** means that there exist numbers $m, M \in \mathbb{R}$ such that
@@ -73,3 +77,17 @@ $$\downarrow \int_a^b f := \sup \text{lower}(f)$$
 We can similarly define the **upper integral of $f$** to be
 
 $$\uparrow \int_a^b f := \inf \text{upper}(f)$$
+
+Next it seems prudent to prove that the lower integral of $f$ is always less than or equal to the upper integral of $f$. In symbols:
+
+$$\downarrow \int_a^b f \ \leq \ \uparrow \int_a^b f$$
+
+To prove this, we can assume that
+
+$$\uparrow \int_a^b f \ < \ \downarrow \int_a^b f $$
+
+and attempt to derive a contradiction.
+
+Proof: TODO
+
+When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then $f$ is said to be **Riemann integrable** or just **integrable** (If this is the "Darbox integral", then why not say "Darboux integrable"? I don't know, I'm just copying Cohn here (*Measure Theory*, second edition, p. xvi).)
