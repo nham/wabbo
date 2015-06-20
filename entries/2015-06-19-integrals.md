@@ -1,10 +1,11 @@
 ---
 title: The Riemann and Darboux integrals
+tags: math, analysis
 ---
 
 ## Preface
 
-This post is based on pp. xv-xvii in Donald L. Cohn's book *Measure Theory*, 2nd ed.
+This post is largely based on pp. xv-xvii in Donald L. Cohn's book *Measure Theory*, 2nd ed. The goal is to define and compare the Riemann and Darboux integrals and establish their equivalence.
 
 ## Prerequisites
 
@@ -32,9 +33,11 @@ If $(a_i)_0^j$ and $(b_i)_0^k$ are two partitions of $[a, b]$ and each $a_i$ app
 
 For any subset $X$ of $\mathbb{R}$, $c$ is said to be an **upper bound** for $X$ if $c \geq x$ for all $x \in X$, and a **lower bound** for $X$ if $c \leq x$ for all $x \in X$
 
-An upper bound (lower bound) $c$ for $X$ is said to be a **least upper bound** (**greatest lower bound**) for $X$ if every other upper bound (lower bound) $d$ for $X$ was such that $c \leq d \ $ ($d \leq c$). The least upper bound is sometimes called the **supremum**, and the greatest lower bound is sometimes called the **infimum**.
+An upper bound (lower bound) $c$ for $X$ is said to be a **least upper bound** (**greatest lower bound**) for $X$ if every other upper bound (lower bound) $d$ for $X$ was such that $c \leq d \ $ ($d \leq c$). The least upper bound is sometimes called the **supremum**, and the greatest lower bound is sometimes called the **infimum**, and these are written $\sup X$ and $\inf X$, respectively.
 
-Finally, one of the defining properties of the real line is that every non-empty subset of $\mathbb{R}$ that is bounded above has a *least* upper bound, and every non-empty subset that is bounded below has a *greatest* lower bound.
+Finally, one of the defining properties of the real line is that every non-empty subset of $\mathbb{R}$ that is bounded above has a *least* upper bound, and every non-empty subset that is bounded below has a *greatest* lower bound. This is sometimes known as the [least upper bound property][lub-prop] of the real numbers (the corresponding property for greatest lower bounds is obtainable from the least upper bound property).
+
+[lub-prop]: https://en.wikipedia.org/wiki/Least-upper-bound_property
 
 ## Darboux integral
 
@@ -84,7 +87,7 @@ We have just established a significant fact. To see why, consider fixing $f$ and
 $$\text{lower}(f) := \{ l(f, \mathcal{P}) : \mathcal{P} \text{ is a partition of } [a, b] \}$$
 $$\text{upper}(f) := \{ U(f, \mathcal{P}) : \mathcal{P} \text{ is a partition of } [a, b] \}$$
 
-What was proven above amounts to saying that $\text{lower}(f)$ is bounded above and $\text{upper}(f)$ is bounded below. Hence we can define the **lower integral** of $f$ by
+What was proven above amounts to saying that $\text{lower}(f)$ is bounded above and $\text{upper}(f)$ is bounded below. Hence we can define (by the least upper bound property) the **lower integral** of $f$ by
 
 $$\downarrow \int_a^b f := \sup \text{lower}(f)$$
 
@@ -104,9 +107,9 @@ and attempt to derive a contradiction.
 
 Proof: TODO
 
-When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then
+When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then $\int_a^b f$ defined by:
 
-$$\int_a^b f := \downarrow \int_a^b f \ = \ \uparrow \int_a^b f$$
+$$\int_a^b f := \ \downarrow \int_a^b f \ = \ \uparrow \int_a^b f$$
 
 is called the **Darboux integral** of $f$ over $[a, b]$. It is also often denoted by
 
@@ -140,4 +143,8 @@ $$|\mathcal{R}(f, \mathcal{P}) - L| < \epsilon$$
 
 is also true.
 
-$L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$.
+$L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This will be denoted by $\int_a^b f$ or $\int_a^b f(x) dx$ since, as we will see below, the Darboux integral and Riemann integral are equivalent.
+
+## Equivalence
+
+TODO
