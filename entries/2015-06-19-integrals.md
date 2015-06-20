@@ -19,7 +19,7 @@ Recall that $[a, b]$ denotes the subset of the real line
 $$\{ x \in \mathbb{R} : a \leq x \leq b\}$$
 
 In other words, it is the line segment starting at $a$ and ending at $b$. This is often called a **closed interval** (since it includes both its endpoints).
- 
+
 A **$k$-partition** of a closed interval $[a, b]$ is a tuple of real numbers
 
 $$(a_0, \ldots, a_k)$$
@@ -27,6 +27,14 @@ $$(a_0, \ldots, a_k)$$
 such that
 
 $$a = a_0 < a_1 < \ldots < a_k = b$$
+
+If $(a_i)_0^j$ and $(b_i)_0^k$ are two partitions of $[a, b]$ and each $a_i$ appears as a $b_j$, then $(b_i)_0^k$ is said to be a **refinement** of $(a_i)_0^j$.
+
+For any subset $X$ of $\mathbb{R}$, $c$ is said to be an **upper bound** for $X$ if $c \geq x$ for all $x \in X$, and a **lower bound** for $X$ if $c \leq x$ for all $x \in X$
+
+An upper bound (lower bound) $c$ for $X$ is said to be a **least upper bound** (**greatest lower bound**) for $X$ if every other upper bound (lower bound) $d$ for $X$ was such that $c \leq d \ $ ($d \leq c$). The least upper bound is sometimes called the **supremum**, and the greatest lower bound is sometimes called the **infimum**.
+
+Finally, one of the defining properties of the real line is that every non-empty subset of $\mathbb{R}$ that is bounded above has a *least* upper bound, and every non-empty subset that is bounded below has a *greatest* lower bound.
 
 ## Darboux integral
 
@@ -46,6 +54,12 @@ Note that the numbers $m_i$ and $M_i$ are entirely determined by $f$ and $\mathc
 
 $$l(f, \mathcal{P}) = \sum_1^k m_i(a_i - a_{i-1})$$
 $$U(f, \mathcal{P}) = \sum_1^k M_i(a_i - a_{i-1})$$
+
+Notice that
+
+$$l(f, \mathcal{P}) \leq U(f, \mathcal{P})$$
+
+holds for every $f$ and $\mathcal{P}$ (because $m_i \leq M_i$ for every $i$).
 
 Here's the fun part: for every $i$ we have
 
@@ -90,4 +104,40 @@ and attempt to derive a contradiction.
 
 Proof: TODO
 
-When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then $f$ is said to be **Riemann integrable** or just **integrable** (If this is the "Darbox integral", then why not say "Darboux integrable"? I don't know, I'm just copying Cohn here (*Measure Theory*, second edition, p. xvi).)
+When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then
+
+$$\int_a^b f := \downarrow \int_a^b f \ = \ \uparrow \int_a^b f$$
+
+is called the **Darboux integral** of $f$ over $[a, b]$. It is also often denoted by
+
+$$\int_a^b f(x) dx$$
+
+as well. In this case $f$ is said to be **Darboux integrable** or just **integrable**.
+
+## Riemann integral
+
+First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(x_1, \ldots, x_k)$ such that $x_i \in [a_{i-1}, a_i]$ for all $i$.
+
+The **mesh** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh is denoted by $\| \mathcal{P} \|$.
+
+The **Riemann sum** corresponding to any function $f: [a, b] \to \mathbb{R}$ and any tagged partition $\mathcal{P} = ((a_i)_0^k, (x_i)_1^k)$ is defined to be
+
+$$\mathcal{R}(f, \mathcal{P}) := \sum_1^k f(x_i) (a_i - a_{i-1})$$
+
+Then $f$ is said to be **Riemann integrable** when the limit
+
+$$\lim_{\| \mathcal{P} \| \to 0} \mathcal{R}(f, \mathcal{P})$$
+
+exists. Formally, $f$ is Riemann integrable if there exists an $L \in \mathbb{R}$ such that
+
+for any $\epsilon > 0$, there is a $\delta > 0$ such that whenever
+
+$$\| \mathcal{P} \| < \delta$$
+
+holds, then
+
+$$|\mathcal{R}(f, \mathcal{P}) - L| < \epsilon$$
+
+is also true.
+
+$L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$.
