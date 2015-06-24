@@ -64,6 +64,16 @@ $$l(f, \mathcal{P}) \leq U(f, \mathcal{P})$$
 
 holds for every $f$ and $\mathcal{P}$ (because $m_i \leq M_i$ for every $i$).
 
+Furthermore, if $\mathcal{P}_1$ and $\mathcal{P}_2$ are partitions with $\mathcal{P}_2$ a refinement of $\mathcal{P}_1$, then
+
+$$l(f, \mathcal{P}_1) \leq l(f, \mathcal{P}_2)$$
+
+and
+
+$$U(f, \mathcal{P}_2) \leq U(f, \mathcal{P}_1)$$
+
+I won't spell out the whole prove, but the idea is to prove it in the case where $\mathcal{P}_2$ has one point more than $\mathcal{P}_1$. From there you use induction.
+
 Here's the fun part: for every $i$ we have
 
 $$m_i \leq M$$
@@ -145,6 +155,6 @@ is also true.
 
 $L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This will be denoted by $\int_a^b f$ or $\int_a^b f(x) dx$ since, as we will see below, the Darboux integral and Riemann integral are equivalent.
 
-## Equivalence
+## Proof of equivalence
 
 TODO
