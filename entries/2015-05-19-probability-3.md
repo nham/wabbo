@@ -71,7 +71,7 @@ $$(a, b) = \bigcup_{n = 1}^{\infty} (a, b - 1/n]$$
 we have that $(a, b) \in \sigma X_2$ for all $a < b$. It is a theorem from topology that every open subset of $\mathbb{R}$ is a countable union of disjoint open intervals, which completes the proof that $\mathcal{B}(\mathbb{R}) \subseteq \sigma X_2$.
 
 
-## So what about random variables
+## So what about random variables {#random-variable}
 
 Here's the definition of a random variable from Grimmett and Stirzaker's book *Probability and Random Processes* (slightly altered):
 
