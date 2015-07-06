@@ -1,5 +1,6 @@
 ---
 title: The basics of Markov chains
+tags: math, probability, stochastic processes
 ---
 
 A **discrete-time stochastic process** is a sequence $(X_0, X_1, \ldots)$ of [random variables][wiki-random-variable] (see also [here][wabbo-random-variable]). The point of it seems to be for modeling something with state that evolves stochastically over time and is observed at discrete instants of time. The distribution of the random variable $X_t$ gives the various probabilities of being in various states at time $t$.
@@ -63,6 +64,25 @@ Consequently, we have:
 $$\sum_{k=0}^{\infty} \mathbb{P}(X_n = j, X_r = k | X_0 = i) = \mathbb{P}(X_n = j | X_0 = i) =: P_{ij}^n$$
 
 since the sum is over all possible values of $X_r$. $\Box$
+
+
+## Reducibility
+
+For any homogeneous Markov chain $(X_t)_{t \geq 0}$, say that **state $j$ is accessible from state $i$** whenever $P_{ij}^n$ for some $n \geq 0$. We will say that states $i$ and $j$ **communicate** whenever $j$ is accessible from $i$ and $i$ is accessible from $j$. This state of affairs is denoted by $i \leftrightarrow j$.
+
+You can prove that $\leftrightarrow$ is an equivalence relation as follows:
+
+ - $i \leftrightarrow i$ for any $i$ since $P_{ii}^0 = 1$.
+ - $i \leftrightarrow j$ implies $j \leftrightarrow i$ pretty much directly from the definition.
+ - finally, if $i \leftrightarrow j$ and $j \leftrightarrow k$, this means there are $n, m \geq 0$ such that $P_{ij}^n, P_{jk}^m > 0$. As a result, we have:
+
+    $$P_{ik}^{n+m} = \sum_{r=0}^{\infty} P_{ir}^n P_{rk}^m \geq P_{ij}^n P_{jk}^m > 0$$
+
+    which establishes the transitivity of $\leftrightarrow$.
+
+Because of the $\leftrightarrow$ equivalence relation, the state space of a Markov chain can be thought of as partitioned into *communication classes*, i.e. the equivalence classes of $\leftrightarrow$. Once the Markov chain transitions to a state in one class, it can never reach a state in a different class.
+
+A Markov chain is said to be **irreducible** if there is a single communication class. This means given any starting state $i$ and any other state $j$, there is always a non-zero probability of transitioning from $i$ to $j$ in some finite number of steps. Otherwise the chain is said to be **reducible**.
 
 
 [wiki-random-variable]: https://en.wikipedia.org/wiki/Random_variable
