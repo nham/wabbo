@@ -18,15 +18,15 @@ It is useful to single out the class of **homogeneous** Markov chains, i.e. Mark
 
 $$\mathbb{P}(X_{t+1} = j | X_t = i) = \mathbb{P}(X_1 = j | X_0 = i)$$
 
-To make this condition more vivid, consider defining the matrix $P_t$ by
+To make this condition more vivid, consider defining the matrix $P_t$ by setting the $(i, j)$-th cell to be:
 
 $$(P_t)_{ij} := \mathbb{P}(X_{t+1} = j | X_t = i)$$
 
-$P_t$ can be considered the **transition matrix at time $t$** of the Markov chain. Then the $(i, j)$-th cell in $P_t$ gives the probability of the Markov chain that is in state $i$ at time $t$ to move to state $j$ at time $t+1$.
+$P_t$ can be considered the **transition matrix at time $t$** of the Markov chain. Note that $(P_t)_{ij}$ gives the probability of the Markov chain that is in state $i$ at time $t$ to move to state $j$ at time $t+1$.
 
-Note that all the entries in a transition matrix are nonnegative. You can also easily confirm that each row in a transition matrix sums to $1$.
+Note that all the entries in a transition matrix are nonnegative. You can also easily confirm that each row in a transition matrix sums to $1$. This means each row in the matrix can be thought of as probability distribution (probability mass function) on all possible next states.
 
-Homogeneous Markov chains are exactly the Markov chains that have a single transition matrix used for all time. As a result, homogeneous chains are fairly easy to analyze:
+With this notion of a transition matrix in hand, we can understand homogeneous Markov chains as precisely the Markov chains that have a single transition matrix used for all time. As a result, homogeneous chains are fairly easy to analyze:
 
 **Theorem:** For any homogeneous Markov chain $(X_t)_{t \geq 0}$, the joint distribution of all state variables is completely determined by the initial distribution $P_0$ on the set of states $S$ and the transition matrix $P$.
 
@@ -60,9 +60,9 @@ $$P_{ik}^r P_{kj}^{n-r} = \mathbb{P}(X_n = j, X_r = k | X_0 = i)$$
 
 Consequently, we have:
 
-$$P_{ij}^n := \sum_{k=0}^{\infty} \mathbb{P}(X_n = j, X_r = k | X_0 = i)$$
+$$\sum_{k=0}^{\infty} \mathbb{P}(X_n = j, X_r = k | X_0 = i) = \mathbb{P}(X_n = j | X_0 = i) =: P_{ij}^n$$
 
-$\Box$
+since the sum is over all possible values of $X_r$. $\Box$
 
 
 [wiki-random-variable]: https://en.wikipedia.org/wiki/Random_variable
