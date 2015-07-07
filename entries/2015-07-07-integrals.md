@@ -64,7 +64,7 @@ $$l(f, \mathcal{P}) \leq U(f, \mathcal{P})$$
 
 holds for every $f$ and $\mathcal{P}$ (because $m_i \leq M_i$ for every $i$).
 
-Furthermore, if $\mathcal{P}_1$ and $\mathcal{P}_2$ are partitions with $\mathcal{P}_2$ a refinement of $\mathcal{P}_1$, then
+Furthermore, if $\mathcal{P}_1$ and $\mathcal{P}_2$ are partitions and $\mathcal{P}_2$ is a refinement of $\mathcal{P}_1$, then
 
 $$l(f, \mathcal{P}_1) \leq l(f, \mathcal{P}_2)$$
 
@@ -72,7 +72,7 @@ and
 
 $$U(f, \mathcal{P}_2) \leq U(f, \mathcal{P}_1)$$
 
-I won't spell out the whole prove, but the idea is to prove it in the case where $\mathcal{P}_2$ has one point more than $\mathcal{P}_1$. From there you use induction.
+*Proof sketch:* The idea is to prove it in the case where $\mathcal{P}_2$ has only one point more than $\mathcal{P}_1$ (i.e. the case where $\mathcal{P}_2$ is the result of starting with $\mathcal{P}_1$ and partitioning one of its intervals into two). Once you've proven this you can use induction. $\Box$
 
 Here's the fun part: for every $i$ we have
 
@@ -97,7 +97,7 @@ We have just established a significant fact. To see why, consider fixing $f$ and
 $$\text{lower}(f) := \{ l(f, \mathcal{P}) : \mathcal{P} \text{ is a partition of } [a, b] \}$$
 $$\text{upper}(f) := \{ U(f, \mathcal{P}) : \mathcal{P} \text{ is a partition of } [a, b] \}$$
 
-What was proven above amounts to saying that $\text{lower}(f)$ is bounded above and $\text{upper}(f)$ is bounded below. Hence we can define (by the least upper bound property) the **lower integral** of $f$ by
+$\text{lower}(f)$ and $\text{upper}(f)$ are the collection of lower sums and of upper sums, respectively. What was proven above amounts to saying that $\text{lower}(f)$ is bounded above and $\text{upper}(f)$ is bounded below. Therefore we can define (by the least upper bound property) the **lower integral** of $f$ by
 
 $$\downarrow \int_a^b f := \sup \text{lower}(f)$$
 
@@ -105,17 +105,47 @@ We can similarly define the **upper integral of $f$** to be
 
 $$\uparrow \int_a^b f := \inf \text{upper}(f)$$
 
-Next it seems prudent to prove that the lower integral of $f$ is always less than or equal to the upper integral of $f$. In symbols:
+**Proposition:** The lower integral of $f$ is always less than or equal to the upper integral of $f$. In symbols:
 
 $$\downarrow \int_a^b f \ \leq \ \uparrow \int_a^b f$$
 
-To prove this, we can assume that
+*Proof:* To prove this, we can assume that
 
 $$\uparrow \int_a^b f \ < \ \downarrow \int_a^b f $$
 
 and attempt to derive a contradiction.
 
-Proof: TODO
+First, define
+
+$$\epsilon := \ \downarrow \int_a^b f \ - \ \uparrow \int_a^b f$$
+
+Then $\epsilon > 0$ by assumption, so since the lower integral is the supremum of $\text{lower}(f)$, we can find a partition $\mathcal{P}$ of $[a, b]$ such that the lower sum $l(f, \mathcal{P})$ satisfies
+
+$$\begin{align}
+\uparrow \int_a^b f \ &= \ \downarrow \int_a^b f - \epsilon \\
+&< \ l(f, \mathcal{P}) \\
+&< \ \downarrow \int_a^b f
+\end{align}$$
+
+By similar reasoning about $\text{upper}(f)$ we can find a partition $\mathcal{Q}$ such that
+
+$$\uparrow \int_a^b f < U(f, \mathcal{Q}) < l(f, \mathcal{P})$$
+
+Then $\mathcal{P} \cup \mathcal{Q}$ is a partition of $[a, b]$ that is refinement of both $\mathcal{P}$ and $\mathcal{Q}$, so
+
+$$U(f, \mathcal{P} \cup \mathcal{Q}) \leq U(f, \mathcal{Q})$$
+
+and
+
+$$l(f, \mathcal{P}) \leq l(f, \mathcal{P} \cup \mathcal{Q})$$
+
+Combining these with the the above inequality, we have proven
+
+$$U(f, \mathcal{P} \cup \mathcal{Q}) < l(f, \mathcal{P} \cup \mathcal{Q})$$
+
+which is a contradiction.
+
+$\Box$
 
 When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then $\int_a^b f$ defined by:
 
@@ -131,7 +161,7 @@ as well. In this case $f$ is said to be **Darboux integrable** or just **integra
 
 First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(x_1, \ldots, x_k)$ such that $x_i \in [a_{i-1}, a_i]$ for all $i$.
 
-The **mesh** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh is denoted by $\| \mathcal{P} \|$.
+The **mesh** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh of $\mathcal{P}$ is denoted by $\| \mathcal{P} \|$.
 
 The **Riemann sum** corresponding to any function $f: [a, b] \to \mathbb{R}$ and any tagged partition $\mathcal{P} = ((a_i)_0^k, (x_i)_1^k)$ is defined to be
 
