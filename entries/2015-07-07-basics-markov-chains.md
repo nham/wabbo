@@ -72,7 +72,7 @@ $\Box$
 
 For any homogeneous Markov chain $(X_t)_{t \geq 0}$, say that **state $j$ is accessible from state $i$** whenever $P_{ij}^n$ for some $n \geq 0$. We will say that states $i$ and $j$ **communicate** whenever $j$ is accessible from $i$ and $i$ is accessible from $j$. This state of affairs is denoted by $i \leftrightarrow j$.
 
-You can prove that $\leftrightarrow$ is an equivalence relation as follows:
+You can prove that $\leftrightarrow$ is an [equivalence relation][wiki-eqrel] as follows:
 
  - $i \leftrightarrow i$ for any $i$ since $P_{ii}^0 = 1$.
  - $i \leftrightarrow j$ implies $j \leftrightarrow i$ pretty much directly from the definition.
@@ -93,8 +93,6 @@ For any homogeneous Markov chain we can define, for each $i$, the set
 $$\mathcal{T}(i) := \{ n \geq 1 :  P_{ii}^n > 0 \}$$
 
 $\mathcal{T}(i)$ is the set of $n$ such that there is a non-zero chance of starting from state $i$ and reaching it again after exactly $n$ time steps. If there is a greatest common divisor $d \geq 1$ of all $n \in \mathcal{T}(i)$, then state $i$ is said to have **period $d$**. When $d = 1$ the state is said to be **aperiodic**.
-
-It turns out that periods can be thought of not just as a property of a state, but of a communication class:
 
 **Theorem:** $i \leftrightarrow j$ implies that $i$ and $j$ have the same period.
 
@@ -124,5 +122,6 @@ $\Box$
 
 A Markov chain is said to be **aperiodic** if all of its states are aperiodic. Note that an irreducible Markov chain is aperiodic whenever one of its states is aperiodic (irreducibility implies all states have the same period).
 
+[wiki-eqrel]: https://en.wikipedia.org/wiki/Equivalence_relation
 [wiki-random-variable]: https://en.wikipedia.org/wiki/Random_variable
 [wabbo-random-variable]: 2015-05-19-probability-3.html#random-variable
