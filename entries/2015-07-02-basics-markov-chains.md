@@ -63,7 +63,9 @@ Consequently, we have:
 
 $$\sum_{k=0}^{\infty} \mathbb{P}(X_n = j, X_r = k | X_0 = i) = \mathbb{P}(X_n = j | X_0 = i) =: P_{ij}^n$$
 
-since the sum is over all possible values of $X_r$. $\Box$
+since the sum is over all possible values of $X_r$.
+
+$\Box$
 
 
 ## Reducibility
@@ -96,7 +98,27 @@ It turns out that periods can be thought of not just as a property of a state, b
 
 **Theorem:** $i \leftrightarrow j$ implies that $i$ and $j$ have the same period.
 
-*Proof:* By hypothesis $i \leftrightarrow j$, which means there exist $m, n$ such that $P_{ij}^m, P_{ji}^n > 0$. Hence $P_{ii}^{m+n}$ and $P_{jj}^{n+m}$ are both non-zero, so $m+n$ is in both $\mathcal{T}(i)$ and $\mathcal{T}(j)$. TODO
+*Proof:* By hypothesis $i \leftrightarrow j$, which means there exist $m, n$ such that $P_{ij}^m, P_{ji}^n > 0$. Hence
+
+$$P_{ii}^{m+n} \geq P_{ij}^m P_{ji}^n \geq 0$$
+
+This means that $d_i := \gcd \mathcal{T}(i)$ divides $m+n$.
+
+Furthermore, for any $k \in \mathcal{T}(j)$,
+
+$$P_{ii}^{m+k+n} \geq P_{ij}^m P_{jj}^k P_{ji}^n \geq 0$$
+
+This implies that $d_i$ divides $m + k + n$, and hence also divides $(m + k + n) - (m + n) = k$.
+
+We have just established that $d_i$ is a common divisor of $\mathcal{T}(j)$, which implies that
+
+$$d_i \leq d_j$$
+
+A similar argument establishes that $d_j$ is a common divisor of $\mathcal{T}(i)$, which implies
+
+$$d_j \leq d_i$$
+
+And hence that states $i$ and $j$ have the same period.
 
 $\Box$
 
