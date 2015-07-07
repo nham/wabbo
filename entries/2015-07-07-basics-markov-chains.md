@@ -3,7 +3,7 @@ title: The basics of Markov chains
 tags: math, probability, stochastic processes
 ---
 
-A **discrete-time stochastic process** is a sequence $(X_0, X_1, \ldots)$ of [random variables][wiki-random-variable] (see also [here][wabbo-random-variable]). The point of it seems to be for modeling something with state that evolves stochastically over time and is observed at discrete instants of time. The distribution of the random variable $X_t$ gives the various probabilities of being in various states at time $t$.
+A **discrete-time stochastic process** is a sequence $(X_0, X_1, \ldots)$ of [random variables][wiki-random-variable] (see also [here][wabbo-random-variable]). This definition models a system whose state evolves randomly over time and is observed at discrete instants of time. The distribution of the random variable $X_t$ gives the various probabilities of being in various states at time $t$.
 
 A **Markov chain** is a discrete-time stochastic process such that for any $t \in \mathbb{N}$:
 
