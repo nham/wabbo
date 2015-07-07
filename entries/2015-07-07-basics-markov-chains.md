@@ -49,7 +49,7 @@ Suppose $(X_t)$ is a homogeneous Markov chain. Define the *$n$-step transition p
 
 $$P_{ij}^n := \mathbb{P}(X_n = j | X_0 = i)$$
 
-Note that this definition depends on the Markov chain being homogeneous. In order for it to be well-defined in the non=homogeneous case, we would also need to specify the time $t$ we are starting from. In the homogeneous case, the starting time does not matter.
+Note that this definition depends on the Markov chain being homogeneous. In order for it to be well-defined in the non-homogeneous case, we would also need to specify the time $t$ we are starting from. In the homogeneous case, the starting time does not matter.
 
 The Chapman-Kolmogorov equation says that for any $r \leq n$:
 
