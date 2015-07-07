@@ -43,7 +43,7 @@ where the first holds by the basic rules of conditional probability and the seco
 
 $\Box$
 
-## Chapman-Kolmogorov equation
+## The Chapman-Kolmogorov equation
 
 Suppose $(X_t)$ is a homogeneous Markov chain. Define the *$n$-step transition probability* $P_{ij}^n$ to be:
 
@@ -84,6 +84,23 @@ Because of the $\leftrightarrow$ equivalence relation, the state space of a Mark
 
 A Markov chain is said to be **irreducible** if there is a single communication class. This means given any starting state $i$ and any other state $j$, there is always a non-zero probability of transitioning from $i$ to $j$ in some finite number of steps. Otherwise the chain is said to be **reducible**.
 
+## Periodicity
+
+For any homogeneous Markov chain we can define, for each $i$, the set
+
+$$\mathcal{T}(i) := \{ n \geq 1 :  P_{ii}^n > 0 \}$$
+
+$\mathcal{T}(i)$ is the set of $n$ such that there is a non-zero chance of starting from state $i$ and reaching it again after exactly $n$ time steps. If there is a greatest common divisor $d \geq 1$ of all $n \in \mathcal{T}(i)$, then state $i$ is said to have **period $d$**. When $d = 1$ the state is said to be **aperiodic**.
+
+It turns out that periods can be thought of not just as a property of a state, but of a communication class:
+
+**Theorem:** $i \leftrightarrow j$ implies that $i$ and $j$ have the same period.
+
+*Proof:* By hypothesis $i \leftrightarrow j$, which means there exist $m, n$ such that $P_{ij}^m, P_{ji}^n > 0$. Hence $P_{ii}^{m+n}$ and $P_{jj}^{n+m}$ are both non-zero, so $m+n$ is in both $\mathcal{T}(i)$ and $\mathcal{T}(j)$. TODO
+
+$\Box$
+
+A Markov chain is said to be **aperiodic** if all of its states are aperiodic. Note that an irreducible Markov chain is aperiodic whenever one of its states is aperiodic (irreducibility implies all states have the same period).
 
 [wiki-random-variable]: https://en.wikipedia.org/wiki/Random_variable
 [wabbo-random-variable]: 2015-05-19-probability-3.html#random-variable
