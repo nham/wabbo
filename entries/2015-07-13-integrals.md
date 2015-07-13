@@ -157,6 +157,32 @@ $$\int_a^b f(x) dx$$
 
 as well. In this case $f$ is said to be **Darboux integrable** or just **integrable**.
 
+**Theorem:** A function $f: [a, b] \to \mathbb{R}$ is Darboux integrable iff for every $\epsilon > 0$ there is a partition $\mathcal{P}$ of $[a, b]$ such that
+
+$$U(f, \mathcal{P}) - l(f, \mathcal{P}) < \epsilon$$
+
+*Proof:* From the definition of infimum and supremum, we can find always find lower sums arbitrarily close to $\downarrow \int_a^b f$ and upper sums arbitrarily close to $\uparrow \int_a^b f$. More precisely, we can always find partitions $\mathcal{P}$ and $\mathcal{Q}$ such that
+
+$$\downarrow \int_a^b f \ - l(f, \mathcal{P}) < \epsilon / 2$$
+
+and
+
+$$U(f, \mathcal{Q}) - \ \uparrow \int_a^b f < \epsilon / 2$$
+
+for any any $\epsilon > 0$.
+
+So when $f$ is Darboux integrable, $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, and the two inequalities above simplify to
+
+$$U(f, \mathcal{Q}) - l(f, \mathcal{P}) < \epsilon$$
+
+This is not quite what we want, but we can use the refinement $\mathcal{P} \cup \mathcal{Q}$ and easily prove that
+
+$$U(f, \mathcal{P} \cup \mathcal{Q}) - l(f, \mathcal{P} \cup \mathcal{Q}) < \epsilon$$
+
+Conversely, if we can find partitions that make the corresponding upper and lower sums arbitrarily close, then the upper and lower integrals must be the same.
+
+$\Box$
+
 ### An example
 
 To illustrate what lower and upper Darboux sums look like, consider the polynomial
