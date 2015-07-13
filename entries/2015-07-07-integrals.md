@@ -185,6 +185,26 @@ is also true.
 
 $L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This will be denoted by $\int_a^b f$ or $\int_a^b f(x) dx$ since, as we will see below, the Darboux integral and Riemann integral are equivalent.
 
+### An example
+
+To illustrate what Riemann sums look like, we will consider the polynomial
+
+$$f(x) = x^3 - 2x^2 + 0.5x + 0.5$$
+
+restricted to the interval $[-1, 2]$. Here's a Riemann sum of $f$ with 12 equal intervals:
+
+![Riemann sum of $f$ with 12 equal intervals](/images/riemann_sum_12.png)
+
+You can clearly see the error in this sum: some of the bars exceed the function, while others do not go far enough (some do both!).
+
+As the number of intervals is increased, the sums will tend to become closer and closer to the area under the curve:
+
+![Riemann sum of $f$ with 40 equal intervals](/images/riemann_sum_40.png)
+
+You can imagine that the sum would be quite close if a trillion intervals were used instead.
+
+Note that these images are misleading in that the vast majority of Riemann sums do *not* have intervals of equal width. I've done this here because it was easier to make images for intervals of equal width and I am lazy.
+
 ## Proof of equivalence
 
 TODO
