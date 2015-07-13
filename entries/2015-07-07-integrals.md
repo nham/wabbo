@@ -157,6 +157,20 @@ $$\int_a^b f(x) dx$$
 
 as well. In this case $f$ is said to be **Darboux integrable** or just **integrable**.
 
+### An example
+
+To illustrate what lower and upper Darboux sums look like, consider the polynomial
+
+$$f(x) = x^3 - 2x^2 + 0.5x + 0.5$$
+
+restricted to the interval $[-1, 2]$. Then for a partition of $[-1, 2]$ into 12 equal intervals, the lower and upper sums look like this:
+
+![Darboux lower sum of $f$](/images/darboux_lower_sum.png)
+
+![Darboux upper sum of $f$](/images/darboux_upper_sum.png)
+
+Note that these images are misleading in that the vast majority of partitions will not have all sub-intervals of equal length. It was simply more convenient to do it this way.
+
 ## Riemann integral
 
 First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(x_1, \ldots, x_k)$ such that $x_i \in [a_{i-1}, a_i]$ for all $i$.
@@ -187,7 +201,7 @@ $L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This w
 
 ### An example
 
-To illustrate what Riemann sums look like, we will consider the polynomial
+To illustrate what Riemann sums look like, we will again consider the polynomial
 
 $$f(x) = x^3 - 2x^2 + 0.5x + 0.5$$
 
@@ -203,7 +217,7 @@ As the number of intervals is increased, the sums will tend to become closer and
 
 You can imagine that the sum would be quite close if a trillion intervals were used instead.
 
-Note that these images are misleading in that the vast majority of Riemann sums do *not* have intervals of equal width. I've done this here because it was easier to make images for intervals of equal width and I am lazy.
+Note, as above, that most partitions will not have all sub-intervals of equal length. You should try to imagine Riemann sums whose partition intervals are wildly uneven. All that matters is that the length of the *longest* interval goes to zero in the limit.
 
 ## Proof of equivalence
 
