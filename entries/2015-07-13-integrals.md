@@ -29,6 +29,9 @@ such that
 
 $$a = a_0 < a_1 < \ldots < a_k = b$$
 
+The **mesh size** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh sizesize  of $\mathcal{P}$ is denoted by $\| \mathcal{P} \|$.
+
+
 If $(a_i)_0^j$ and $(b_i)_0^k$ are two partitions of $[a, b]$ and each $a_i$ appears as a $b_j$, then $(b_i)_0^k$ is said to be a **refinement** of $(a_i)_0^j$.
 
 For any subset $X$ of $\mathbb{R}$, $c$ is said to be an **upper bound** for $X$ if $c \geq x$ for all $x \in X$, and a **lower bound** for $X$ if $c \leq x$ for all $x \in X$
@@ -149,11 +152,11 @@ $\Box$
 
 When $f$ is such that $\downarrow \int_a^b f \ = \ \uparrow \int_a^b f$, then $\int_a^b f$ defined by:
 
-$$\int_a^b f := \ \downarrow \int_a^b f \ = \ \uparrow \int_a^b f$$
+$$(D) \int_a^b f := \ \downarrow \int_a^b f \ = \ \uparrow \int_a^b f$$
 
-is called the **Darboux integral** of $f$ over $[a, b]$. It is also often denoted by
+is called the **Darboux integral** of $f$ over $[a, b]$. It can also be denoted by
 
-$$\int_a^b f(x) dx$$
+$$(D) \int_a^b f(x) dx$$
 
 as well. In this case $f$ is said to be **Darboux integrable** or just **integrable**.
 
@@ -201,8 +204,6 @@ Note that these images are misleading in that the vast majority of partitions wi
 
 First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(x_1, \ldots, x_k)$ such that $x_i \in [a_{i-1}, a_i]$ for all $i$.
 
-The **mesh** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh of $\mathcal{P}$ is denoted by $\| \mathcal{P} \|$.
-
 The **Riemann sum** corresponding to any function $f: [a, b] \to \mathbb{R}$ and any tagged partition $\mathcal{P} = ((a_i)_0^k, (x_i)_1^k)$ is defined to be
 
 $$\mathcal{R}(f, \mathcal{P}) := \sum_1^k f(x_i) (a_i - a_{i-1})$$
@@ -223,7 +224,7 @@ $$|\mathcal{R}(f, \mathcal{P}) - L| < \epsilon$$
 
 is also true.
 
-$L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This will be denoted by $\int_a^b f$ or $\int_a^b f(x) dx$ since, as we will see below, the Darboux integral and Riemann integral are equivalent.
+$L$ in the above is called the **Riemann integral** of $f$ over $[a, b]$. This will be denoted by $(R) \int_a^b f$ or $(R) \int_a^b f(x) dx$.
 
 ### An example
 
@@ -247,4 +248,26 @@ Note, as above, that most partitions will not have all sub-intervals of equal le
 
 ## Proof of equivalence
 
-TODO
+This proof is taken from [Daniele Grandini's lecture notes][grandini-notes].
+
+**Lemma:** If $\mathcal{P}$ is a partition of $[a, b]$, then for every $\epsilon > 0$ there is a $\delta$ such that every partition $\mathcal{Q}$ with $\| \mathcal{Q} \| < \delta$ has
+
+$$U(f, \mathcal{Q}) - U(f, \mathcal{P} \cup \mathcal{Q}) < \epsilon$$
+
+and
+
+$$l(f, \mathcal{P} \cup \mathcal{Q}) - l(f, \mathcal{Q}) < \epsilon$$
+
+*Proof:* TODO
+
+$\Box$
+
+**Theorem:** A function $f: [a, b] \to \mathbb{R}$ is Darboux integrable iff it is Riemann integrable, and when $f$ is integrable the two integrals coincide:
+
+$$(D) \int_a^b f = (R) \int_a^b f$$
+
+*Proof:* TODO
+
+$\Box$
+
+[grandini-notes]: http://math.unm.edu/~daniele/RiemannDarbouxandStieltjes.pdf
