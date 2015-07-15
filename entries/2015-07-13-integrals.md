@@ -202,25 +202,25 @@ Note that these images are misleading in that the vast majority of partitions wi
 
 ## Riemann integral
 
-First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(x_1, \ldots, x_k)$ such that $x_i \in [a_{i-1}, a_i]$ for all $i$.
+First, a **tagged partition** of $[a, b]$ is a partition $\mathcal{P} = (a_0, \ldots, a_k)$ along with a collection of tags $(c_1, \ldots, c_k)$ such that $c_i \in [a_{i-1}, a_i]$ for all $i$.
 
-The **Riemann sum** corresponding to any function $f: [a, b] \to \mathbb{R}$ and any tagged partition $\mathcal{P} = ((a_i)_0^k, (x_i)_1^k)$ is defined to be
+The **Riemann sum** corresponding to any function $f: [a, b] \to \mathbb{R}$ and any tagged partition $(\mathcal{P}, \vec{c})$ is defined to be
 
-$$\mathcal{R}(f, \mathcal{P}) := \sum_1^k f(x_i) (a_i - a_{i-1})$$
+$$\mathcal{R}(f, \mathcal{P}, \vec{c}) := \sum_1^k f(c_i) (a_i - a_{i-1})$$
 
 Then $f$ is said to be **Riemann integrable** when the limit
 
-$$\lim_{\| \mathcal{P} \| \to 0} \mathcal{R}(f, \mathcal{P})$$
+$$\lim_{\| (\mathcal{P}, \vec{c}) \| \to 0} \mathcal{R}(f, \mathcal{P}, \vec{c})$$
 
 exists. Formally, $f$ is Riemann integrable if there exists an $L \in \mathbb{R}$ such that
 
 for any $\epsilon > 0$, there is a $\delta > 0$ such that whenever
 
-$$\| \mathcal{P} \| < \delta$$
+$$\| (\mathcal{P}, \vec{c}) \| < \delta$$
 
 holds, then
 
-$$|\mathcal{R}(f, \mathcal{P}) - L| < \epsilon$$
+$$|\mathcal{R}(f, \mathcal{P}, \vec{c}) - L| < \epsilon$$
 
 is also true.
 
@@ -266,7 +266,63 @@ $\Box$
 
 $$(D) \int_a^b f = (R) \int_a^b f$$
 
-*Proof:* TODO
+*Proof:* First suppose that $f$ is Darboux integrable, and let the Darboux integral be $I$. Then for any $\epsilon > 0$ we can find a partition $\mathcal{P}$ such that
+
+$$U(f, \mathcal{P}) - l(f, \mathcal{P}) < \epsilon / 2$$
+
+We can expand this into two inequalities, which may seem pointless but you'll see why it's useful below:
+
+$$\begin{equation}
+- \epsilon = - \epsilon / 2 - \epsilon / 2 < l(f, \mathcal{P}) - \epsilon / 2 - U(f, \mathcal{P})
+\label{eq:one}
+\end{equation}$$
+
+and
+
+$$\begin{equation}
+U(f, \mathcal{P}) + \epsilon / 2 - l(f, \mathcal{P}) < \epsilon / 2 + \epsilon / 2 = \epsilon
+\label{eq:two}
+\end{equation}$$
+
+
+Now, by the lemma previously proved, there is a $\delta$ such that every partition $\mathcal{Q}$ with $\| \mathcal{Q} \| < \delta$ has
+
+$$U(f, \mathcal{Q}) - U(f, \mathcal{P} \cup \mathcal{Q}) < \epsilon / 2$$
+
+and
+
+$$l(f, \mathcal{P} \cup \mathcal{Q}) - l(f, \mathcal{Q}) < \epsilon / 2$$
+
+
+We can of course find a partition $\mathcal{Q}$ such that $\| \mathcal{Q} \| < \delta$. This means that
+
+$$U(f, \mathcal{Q}) < U(f, \mathcal{P} \cup \mathcal{Q}) + \epsilon / 2 \leq U(f, \mathcal{P}) + \epsilon / 2$$
+
+and
+
+$$l(f, \mathcal{Q}) > l(f, \mathcal{P} \cup \mathcal{Q}) - \epsilon / 2 \geq l(f, \mathcal{P}) - \epsilon / 2$$
+
+Now, for any fixed partition, the Riemann sum associated with any set of tags for that partition is bounded above and below by upper and lower Darboux sums for the partition (pretty much by the definitions). So for any tags $\vec{c}$ for the partition $\mathcal{Q}$, we have
+
+$$\mathcal{R}(f, \mathcal{Q}, \vec{c}) \leq U(f, \mathcal{Q})$$
+
+$$\mathcal{R}(f, \mathcal{Q}, \vec{c}) \geq l(f, \mathcal{Q})$$
+
+Here's where the "pointless" inequalities from above come back into play: we have just proven that:
+
+$$l(f, \mathcal{P}) - \epsilon/2 < \mathcal{R}(f, \mathcal{Q}, \vec{c}) < U(f, \mathcal{P}) + \epsilon / 2$$
+
+for any tagged partition $(\mathcal{Q}, \vec{c})$ with $\| (\mathcal{Q}, \vec{c}) \| < \delta$.
+
+Furthermore, we clearly have $l(f, \mathcal{P}) \leq I \leq U(f, \mathcal{P})$. Combining all of these with the two inequalities, we have that
+
+$$- \epsilon < \mathcal{R}(f, \mathcal{Q}, \vec{c} - I < \epsilon$$
+
+for any tagged partition $(\mathcal{Q}, \vec{c})$ with $\| (\mathcal{Q}, \vec{c}) \| < \delta$.
+
+This establishes that $f$ is Riemann integrable with a Riemann integral of $I$.
+
+Converse: TODO
 
 $\Box$
 
