@@ -19,6 +19,15 @@ Why care about this? A very partial answer is this quote from Baez and Stay:
 
  > A category is the simplest framework where we can talk about systems (objects) and processes (morphisms)
 
+Another way to understand categories is as generalizations of monoids. Indeed, a monoid can be thought of as a category with one object.
+
+Some examples of categories include:
+
+ - $\text{Set}$, the category whose objects are all sets and morphisms are functions
+ - $\text{Vect}_k$, the category whose objects are all vector spaces over the field $k$ and morphisms are linear maps
+ - $\text{Top}$, the category whose objects are all topological spaces and morphisms are continuous maps
+ - TODO: more?
+
 A morphism $f: X \to Y$$ in a category is said to be an **isomorphism** when there is a $g: Y \to X$ such that $f ; g = 1_X$ and $g ; f = 1_Y$. In this case, $g$ must be unique and is called the **inverse** of $f$ (and is sometimes denoted $f^{-1}$), since for any inverse $h: Y \to X$ we have
 
 $$h = h ; 1_X = h ; f ; g = 1_Y ; g = g$$
@@ -27,12 +36,16 @@ The definition is symmetric, so each inverse $f^{-1}$ is also an isomorphism. It
 
 Gathering up all the facts from the last paragraph, the relation on objects defined by $X \sim Y$ iff there exists an isomorphism $X \to Y$ is an equivalence relation. I think this is important because in category theory we are often concerned not with proving that two things are equal, but that they are isomorphic (i.e. that they belong to the same isomorphism class).
 
+A group can be thought of as a category with one object where every arrow is an isomorphism. In general, a category where every arrow is an isomorphism is called a **groupoid**. (If we follow this naming scheme, we should perhaps call a category a *monoidoid* instead.)
+
 ## Functors
 
 If $C$ and $D$ are categories, then a **functor** $F: C \to D$ maps objects and morphisms in $C$ to objects and morphisms in $D$ such that
 
  - identities are preserved: for every object $X$ in $C$, $F(1_X) = 1_{F(X)}$
  - compositions are preserved: for any morphisms $f: X \to Y$ and $g: Y \to Z$, $F(f;g) = F(f) ; F(g)$
+
+Baez and Stay give a good example of this. Recall that a **group action** of $G$ on a set $X$ is a group homomorphism from $G$ to the symmetric group on $X$. If we consider $G$ as a category, then a group action is exactly a functor $G \to \text{Set}$.
 
 [rosetta]: http://math.ucr.edu/home/baez/rosetta.pdf
 [quiver-wiki]: https://en.wikipedia.org/wiki/Quiver_%28mathematics%29
