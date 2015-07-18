@@ -266,7 +266,7 @@ $\Box$
 
 $$(D) \int_a^b f = (R) \int_a^b f$$
 
-*Proof:* First suppose that $f$ is Darboux integrable, and let the Darboux integral be $I$. Then for any $\epsilon > 0$ we can find a partition $\mathcal{P}$ such that
+*Proof:* *(Darboux integrable => Riemann integrable):* First suppose that $f$ is Darboux integrable, and let the Darboux integral be $I$. Then for any $\epsilon > 0$ we can find a partition $\mathcal{P}$ such that
 
 $$U(f, \mathcal{P}) - l(f, \mathcal{P}) < \epsilon / 2$$
 
@@ -322,7 +322,52 @@ for any tagged partition $(\mathcal{Q}, \vec{c})$ with $\| (\mathcal{Q}, \vec{c}
 
 This establishes that $f$ is Riemann integrable with a Riemann integral of $I$.
 
-Converse: TODO
+*(Riemann integrable => Darboux integrable):* Conversely, if $f$ is Riemann integrable with integral $I$, then by definition for any $\epsilon > 0$ we can find a $\delta$ such any partition $\mathcal{P}$ with $\| \mathcal{P} \| < \delta$ has
+
+$$|\mathcal{R}(f, \mathcal{P}, \vec{c}) - I| < \epsilon$$
+
+for any tag vector $\vec{c}$. Fix some partition $\mathcal{P}$ such that $\| \mathcal{P} \| < \delta$. Then we can find tag vectors $\vec{c}, \vec{d}$ such that:
+
+$$\mathcal{R}(f, \mathcal{P}, \vec{c}) > U(f, \mathcal{P}) - \epsilon$$
+
+and
+
+$$\mathcal{R}(f, \mathcal{P}, \vec{c}) < l(f, \mathcal{P}) + \epsilon$$
+
+To see why, note that for each $i$, there must be a $c_i \in [a_{i-1}, a_i]$ such that
+
+$$f(c_i) > M_i - \frac{\epsilon}{b - a}$$
+
+(recall that $M_i$ is the supremum of $f([a_{i-1}, a_i])$), and similarly there must be a $d_i$ such that
+
+$$f(d_i) < m_i + \frac{\epsilon}{b - a}$$
+
+(and similarly recall $m_i$ is the infimum of $f([a_{i-1}, a_i])$).
+
+So we must have:
+
+$$\mathcal{R}(f, \mathcal{P}, \vec{c}) > U(f, \mathcal{P}) - \frac{\epsilon}{b - a} \sum_1^n (a_i - a_{i-1}) = U(f, \mathcal{P})  - \epsilon$$
+
+and
+
+$$\mathcal{R}(f, \mathcal{P}, \vec{c}) < l(f, \mathcal{P}) + \frac{\epsilon}{b - a} \sum_1^n (a_i - a_{i-1}) = l(f, \mathcal{P} + \epsilon$$
+
+With the claim established, we can now show that:
+
+$$\begin{align}
+U(f, \mathcal{P}) - l(f, \mathcal{P}) & < (\mathcal{R}(f, \mathcal{P}, \vec{c}) + \epsilon) - (\mathcal{R}(f, \mathcal{P}, \vec{d}) - \epsilon) \\
+& \leq | \mathcal{R}(f, \mathcal{P}, \vec{c}) -\mathcal{R}(f, \mathcal{P}, \vec{d})| + 2 \epsilon
+\end{align}$$
+
+But by the triangle inequality and by the definition of $\mathcal{P}$, we have:
+
+$$|\mathcal{R}(f, \mathcal{P}, \vec{c}) - \mathcal{R}(f, \mathcal{P}, \vec{d})| \leq |\mathcal{R}(f, \mathcal{P}, \vec{c}) - I| + |I - \mathcal{R}(f, \mathcal{P}, \vec{d})| < 2 \epsilon$$
+
+Therefore
+
+$$U(f, \mathcal{P}) - l(f, \mathcal{P}) < 4 \epsilon$$
+
+So we can always find partitions that make the gap between the upper and lower Darboux sums arbitrarily small, and hence $f$ is Darboux integrable.
 
 $\Box$
 
