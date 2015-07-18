@@ -5,7 +5,7 @@ tags: math, analysis
 
 ## Preface
 
-This post is largely based on pp. xv-xvii in Donald L. Cohn's book *Measure Theory*, 2nd ed. The goal is to define and compare the Riemann and Darboux integrals and establish their equivalence.
+The goal is to define and compare the Riemann and Darboux integrals and establish their equivalence.
 
 ## Prerequisites
 
