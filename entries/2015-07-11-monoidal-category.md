@@ -64,6 +64,8 @@ If $F$ and $G$ are both functors $C \to D$, then a **natural transformation** is
     G(X) @>{G(f)}>> G(Y);
     \end{CD}$$
 
+A **natural isomorphism** is a natural transformation where each $\eta_X$ is an isomorphism.
+
 
 [rosetta]: http://math.ucr.edu/home/baez/rosetta.pdf
 [quiver-wiki]: https://en.wikipedia.org/wiki/Quiver_%28mathematics%29
