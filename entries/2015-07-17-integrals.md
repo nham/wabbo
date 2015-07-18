@@ -29,7 +29,7 @@ such that
 
 $$a = a_0 < a_1 < \ldots < a_k = b$$
 
-The **mesh size** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh sizesize  of $\mathcal{P}$ is denoted by $\| \mathcal{P} \|$.
+The **mesh size** of a partition $\mathcal{P}$ is defined to be $\max_i(a_i - a_{i-1})$, the length of the longest sub-interval. The mesh size of $\mathcal{P}$ is denoted by $\| \mathcal{P} \|$.
 
 
 If $(a_i)_0^j$ and $(b_i)_0^k$ are two partitions of $[a, b]$ and each $a_i$ appears as a $b_j$, then $(b_i)_0^k$ is said to be a **refinement** of $(a_i)_0^j$.
