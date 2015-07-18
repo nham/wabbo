@@ -1,3 +1,8 @@
+---
+title: Monoidal categories
+tags: math, category theory
+---
+
 This post assumes knowledge of basic group theory. Groups are not technically a requirement for these definitions, but I use them as examples to make what follows slightly more concrete.
 
 This is just my notes on a very small part of  John Baez and Mike Stay's paper [Physics, Topology, Logic and Computation: A Rosetta Stone][rosetta]. You should probably read that instead of this post.
@@ -46,6 +51,19 @@ If $C$ and $D$ are categories, then a **functor** $F: C \to D$ maps objects and 
  - compositions are preserved: for any morphisms $f: X \to Y$ and $g: Y \to Z$, $F(f;g) = F(f) ; F(g)$
 
 Baez and Stay give a good example of this. Recall that a **group action** of $G$ on a set $X$ is a group homomorphism from $G$ to the symmetric group on $X$. If we consider $G$ as a category, then a group action is exactly a functor $G \to \text{Set}$.
+
+If $F$ and $G$ are both functors $C \to D$, then a **natural transformation** is a family $\eta: F \to G$ of morphisms such that:
+
+ - for every object $X$ in $C$, $\eta_X: F(X) \to G(X)$ is a morphism in $D$, called the **component** of $\eta$ at $X$
+ - for every morphism $f: X \to Y$ in $C$, $F(f) ; \eta_Y  = \eta_X ; G(f)$. Another way of putting it is that for each such $f$, the following digram commutes:
+
+    $$\require{AMScd}
+    \begin{CD}
+    F(X) @>{F(f)}>> F(Y);\\
+    @VV{\eta_X}V @VV{\eta_Y}V \\
+    G(X) @>{G(f)}>> G(Y);
+    \end{CD}$$
+
 
 [rosetta]: http://math.ucr.edu/home/baez/rosetta.pdf
 [quiver-wiki]: https://en.wikipedia.org/wiki/Quiver_%28mathematics%29
