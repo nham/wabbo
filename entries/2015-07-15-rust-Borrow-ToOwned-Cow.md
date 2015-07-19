@@ -1,9 +1,7 @@
 ---
-title: Rust's std::borrow::{Borrow, ToOwned, Cow}
+title: Some notes on Rust's std::borrow::{Borrow, ToOwned, Cow}
 tags: programming, Rust
 ---
-
-I recently attempted to understand the `Borrow` and `ToOwned` traits, as well as the `Cow` smart pointer type from Rust's `std::borrow` module. This post attempts to give a rough account of how I did it. There are [docs][std-borrow-docs] and even a [chapter in TRPL on the Borrow trait][borrow-trpl], but I did not find them to be very helpful when I was starting out. Instead I had to proceed somewhat mechanically, looking at the definition and making useless toy examples to get a grasp on it. I'm posting this in case it proves useful to someone.
 
 ## Borrow
 
@@ -83,7 +81,7 @@ Hopefully this makes at least partial sense. This level of understanding should 
 
 ## ToOwned
 
-The Rust docs call this next trait "A generalization of `Clone` to borrowed data". Here's the definition:
+The `ToOwned` trait is of particular interest since it is in the [Rust 1.0 prelude][v1-prelude] The Rust docs call it a "generalization of `Clone` to borrowed data". Here's the definition:
 
 ```rust
 pub trait ToOwned {
@@ -202,14 +200,78 @@ fn main() {
 }
 ```
 
-The `baz_ref.borrow()` line is only permitted because `<Foo as ToOwned>::Owned = Baz` implements `Borrow<Foo>`, but... I'm still not sure why this is needed or even desired. I think the use of toy implementations here is impeding understanding, unfortunately.
+The `baz_ref.borrow()` line is only permitted because `<Foo as ToOwned>::Owned` (i.e. `Baz`) implements `Borrow<Foo>`, but... I'm still not sure why this is needed or even desired. I think the use of toy implementations here is impeding understanding, unfortunately.
 
 Let's set aside our confusion for now and move on to the `Cow` type. Maybe that will clear it up?
 
 ## Cow
 
-TODO
+This seemingly oddly-named type stands for "clone-on-write". It is a smart pointer type, an `enum` with two variants:
+
+```rust
+pub enum Cow<'a, B: ?Sized + 'a> where B: ToOwned {
+    /// Borrowed data.
+    Borrowed(&'a B),
+
+    /// Owned data.
+    Owned(<B as ToOwned>::Owned)
+}
+```
+
+The docs say this about it:
+
+ > The type `Cow` is a smart pointer providing clone-on-write functionality: it
+ > can enclose and provide immutable access to borrowed data, and clone the
+ > data lazily when mutation or ownership is required. The type is designed to
+ > work with general borrowed data via the `Borrow` trait.
+
+This type has two inherent methods defined for it (implementations omitted):
+
+```rust
+impl<'a, B: ?Sized> Cow<'a, B> where B: ToOwned {
+    /// Acquires a mutable reference to the owned form of the data.
+    ///
+    /// Copies the data if it is not already owned.
+    pub fn to_mut(&mut self) -> &mut <B as ToOwned>::Owned { ... }
+
+    /// Extracts the owned data.
+    ///
+    /// Copies the data if it is not already owned.
+    pub fn into_owned(self) -> <B as ToOwned>::Owned { ... }
+}
+```
+
+The implementations of the methods make sense to me given the descriptions. `to_mut` acquires a mutable reference, converting a `Borrowed` variant to the `Owned` variant as needed:
+
+```rust
+pub fn to_mut(&mut self) -> &mut <B as ToOwned>::Owned {
+    match *self {
+        Borrowed(borrowed) => {
+            *self = Owned(borrowed.to_owned());
+            self.to_mut()
+        }
+        Owned(ref mut owned) => owned
+    }
+}
+```
+
+On the other hand, `into_owned` consumes the `Cow` value, again converting the `Borrowed` variant to the `Owned` variant as needed and yielding the inner `Owned` value:
+
+```rust
+pub fn into_owned(self) -> <B as ToOwned>::Owned {
+    match self {
+        Borrowed(borrowed) => borrowed.to_owned(),
+        Owned(owned) => owned
+    }
+}
+```
+
+This all seems to make sense. Note that the type parameter `B` for `Cow` has a `ToOwned` bound on it. Does this help us resolve our earlier confusion with the `ToOwned` trait? Well, since `Cow` is a smart pointer type, it makes sense that it would implement `Deref` right? It's important that pointers can be dereferenced. Indeed, the docs say:
+
+ > `Cow` implements `Deref`, which means that you can call
+ > non-mutating methods directly on the data it encloses. If mutation
+ > is desired, `to_mut` will obtain a mutable reference to an owned
+ > value, cloning if necessary.
 
 [the-sized-trait]: http://huonw.github.io/blog/2015/01/the-sized-trait/
-[std-borrow-docs]: https://doc.rust-lang.org/std/borrow/
-[borrow-trpl]: https://doc.rust-lang.org/book/borrow-and-asref.html
+[v1-prelude]: https://doc.rust-lang.org/std/prelude/v1/
