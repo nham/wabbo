@@ -3,7 +3,9 @@ title: Some notes on Rust's std::borrow::{Borrow, ToOwned, Cow}
 tags: programming, Rust
 ---
 
-Some notes on two traits and a type from the `std::borrow` module in the Rust standard library. All the definitions discussed can be found in `libcollections/borrow.rs`.
+Some notes on two traits and a type from the `std::borrow` module in the Rust standard library. These traits/types interact and it seems ideal to discuss them together.
+
+All the definitions discussed can be found in `libcollections/borrow.rs`.
 
 ## Borrow
 
@@ -96,7 +98,7 @@ pub trait ToOwned {
 }
 ```
 
-As was the case for `Borrow`, `ToOwned` has only one method. However, this trait is much more confusing (to me) because it has an associated type `Owned` with this weird `Borrow<Self>` bound on it. What could possibly be the point of that? Well, we know from our previous exploration of the `Borrow` trait that `Owned: Borrow<Self>` means that `&Self` can be borrowed from `&Owned`, but this fact alone does not shed much light on it for me. Maybe the docs say something about it?
+As was the case for `Borrow`, `ToOwned` has only one method. However, this trait is much more confusing (to me) because it has an associated type `Owned` with this weird `Borrow<Self>` bound on it. What could possibly be the point of that? We know from our previous exploration of the `Borrow` trait that `Owned: Borrow<Self>` means that `&Self` can be borrowed from `&Owned`, but this fact alone does not shed much light on it for me. Maybe the docs say something about it?
 
  > A generalization of `Clone` to borrowed data.
  >
@@ -270,7 +272,9 @@ pub fn into_owned(self) -> <B as ToOwned>::Owned {
 }
 ```
 
-This all seems to make sense. Note that the type parameter `B` for `Cow` has a `ToOwned` bound on it. Does this help us resolve our earlier confusion with the `ToOwned` trait? Well, since `Cow` is a smart pointer type, it makes sense that it would implement `Deref` right? It's important that pointers can be dereferenced. Indeed, the docs say:
+Both of these method definitions seem sensible to me.
+
+Note that the type parameter `B` for `Cow` has a `ToOwned` bound on it. Does this help us resolve our earlier confusion with the `ToOwned` trait? Well, since `Cow` is a smart pointer type, it makes sense that it would implement `Deref` right? It's important that pointers can be dereferenced. Indeed, the docs say:
 
  > `Cow` implements `Deref`, which means that you can call
  > non-mutating methods directly on the data it encloses. If mutation
