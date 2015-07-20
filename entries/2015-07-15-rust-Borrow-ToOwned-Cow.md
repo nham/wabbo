@@ -3,26 +3,67 @@ title: Some notes on Rust's std::borrow::{Borrow, ToOwned, Cow}
 tags: programming, Rust
 ---
 
-Some notes on two traits and a type from the `std::borrow` module in the Rust standard library. These traits/types interact and it seems ideal to discuss them together.
+Some notes on the `Borrow` and `ToOwned` traits and the `Cow` smart pointer type from the `std::borrow` module in the Rust standard library. The `ToOwned` trait is of particular interest since it is in the [Rust 1.0 prelude][v1-prelude].
 
 All the definitions discussed can be found in `libcollections/borrow.rs`.
 
-## Borrow
+## `Borrow` and `ToOwned`
 
-The first trait we'll look at is `std::borrow::Borrow`. The docs call this "a trait for borrowing data". It's a trait with a single method, `borrow`. Here's the definition:
+The `Borrow` and `ToOwned` traits are closely related, so it makes some sense to consider them together. Here are the definitions:
 
 ```rust
+/// A trait for borrowing data.
 pub trait Borrow<Borrowed: ?Sized> {
     /// Immutably borrows from an owned value.
     fn borrow(&self) -> &Borrowed;
 }
+
+/// A generalization of `Clone` to borrowed data.
+pub trait ToOwned {
+    type Owned: Borrow<Self>;
+
+    /// Creates owned data from borrowed data, usually by cloning.
+    fn to_owned(&self) -> Self::Owned;
+}
 ```
 
-(You can safely ignore the `?Sized` thing here and in everything that follows if you find it to be baffling. It just means that the trait accepts [unsized][the-sized-trait] type parameters.)
+(You can safely ignore the `?Sized` thing for now if you find it to be baffling. It just means that the trait accepts [unsized][the-sized-trait] type parameters.)
 
-What is the meaning of this trait? If `T` and `U` are types and `T` implements `Borrow<U>`, then you can use the `borrow` method on a value of type `&T` to obtain a value of type `&U`.
+The `Borrow` trait has a single method, `borrow`. If `T` and `U` are types and `T` implements `Borrow<U>`, then you can use the `borrow` method on a value of type `&T` to obtain a value of type `&U`.
 
-Let's build a toy implementation of this trait in order to understand it better. We'll start with perhaps the simplest possible types, unit structs:
+Despite also having a single method, the `ToOwned` trait is a bit harder to understand (to my mind). This is due to the `Owned` associated type with its strange `Borrow<Self>` bound. What is the meaning of this bound?
+
+TODO, something about the original type being "recoverable" from its owned version. Or rather, "borrowable" from the owned version. We know that `Owned: Borrow<Self>` means that `&Self` can be borrowed from `&Owned`.
+
+Furthermore, why does the `Borrow` trait use a type parameter but the `ToOwned` use an associated type? This one is not too hard to understand, actually. { Perhaps something about multidispatch should go here. A type `T` implementing `ToOwned` can only have one impl, but the same type `T` could impl `Borrow<U>` for multiple `U`. So a type `T` can be borrowed in multiple ways, but there is at most one way of converting a given type to an owned type. }
+
+TODO: something with these quotes.
+
+ > A trait for borrowing data.
+ >
+ > In general, there may be several ways to "borrow" a piece of data.  The
+ > typical ways of borrowing a type `T` are `&T` (a shared borrow) and `&mut T`
+ > (a mutable borrow). But types like `Vec<T>` provide additional kinds of
+ > borrows: the borrowed slices `&[T]` and `&mut [T]`.
+ >
+ > When writing generic code, it is often desirable to abstract over all ways
+ > of borrowing data from a given type. That is the role of the `Borrow`
+ > trait: if `T: Borrow<U>`, then `&U` can be borrowed from `&T`.  A given
+ > type can be borrowed as multiple different types. In particular, `Vec<T>:
+ > Borrow<Vec<T>>` and `Vec<T>: Borrow<[T]>`.
+
+TODO
+
+ > A generalization of `Clone` to borrowed data.
+ >
+ > Some types make it possible to go from borrowed to owned, usually by
+ > implementing the `Clone` trait. But `Clone` works only for going from `&T`
+ > to `T`. The `ToOwned` trait generalizes `Clone` to construct owned data
+ > from any borrow of a given type.
+
+### Toy implementation
+
+Let's build a toy implementation of these trait in order to understand it better. We'll start with perhaps the simplest possible types, unit structs:
 
 ```rust
 struct Foo;
@@ -68,63 +109,7 @@ fn main() {
 
 (The type annotation on `foo_ref` is not necessary, I just put it there for emphasis.)
 
-So this compiles and that's great and all, but the program we've made is clearly useless. What's the *point* of this trait? Perhaps the docs can help us out now:
-
- > A trait for borrowing data.
- >
- > In general, there may be several ways to "borrow" a piece of data.  The
- > typical ways of borrowing a type `T` are `&T` (a shared borrow) and `&mut T`
- > (a mutable borrow). But types like `Vec<T>` provide additional kinds of
- > borrows: the borrowed slices `&[T]` and `&mut [T]`.
- >
- > When writing generic code, it is often desirable to abstract over all ways
- > of borrowing data from a given type. That is the role of the `Borrow`
- > trait: if `T: Borrow<U>`, then `&U` can be borrowed from `&T`.  A given
- > type can be borrowed as multiple different types. In particular, `Vec<T>:
- > Borrow<Vec<T>>` and `Vec<T>: Borrow<[T]>`.
-
-Hopefully this makes at least some sense. This level of understanding should be enough to begin studying the next trait, `ToOwned`.
-
-## ToOwned
-
-The `ToOwned` trait is of particular interest since it is in the [Rust 1.0 prelude][v1-prelude] The Rust docs call it a "generalization of `Clone` to borrowed data". Here's the definition:
-
-```rust
-pub trait ToOwned {
-    type Owned: Borrow<Self>;
-
-    /// Creates owned data from borrowed data, usually by cloning.
-    fn to_owned(&self) -> Self::Owned;
-}
-```
-
-As was the case for `Borrow`, `ToOwned` has only one method. However, this trait is much more confusing (to me) because it has an associated type `Owned` with this weird `Borrow<Self>` bound on it. What could possibly be the point of that? We know from our previous exploration of the `Borrow` trait that `Owned: Borrow<Self>` means that `&Self` can be borrowed from `&Owned`, but this fact alone does not shed much light on it for me. Maybe the docs say something about it?
-
- > A generalization of `Clone` to borrowed data.
- >
- > Some types make it possible to go from borrowed to owned, usually by
- > implementing the `Clone` trait. But `Clone` works only for going from `&T`
- > to `T`. The `ToOwned` trait generalizes `Clone` to construct owned data
- > from any borrow of a given type.
-
-This is helpful, but it does not seem to say anything about why the `Owned` type must implement `Borrow<Self>`. Hrm.
-
-Let's try to expand our toy example from earlier. Recall that we had these definitions:
-
-```rust
-struct Foo;
-
-struct Baz(Foo);
-
-impl Borrow<Foo> for Baz {
-    fn borrow(&self) -> &Foo {
-        let Baz(ref foo) = *self;
-        foo
-    }
-}
-```
-
-Since we already have `Baz: Borrow<Foo>`, it seems like the path of least resistance is to make an implementation of `ToOwned` for `Foo` where the associated `Owned` type is `Baz`:
+Let us now add a toy implementation of `ToOwned`. Since we already have `Baz: Borrow<Foo>`, it seems like the path of least resistance is to make an implementation of `ToOwned` for `Foo` where the associated `Owned` type is `Baz`:
 
 ```rust
 impl ToOwned for Foo {
@@ -186,6 +171,25 @@ So by making `Foo` implement `Clone`, that automatically makes this implementati
 Actually, we don't need `Foo` to implement Clone. It's a zero-sized type, so there's nothing to clone. This should work instead:
 
 ```rust
+fn to_owned(&self) -> Baz {
+    Baz(Foo)
+}
+```
+
+To bring all this code together:
+
+```rust
+struct Foo;
+
+struct Baz(Foo);
+
+impl Borrow<Foo> for Baz {
+    fn borrow(&self) -> &Foo {
+        let Baz(ref foo) = *self;
+        foo
+    }
+}
+
 impl ToOwned for Foo {
     type Owned = Baz;
 
@@ -274,14 +278,7 @@ pub fn into_owned(self) -> <B as ToOwned>::Owned {
 
 Both of these method definitions seem sensible to me.
 
-Note that the type parameter `B` for `Cow` has a `ToOwned` bound on it. Does this help us resolve our earlier confusion with the `ToOwned` trait? Well, since `Cow` is a smart pointer type, it makes sense that it would implement `Deref` right? It's important that pointers can be dereferenced. Indeed, the docs say:
-
- > `Cow` implements `Deref`, which means that you can call
- > non-mutating methods directly on the data it encloses. If mutation
- > is desired, `to_mut` will obtain a mutable reference to an owned
- > value, cloning if necessary.
-
-The `Deref` impl is probably worth a peek, huh?
+Note that the type parameter `B` for `Cow` has a `ToOwned` bound on it. Does this help us resolve our earlier confusion with the `ToOwned` trait? Well, since `Cow` is a smart pointer type, it makes sense that it would implement `Deref` right? It's important that pointers can be dereferenced. The `Deref` impl for `Cow` is therefore probably worth a peek:
 
 ```rust
 impl<'a, B: ?Sized> Deref for Cow<'a, B> where B: ToOwned {
@@ -296,7 +293,13 @@ impl<'a, B: ?Sized> Deref for Cow<'a, B> where B: ToOwned {
 }
 ```
 
-This is an interesting definition! It says that if we have a Cow value, `some_cow_ptr`, and we dereference it as in `*some_cow_ptr`, the result is a reference to the borrowed version. Of course, this means that if `some_cow_ptr` is actually the `Owned` variant, TODO
+This is an interesting definition! It says that if we have a Cow value, `some_cow_ptr`, and we dereference it as in `*some_cow_ptr`, the result is a reference to the borrowed version. Of course, this means that if `some_cow_ptr` is actually the `Owned` variant, we need to *convert* it to the borrowed version. More precisely, look at this `match` arm:
+
+```rust
+    Owned(ref owned) => owned.borrow()
+```
+
+`owned` is of type `&<B as ToOwned>::Owned`, and we need to obtain a `&B` from it to match the return type of the `deref` method. What allows us to do this? It is precisely the `Borrow<Self>` bound on the `Owned` associated type, the one we were puzzling about earlier.
 
 [the-sized-trait]: http://huonw.github.io/blog/2015/01/the-sized-trait/
 [v1-prelude]: https://doc.rust-lang.org/std/prelude/v1/
