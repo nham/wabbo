@@ -3,6 +3,8 @@ title: Some notes on Rust's std::borrow::{Borrow, ToOwned, Cow}
 tags: programming, Rust
 ---
 
+Some notes on two traits and a type from the `std::borrow` module in the Rust standard library. All the definitions discussed can be found in `libcollections/borrow.rs`.
+
 ## Borrow
 
 The first trait we'll look at is `std::borrow::Borrow`. The docs call this "a trait for borrowing data". It's a trait with a single method, `borrow`. Here's the definition:
@@ -25,7 +27,7 @@ struct Foo;
 struct Baz;
 ```
 
-Let's say that we want to make `Baz` implement `Borrow<Foo>`. The implementation will look something like this:
+Suppose that we want to make `Baz` implement `Borrow<Foo>`. The implementation will look something like this:
 
 ```rust
 impl Borrow<Foo> for Baz {
@@ -33,7 +35,7 @@ impl Borrow<Foo> for Baz {
 }
 ```
 
-Err, there's a problem here. How are we going to get a reference to a `Foo` from a reference to a `Baz`?  As defined, it doesn't seem possible, but we can do it if we change the definition of `Baz` so that it wraps a `Foo` value:
+There's a problem here. How are we going to get a reference to a `Foo` from a reference to a `Baz`?  As defined, it doesn't seem possible, but we can do it if we change the definition of `Baz` so that it wraps a `Foo` value:
 
 ```rust
 struct Baz(Foo);
@@ -50,6 +52,8 @@ impl Borrow<Foo> for Baz {
 }
 ```
 
+Inside the `borrow` method, `self` is a reference to a `Baz` value (i.e. it is of type `&Baz`). The `let Baz(ref foo) = *self;` line destructures the `&Baz` to obtain a reference to the inner `Foo`. `borrow` subsequently returns this reference.
+
 Now, since `Baz` implements `Borrow<Foo>`, we can use the `borrow` method on a value of type `&Baz` to obtain a value of type `&Foo`:
 
 ```rust
@@ -62,7 +66,7 @@ fn main() {
 
 (The type annotation on `foo_ref` is not necessary, I just put it there for emphasis.)
 
-So this compiles and that's great and all, but the program we've made is useless. What's the *point* of this trait? Perhaps the docs can help us out now:
+So this compiles and that's great and all, but the program we've made is clearly useless. What's the *point* of this trait? Perhaps the docs can help us out now:
 
  > A trait for borrowing data.
  >
@@ -77,7 +81,7 @@ So this compiles and that's great and all, but the program we've made is useless
  > type can be borrowed as multiple different types. In particular, `Vec<T>:
  > Borrow<Vec<T>>` and `Vec<T>: Borrow<[T]>`.
 
-Hopefully this makes at least partial sense. This level of understanding should be enough to begin studying the next trait, `ToOwned`.
+Hopefully this makes at least some sense. This level of understanding should be enough to begin studying the next trait, `ToOwned`.
 
 ## ToOwned
 
@@ -166,7 +170,7 @@ toy_std_borrow.rs:21     }
 error: aborting due to previous error
 ```
 
-If you look in `libcollections/borrow.rs`, you'll find this implementation, which seems to be our culprit:
+If you look in `libcollections/borrow.rs`, you'll find this implementation, which seems to be the culprit here:
 
 ```rust
 impl<T> ToOwned for T where T: Clone {
@@ -225,18 +229,18 @@ The docs say this about it:
  > data lazily when mutation or ownership is required. The type is designed to
  > work with general borrowed data via the `Borrow` trait.
 
-This type has two inherent methods defined for it (implementations omitted):
+This type has two inherent methods defined for it (implementations omitted temporarily):
 
 ```rust
 impl<'a, B: ?Sized> Cow<'a, B> where B: ToOwned {
     /// Acquires a mutable reference to the owned form of the data.
     ///
-    /// Copies the data if it is not already owned.
+    /// Clones the data if it is not already owned.
     pub fn to_mut(&mut self) -> &mut <B as ToOwned>::Owned { ... }
 
     /// Extracts the owned data.
     ///
-    /// Copies the data if it is not already owned.
+    /// Clones the data if it is not already owned.
     pub fn into_owned(self) -> <B as ToOwned>::Owned { ... }
 }
 ```
@@ -272,6 +276,23 @@ This all seems to make sense. Note that the type parameter `B` for `Cow` has a `
  > non-mutating methods directly on the data it encloses. If mutation
  > is desired, `to_mut` will obtain a mutable reference to an owned
  > value, cloning if necessary.
+
+The `Deref` impl is probably worth a peek, huh?
+
+```rust
+impl<'a, B: ?Sized> Deref for Cow<'a, B> where B: ToOwned {
+    type Target = B;
+
+    fn deref(&self) -> &B {
+        match *self {
+            Borrowed(borrowed) => borrowed,
+            Owned(ref owned) => owned.borrow()
+        }
+    }
+}
+```
+
+This is an interesting definition! It says that if we have a Cow value, `some_cow_ptr`, and we dereference it as in `*some_cow_ptr`, the result is a reference to the borrowed version. Of course, this means that if `some_cow_ptr` is actually the `Owned` variant, TODO
 
 [the-sized-trait]: http://huonw.github.io/blog/2015/01/the-sized-trait/
 [v1-prelude]: https://doc.rust-lang.org/std/prelude/v1/
