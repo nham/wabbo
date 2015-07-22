@@ -76,7 +76,7 @@ main = hakyll $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "entries/*"
+            posts <- fmap (take 10) . recentFirst =<< loadAll "entries/*"
             let indexCtx =
                     listField "posts" (postCtx tags) (return posts) <>
                     constField "title" "Home"                <>
